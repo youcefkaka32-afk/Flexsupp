@@ -488,10 +488,16 @@ export default function Hero() {
     const cursorTarget = s.cursorTarget
     let rafCursor
 
+    // Detect touch/mobile — hide cursor entirely on touch devices
+    const isTouchDevice = () => window.matchMedia('(hover: none) and (pointer: coarse)').matches
+    if (cursorRef.current && isTouchDevice()) {
+      cursorRef.current.style.display = 'none'
+    }
+
     function animateCursor() {
       cursorPos.x += (cursorTarget.x - cursorPos.x) * 0.15
       cursorPos.y += (cursorTarget.y - cursorPos.y) * 0.15
-      if (cursorRef.current) {
+      if (cursorRef.current && !isTouchDevice()) {
         cursorRef.current.style.transform = `translate(${cursorPos.x}px,${cursorPos.y}px) translate(-50%,-50%)`
       }
       rafCursor = requestAnimationFrame(animateCursor)
@@ -500,13 +506,18 @@ export default function Hero() {
 
     const hero = heroRef.current
     const onMouseMove = (e) => {
+      if (isTouchDevice()) return
       const rect = hero.getBoundingClientRect()
       const over = e.clientY >= rect.top && e.clientY <= rect.bottom && e.clientX >= rect.left && e.clientX <= rect.right
       if (cursorRef.current) cursorRef.current.style.display = over ? 'block' : 'none'
       cursorTarget.x = e.clientX
       cursorTarget.y = e.clientY
     }
-    const onEnter = () => { s.paused = true; clearTimeout(s.autoplay); if (cursorRef.current) cursorRef.current.style.display = 'block' }
+    const onEnter = () => {
+      s.paused = true
+      clearTimeout(s.autoplay)
+      if (cursorRef.current && !isTouchDevice()) cursorRef.current.style.display = 'block'
+    }
     const onLeave = () => {
       s.paused = false
       scheduleAutoplay()
@@ -536,6 +547,10 @@ export default function Hero() {
     ]
     navs.forEach(({ container, btn, symbol }) => {
       if (!container || !btn || !symbol) return
+      const resetNav = () => {
+        gsap.to(container, { x: 0, y: 0, scale: 1, borderColor: 'rgba(255,255,255,.14)', backgroundColor: 'rgba(255,255,255,0)', duration: 0.8, ease: 'elastic.out(1.1,.6)' })
+        gsap.to(symbol, { x: 0, y: 0, scale: 1, duration: 0.8, ease: 'elastic.out(1.1,.6)' })
+      }
       btn.addEventListener('mousemove', (e) => {
         const rect = container.getBoundingClientRect()
         const dX = e.clientX - (rect.left + rect.width / 2)
@@ -543,10 +558,8 @@ export default function Hero() {
         gsap.to(container, { x: dX * 0.15, y: dY * 0.15, scale: 2.2, borderColor: 'rgba(255,255,255,.45)', backgroundColor: 'rgba(255,255,255,.04)', duration: 0.3, ease: 'power2.out' })
         gsap.to(symbol, { x: dX * 0.32, y: dY * 0.32, scale: 1.15, duration: 0.3, ease: 'power2.out' })
       })
-      btn.addEventListener('mouseleave', () => {
-        gsap.to(container, { x: 0, y: 0, scale: 1, borderColor: 'rgba(255,255,255,.14)', backgroundColor: 'rgba(255,255,255,0)', duration: 0.8, ease: 'elastic.out(1.1,.6)' })
-        gsap.to(symbol, { x: 0, y: 0, scale: 1, duration: 0.8, ease: 'elastic.out(1.1,.6)' })
-      })
+      btn.addEventListener('mouseleave', resetNav)
+      btn.addEventListener('click', resetNav)
     })
 
     scheduleAutoplay()

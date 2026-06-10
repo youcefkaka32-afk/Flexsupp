@@ -30,7 +30,8 @@ export default function TabbedCatalog() {
     else if (!goalQuery)                { setTopTab('category'); setActiveSubTab('all') }
   }, [goalQuery])
 
-  const products   = data?.products   ?? []
+  // Only show products flagged for the catalog (showInCatalog = true by default)
+  const products   = (data?.products   ?? []).filter(p => p.showInCatalog !== false)
   const categories = data?.categories ?? []
 
   const goals = [
@@ -60,6 +61,9 @@ export default function TabbedCatalog() {
     if (activeSubTab === 'energy')   return p.tags.some(t => t.toLowerCase().includes('pre-workout') || t.toLowerCase().includes('énergie') || t.toLowerCase().includes('performance'))
     return true
   })
+
+  // Don't render if loading is done and nothing is flagged for the catalog
+  if (!loading && products.length === 0) return null
 
   return (
     <section className="catalog-section" id="productsSection" ref={sectionRef}>

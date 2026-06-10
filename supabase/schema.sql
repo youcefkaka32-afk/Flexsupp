@@ -18,12 +18,18 @@ create table if not exists products (
   in_stock boolean default true,
   badge text,
   featured boolean default false,
+  show_in_catalog boolean default true,
+  show_in_new boolean default false,
   image text default '',
   image_hover text default '',
   href text default '#',
   created_at timestamptz default now(),
   updated_at timestamptz default now()
 );
+
+-- Add placement columns if table already exists (safe migration)
+alter table products add column if not exists show_in_catalog boolean default true;
+alter table products add column if not exists show_in_new boolean default false;
 
 create table if not exists categories (
   id text primary key,

@@ -16,7 +16,7 @@ export default function NewProducts() {
   useScrollReveal({ selector: '.new-products-section__title', from: 'fadeUp', duration: 0.8 }, sectionRef)
   useScrollReveal({ selector: '.new-card', from: 'fadeUp', stagger: 0.1, duration: 0.8, start: 'top 88%' }, sectionRef)
 
-  const newProducts = data ? data.products.filter(p => p.badge === 'NOUVEAU' || p.oldPrice === null) : []
+  const newProducts = data ? data.products.filter(p => p.showInNew) : []
 
   function addToCart(product) {
     dispatch({ type: 'ADD', product: {
@@ -25,6 +25,9 @@ export default function NewProducts() {
     }})
     openDrawer()
   }
+
+  // Don't render the section at all if there are no new products and we're done loading
+  if (!loading && newProducts.length === 0) return null
 
   return (
     <section className="new-products-section" ref={sectionRef}>

@@ -38,6 +38,8 @@ export interface Product {
   inStock: boolean
   badge: string | null
   featured: boolean
+  showInCatalog: boolean
+  showInNew: boolean
   image: string
   imageHover: string
   href: string
@@ -121,6 +123,8 @@ export function useStoreData(): UseStoreDataResult {
           inStock: p.in_stock,
           badge: p.badge ?? null,
           featured: p.featured || false,
+          showInCatalog: p.show_in_catalog !== false, // default true
+          showInNew: p.show_in_new || false,
           image: p.image || '',
           imageHover: p.image_hover || '',
           href: p.href || '#',

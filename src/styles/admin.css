@@ -150,6 +150,7 @@
 .admin-stat__val--green { color: var(--a-green); }
 .admin-stat__val--red   { color: var(--a-danger); }
 .admin-stat__val--gold  { color: var(--a-gold); }
+.admin-stat__val--blue  { color: #60a5fa; }
 .admin-stat__lbl { font-size: .65rem; color: var(--a-muted); text-transform: uppercase; letter-spacing: .06em; }
 
 /* ── Tabs ────────────────────────────────────────── */
@@ -235,7 +236,9 @@
 }
 .admin-toggle:hover { border-color: var(--a-border2); color: var(--a-text); }
 .admin-toggle.active { background: var(--a-green-dim); border-color: rgba(34,197,94,.3); color: var(--a-green); }
-.admin-toggle--gold.active { background: var(--a-gold-dim); border-color: rgba(245,158,11,.3); color: var(--a-gold); }
+.admin-toggle--gold.active  { background: var(--a-gold-dim);  border-color: rgba(245,158,11,.3); color: var(--a-gold); }
+.admin-toggle--blue.active  { background: rgba(59,130,246,.14); border-color: rgba(59,130,246,.35); color: #60a5fa; }
+.admin-toggle--green.active { background: var(--a-green-dim); border-color: rgba(34,197,94,.35);  color: var(--a-green); }
 
 /* ── Inputs ──────────────────────────────────────── */
 .admin-input {
@@ -412,6 +415,7 @@ select.admin-input { cursor: pointer; }
 }
 .admin-hint--home { background: rgba(245,158,11,.15); color: var(--a-gold); border: 1px solid rgba(245,158,11,.3); }
 .admin-hint--shop { background: rgba(59,130,246,.15); color: #60a5fa; border: 1px solid rgba(59,130,246,.3); }
+.admin-hint--new  { background: rgba(34,197,94,.15);  color: var(--a-green); border: 1px solid rgba(34,197,94,.3); }
 
 /* ── Input warning ───────────────────────────────── */
 .admin-input-warn {

@@ -36,6 +36,8 @@ export default function Products() {
   const [sortBy, setSortBy]                 = useState('featured')
   const [sidebarOpen, setSidebarOpen]       = useState(true)
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false)
+  const [currentPage, setCurrentPage]       = useState(1)
+  const PRODUCTS_PER_PAGE = 12
 
   const categories  = data?.categories ?? []
   const allProducts = data?.products   ?? []
@@ -77,12 +79,24 @@ export default function Products() {
     priceRange[0] > minPrice || priceRange[1] < maxPrice,
   ].filter(Boolean).length
 
+  // Reset to page 1 when filters/sort change
+  useEffect(() => { setCurrentPage(1) }, [activeCategory, selectedBrands, inStockOnly, priceRange, sortBy])
+
+  const totalPages  = Math.max(1, Math.ceil(filtered.length / PRODUCTS_PER_PAGE))
+  const paginated   = filtered.slice((currentPage - 1) * PRODUCTS_PER_PAGE, currentPage * PRODUCTS_PER_PAGE)
+
+  function goToPage(page) {
+    setCurrentPage(page)
+    sectionRef.current?.querySelector('.boutique-toolbar')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }
+
   const resetFilters = () => {
     setActiveCategory('all')
     setSelectedBrands([])
     setInStockOnly(false)
     setPriceRange([minPrice, maxPrice])
     setSortBy('featured')
+    setCurrentPage(1)
   }
 
   const toggleBrand = (brand) =>
@@ -179,7 +193,7 @@ export default function Products() {
                       <button className="btn primary" onClick={resetFilters}>{t('shop.resetBtn')}</button>
                     </motion.div>
                   )
-                : filtered.map(product => (
+                : paginated.map(product => (
                     <motion.div layout key={product.id}
                       initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, scale: 0.95 }} transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
@@ -190,6 +204,45 @@ export default function Products() {
               }
             </AnimatePresence>
           </motion.div>
+
+          {/* Pagination */}
+          {!loading && totalPages > 1 && (
+            <div className="boutique-pagination">
+              <button
+                className="pagination-arrow"
+                onClick={() => goToPage(currentPage - 1)}
+                disabled={currentPage === 1}
+                aria-label="Page précédente"
+              >‹</button>
+
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => {
+                // Always show first, last, current, and neighbours; show ... for gaps
+                const show = page === 1 || page === totalPages || Math.abs(page - currentPage) <= 1
+                const showDotsBefore = page === currentPage - 2 && currentPage > 3
+                const showDotsAfter  = page === currentPage + 2 && currentPage < totalPages - 2
+                if (!show && !showDotsBefore && !showDotsAfter) return null
+                if (showDotsBefore || showDotsAfter) return <span key={`dots-${page}`} className="pagination-dots">…</span>
+                return (
+                  <button
+                    key={page}
+                    className={`pagination-page${currentPage === page ? ' active' : ''}`}
+                    onClick={() => goToPage(page)}
+                    aria-label={`Page ${page}`}
+                    aria-current={currentPage === page ? 'page' : undefined}
+                  >
+                    {page}
+                  </button>
+                )
+              })}
+
+              <button
+                className="pagination-arrow"
+                onClick={() => goToPage(currentPage + 1)}
+                disabled={currentPage === totalPages}
+                aria-label="Page suivante"
+              >›</button>
+            </div>
+          )}
         </div>
       </div>
 

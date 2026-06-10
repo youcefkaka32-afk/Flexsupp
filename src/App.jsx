@@ -43,15 +43,18 @@ function AnimatedRoutes() {
           <Route path="/admin" element={<AdminPage />} />
         </Routes>
       </AnimatePresence>
+      {!isAdmin && <CartDrawer />}
+      {!isAdmin && <CheckoutModal />}
+      {!isAdmin && <ScrollToTop />}
     </>
   )
 }
 
 export default function App() {
   const [loading, setLoading] = useState(true)
+  const isAdmin = typeof window !== 'undefined' && window.location.pathname.startsWith('/admin')
   
   useEffect(() => {
-    // prevent scroll while loading
     if (loading) document.body.style.overflow = 'hidden'
     else document.body.style.overflow = ''
   }, [loading])
@@ -59,11 +62,8 @@ export default function App() {
   return (
     <CartProvider>
       <BrowserRouter>
-        {loading && <Loader onComplete={() => setLoading(false)} />}
+        {!isAdmin && loading && <Loader onComplete={() => setLoading(false)} />}
         <AnimatedRoutes />
-        <CartDrawer />
-        <CheckoutModal />
-        <ScrollToTop />
       </BrowserRouter>
     </CartProvider>
   )

@@ -55,9 +55,13 @@ export default function App() {
   const isAdmin = typeof window !== 'undefined' && window.location.pathname.startsWith('/admin')
   
   useEffect(() => {
+    if (isAdmin) {
+      document.body.style.overflow = ''
+      return
+    }
     if (loading) document.body.style.overflow = 'hidden'
     else document.body.style.overflow = ''
-  }, [loading])
+  }, [loading, isAdmin])
 
   return (
     <CartProvider>

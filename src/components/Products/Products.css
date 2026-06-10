@@ -942,3 +942,69 @@
     font-size: .82rem;
   }
 }
+
+/* ── Section Filter Tabs ──────────────────────────────────── */
+.boutique-section-tabs {
+  display: flex;
+  gap: .5rem;
+  padding: 1rem 2rem 0;
+  flex-wrap: wrap;
+  background: #fff;
+  border-bottom: 2px solid #f1f1f1;
+}
+
+.section-tab {
+  display: flex;
+  align-items: center;
+  gap: .45rem;
+  padding: .65rem 1.1rem;
+  border: none;
+  background: transparent;
+  font-size: .85rem;
+  font-weight: 600;
+  color: #6b7280;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  transition: color .18s, border-color .18s;
+  white-space: nowrap;
+}
+
+.section-tab:hover {
+  color: #111;
+}
+
+.section-tab.active {
+  color: #d31f25;
+  border-bottom-color: #d31f25;
+}
+
+.section-tab__count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 5px;
+  background: #f3f4f6;
+  color: #6b7280;
+  border-radius: 99px;
+  font-size: .72rem;
+  font-weight: 700;
+}
+
+.section-tab.active .section-tab__count {
+  background: rgba(211,31,37,.12);
+  color: #d31f25;
+}
+
+@media (max-width: 640px) {
+  .boutique-section-tabs {
+    padding: .75rem 1rem 0;
+    gap: .25rem;
+  }
+  .section-tab {
+    padding: .5rem .75rem;
+    font-size: .78rem;
+  }
+}

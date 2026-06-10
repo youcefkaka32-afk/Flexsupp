@@ -263,8 +263,8 @@ function ProductModal({ product, brands, categories, onSave, onClose, saving }) 
                   <button type="button" className={`admin-toggle${form.in_stock ? ' active' : ''}`} onClick={() => set('in_stock', !form.in_stock)}>
                     {form.in_stock ? '✓ En stock' : '✕ Épuisé'}
                   </button>
-                  <button type="button" className={`admin-toggle${form.show_in_catalog ? ' active admin-toggle--blue' : ''}`} onClick={() => set('show_in_catalog', !form.show_in_catalog)}>
-                    {form.show_in_catalog ? '🏠 Accueil (Catalogue)' : '— Hors catalogue accueil'}
+                  <button type="button" className={`admin-toggle${form.show_in_catalog === true ? ' active admin-toggle--blue' : ''}`} onClick={() => set('show_in_catalog', !form.show_in_catalog)}>
+                    {form.show_in_catalog === true ? '🏠 Accueil (Catalogue)' : '— Hors catalogue accueil'}
                   </button>
                   <button type="button" className={`admin-toggle${form.show_in_new ? ' active admin-toggle--green' : ''}`} onClick={() => set('show_in_new', !form.show_in_new)}>
                     {form.show_in_new ? '✨ Nouveaux produits' : '— Hors nouveaux produits'}
@@ -440,8 +440,8 @@ export default function AdminPage() {
         <div className="admin-stat"><span className="admin-stat__val">{products.length}</span><span className="admin-stat__lbl">Produits</span></div>
         <div className="admin-stat"><span className="admin-stat__val admin-stat__val--green">{products.filter(p => p.in_stock).length}</span><span className="admin-stat__lbl">En stock</span></div>
         <div className="admin-stat"><span className="admin-stat__val admin-stat__val--red">{products.filter(p => !p.in_stock).length}</span><span className="admin-stat__lbl">Épuisés</span></div>
-        <div className="admin-stat"><span className="admin-stat__val admin-stat__val--blue">{products.filter(p => p.show_in_catalog !== false).length}</span><span className="admin-stat__lbl">Catalogue</span></div>
-        <div className="admin-stat"><span className="admin-stat__val admin-stat__val--green">{products.filter(p => p.show_in_new).length}</span><span className="admin-stat__lbl">Nouveaux</span></div>
+        <div className="admin-stat"><span className="admin-stat__val admin-stat__val--blue">{products.filter(p => p.show_in_catalog === true).length}</span><span className="admin-stat__lbl">Catalogue</span></div>
+        <div className="admin-stat"><span className="admin-stat__val admin-stat__val--green">{products.filter(p => p.show_in_new === true).length}</span><span className="admin-stat__lbl">Nouveaux</span></div>
       </div>
 
       {/* Tabs */}
@@ -487,8 +487,8 @@ function ProductsTab({ products, categories, brands, onRefresh, addToast }) {
   const [filterCat, setFilterCat] = useState('all')
 
   // Live slot counts
-  const catalogCount = products.filter(p => p.show_in_catalog !== false).length
-  const newCount     = products.filter(p => p.show_in_new).length
+  const catalogCount = products.filter(p => p.show_in_catalog === true).length
+  const newCount     = products.filter(p => p.show_in_new === true).length
 
   const filtered = products.filter(p => {
     const q = search.toLowerCase()
@@ -658,7 +658,7 @@ function ProductsTab({ products, categories, brands, onRefresh, addToast }) {
         <div className="admin-grid">
           {filtered.map(p => {
             const catName = categories.find(c => c.id === p.category)?.name || p.category
-            const catalogFull = catalogCount >= CATALOG_MAX && p.show_in_catalog === false
+            const catalogFull = catalogCount >= CATALOG_MAX && p.show_in_catalog !== true
             const newFull = newCount >= NEW_MAX && !p.show_in_new
             return (
               <div key={p.id} className={`admin-card${!p.in_stock ? ' admin-card--out' : ''}`}>
@@ -681,11 +681,11 @@ function ProductsTab({ products, categories, brands, onRefresh, addToast }) {
                       {p.in_stock ? '✓ Stock' : '✕ Épuisé'}
                     </button>
                     <button
-                      className={`admin-toggle${p.show_in_catalog !== false ? ' active admin-toggle--blue' : ''}${catalogFull ? ' admin-toggle--disabled' : ''}`}
+                      className={`admin-toggle${p.show_in_catalog === true ? ' active admin-toggle--blue' : ''}${catalogFull ? ' admin-toggle--disabled' : ''}`}
                       onClick={() => quickToggle(p, 'show_in_catalog')}
                       title={catalogFull ? `Maximum ${CATALOG_MAX} atteint` : ''}
                     >
-                      {p.show_in_catalog !== false ? '🏠 Catalogue' : `— Catalogue`}
+                      {p.show_in_catalog === true ? '🏠 Catalogue' : `— Catalogue`}
                     </button>
                     <button
                       className={`admin-toggle${p.show_in_new ? ' active admin-toggle--green' : ''}${newFull ? ' admin-toggle--disabled' : ''}`}

@@ -123,7 +123,9 @@ export function useStoreData(): UseStoreDataResult {
           inStock: p.in_stock,
           badge: p.badge ?? null,
           featured: p.featured || false,
-          showInCatalog: p.show_in_catalog !== false, // default true
+          showInCatalog: p.show_in_catalog === true
+            // fallback: if column doesn't exist yet, use featured flag
+            || (p.show_in_catalog == null && p.featured === true),
           showInNew: p.show_in_new === true
             // fallback: if show_in_new column doesn't exist in DB yet, use badge
             || (p.show_in_new == null && p.badge === 'NOUVEAU'),

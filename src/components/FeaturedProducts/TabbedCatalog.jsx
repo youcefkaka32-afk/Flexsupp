@@ -30,8 +30,8 @@ export default function TabbedCatalog() {
     else if (!goalQuery)                { setTopTab('category'); setActiveSubTab('all') }
   }, [goalQuery])
 
-  // Only show products flagged for the catalog (showInCatalog = true by default)
-  const products   = (data?.products   ?? []).filter(p => p.showInCatalog !== false)
+  // Only show products flagged for the catalog; fallback to featured for old data
+  const products   = (data?.products   ?? []).filter(p => p.showInCatalog)
   const categories = data?.categories ?? []
 
   const goals = [

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { supabase } from '../lib/supabase'
 
 // ── Types ────────────────────────────────────────────────────
 
@@ -56,17 +57,10 @@ export interface UseStoreDataResult {
 
 // ── Hook ─────────────────────────────────────────────────────
 
-/**
- * Fetches store data from /data/products.json (served from /public).
- * Returns { data, loading, error }.
- *
- * To update products, categories or brands, edit:
- *   public/data/products.json
- */
 export function useStoreData(): UseStoreDataResult {
-  const [data, setData]       = useState<StoreData | null>(null)
+  const [data, setData] = useState<StoreData | null>(null)
   const [loading, setLoading] = useState(true)
-  const [error, setError]     = useState<string | null>(null)
+  const [error, setError] = useState<string | null>(null)
 
   const FLAVOR_COLOR_MAP: Record<string, string> = {
     'Chocolat': '#3d1c02',
@@ -91,38 +85,85 @@ export function useStoreData(): UseStoreDataResult {
     'Banane': '#d6c04a',
   }
 
-  const normalizeFlavor = (item: string | Flavor): Flavor => {
-    if (typeof item === 'string') {
-      return {
-        name: item,
-        color: FLAVOR_COLOR_MAP[item] ?? '#777777',
+  useEffect(() => {
+    async function fetchAll() {
+      try {
+        const [
+          { data: products, error: pErr },
+          { data: categories, error: cErr },
+          { data: brands, error: bErr },
+        ] = await Promise.all([
+          supabase.from('products').select('*').order('created_at', { ascending: true }),
+          supabase.from('categories').select('*'),
+          supabase.from('brands').select('*').order('name'),
+        ])
+
+        if (pErr) throw pErr
+        if (cErr) throw cErr
+        if (bErr) throw bErr
+
+        // Map DB snake_case to camelCase and normalize flavors
+        const mappedProducts = (products || []).map((p: any) => ({
+          id: p.id,
+          name: p.name,
+          brand: p.brand,
+          category: p.category,
+          tags: p.tags || [],
+          description: p.description || '',
+          flavors: (p.flavors || []).map((f: any) => {
+            if (typeof f === 'string') return { name: f, color: FLAVOR_COLOR_MAP[f] ?? '#777777' }
+            return f
+          }),
+          sizes: p.sizes || [],
+          price: p.price,
+          oldPrice: p.old_price ?? null,
+          currency: p.currency || 'DA',
+          inStock: p.in_stock,
+          badge: p.badge ?? null,
+          featured: p.featured || false,
+          image: p.image || '',
+          imageHover: p.image_hover || '',
+          href: p.href || '#',
+        }))
+
+        setData({
+          products: mappedProducts,
+          categories: categories || [],
+          brands: (brands || []).map((b: any) => ({
+            name: b.name,
+            href: b.href || '#',
+            logo: b.logo || '',
+          })),
+        })
+        setLoading(false)
+      } catch (err: any) {
+        // Fallback to products.json if Supabase fails
+        console.warn('[useStoreData] Supabase failed, falling back to products.json', err)
+        fetch('/data/products.json')
+          .then((r) => r.json())
+          .then((json) => {
+            const normalizeFlavor = (item: string | Flavor): Flavor => {
+              if (typeof item === 'string') {
+                return { name: item, color: FLAVOR_COLOR_MAP[item] ?? '#777777' }
+              }
+              return item
+            }
+            setData({
+              ...json,
+              products: json.products.map((p: any) => ({
+                ...p,
+                flavors: (p.flavors ?? []).map(normalizeFlavor),
+              })),
+            })
+            setLoading(false)
+          })
+          .catch((e: Error) => {
+            setError(e.message)
+            setLoading(false)
+          })
       }
     }
-    return item
-  }
-
-  useEffect(() => {
-    fetch('/data/products.json')
-      .then((res) => {
-        if (!res.ok) throw new Error(`Failed to load products.json (${res.status})`)
-        return res.json() as Promise<StoreData>
-      })
-      .then((json) => {
-        const converted = {
-          ...json,
-          products: json.products.map((product) => ({
-            ...product,
-            flavors: product.flavors?.map(normalizeFlavor) ?? [],
-          })),
-        }
-        setData(converted)
-        setLoading(false)
-      })
-      .catch((err: Error) => {
-        console.error('[useStoreData]', err)
-        setError(err.message)
-        setLoading(false)
-      })
+    fetchAll()
   }, [])
 
   return { data, loading, error }

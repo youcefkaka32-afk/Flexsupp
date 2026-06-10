@@ -22,27 +22,34 @@ import AdminPage       from './pages/AdminPage'
 
 function AnimatedRoutes() {
   const location = useLocation()
+  const isAdmin = location.pathname.startsWith('/admin')
 
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [location.pathname])
   
   return (
-    <AnimatePresence mode="wait">
-      <Routes location={location} key={location.pathname}>
-        <Route path="/" element={<PageTransition><HomePage /></PageTransition>} />
-        <Route path="/shop" element={<PageTransition><ShopPage /></PageTransition>} />
-        <Route path="/boutique/:id" element={<PageTransition><ProductPage /></PageTransition>} />
-        <Route path="/about" element={<PageTransition><AboutPage /></PageTransition>} />
-        <Route path="/admin" element={<AdminPage />} />
-      </Routes>
-    </AnimatePresence>
+    <>
+      {!isAdmin && <AnnouncementBar />}
+      {!isAdmin && <Navbar />}
+      {!isAdmin && <CustomCursor />}
+      {!isAdmin && <PageCurtain />}
+      <AnimatePresence mode="wait">
+        <Routes location={location} key={location.pathname}>
+          <Route path="/" element={<PageTransition><HomePage /></PageTransition>} />
+          <Route path="/shop" element={<PageTransition><ShopPage /></PageTransition>} />
+          <Route path="/boutique/:id" element={<PageTransition><ProductPage /></PageTransition>} />
+          <Route path="/about" element={<PageTransition><AboutPage /></PageTransition>} />
+          <Route path="/admin" element={<AdminPage />} />
+        </Routes>
+      </AnimatePresence>
+    </>
   )
 }
 
 export default function App() {
   const [loading, setLoading] = useState(true)
-
+  
   useEffect(() => {
     // prevent scroll while loading
     if (loading) document.body.style.overflow = 'hidden'
@@ -53,10 +60,6 @@ export default function App() {
     <CartProvider>
       <BrowserRouter>
         {loading && <Loader onComplete={() => setLoading(false)} />}
-        <AnnouncementBar />
-        <Navbar />
-        <CustomCursor />
-        <PageCurtain />
         <AnimatedRoutes />
         <CartDrawer />
         <CheckoutModal />

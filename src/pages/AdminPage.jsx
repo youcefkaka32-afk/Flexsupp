@@ -1,45 +1,343 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import '../styles/admin.css'
-import { useStoreData } from '../hooks/useStoreData'
+import { supabase } from '../lib/supabase'
 
-// PIN is stored here — change it to whatever the client wants
 const ADMIN_PIN = '1234'
 const SESSION_KEY = 'flexsupps_admin_session'
+const STORAGE_BUCKET = 'product-images'
+const SUPABASE_URL = 'https://lazryrfxndirnqmwcapt.supabase.co'
 
+// ── Seed Data ────────────────────────────────────────────────
+const SEED_CATEGORIES = [
+  { id: 'whey', name: 'WHEY', slug: 'whey', description: 'Protéines de haute qualité pour la récupération musculaire', image: '', href: '#productsSection' },
+  { id: 'creatine', name: 'CRÉATINE', slug: 'creatine', description: 'Boostez votre force et vos performances explosives', image: '', href: '#productsSection' },
+  { id: 'bcaa', name: 'BCAA', slug: 'bcaa', description: "Acides aminés essentiels pour la récupération et l'endurance", image: '', href: '#productsSection' },
+  { id: 'preworkout', name: 'PRÉ-WORKOUT', slug: 'preworkout', description: "Énergie maximale avant l'entraînement", image: '', href: '#productsSection' },
+]
+
+const SEED_BRANDS = [
+  { name: 'Optimum Nutrition', href: '#', logo: '/images/optimum-nutrition.png' },
+  { name: 'MyProtein', href: '#', logo: '/images/myprotein.png' },
+  { name: 'Scitec Nutrition', href: '#', logo: '/images/scitec-nutrition.png' },
+  { name: 'BioTechUSA', href: '#', logo: '/images/biotechusa.png' },
+  { name: 'BSN', href: '#', logo: '/images/bsn.png' },
+  { name: 'MuscleTech', href: '#', logo: '/images/muscletech.png' },
+  { name: 'Cellucor', href: '#', logo: '/images/cellucor.png' },
+  { name: 'Dymatize', href: '#', logo: '/images/dymatize.png' },
+  { name: 'REDCON1', href: '#', logo: '/images/redcon1.png' },
+  { name: 'Mutant', href: '#', logo: '/images/mutant.png' },
+]
+
+const SEED_PRODUCTS = [
+  { id: 'whey-gold-chocolate', name: 'WHEY PROTEIN CONCENTRATE', brand: 'Optimum Nutrition', category: 'whey', tags: ['Whey', 'Protéine', 'Muscle'], description: 'La whey protéine de référence mondiale.', flavors: [{ name: 'Chocolat', color: '#3d1c02' }, { name: 'Vanille', color: '#f5e6c8' }], sizes: ['1kg', '2.27kg', '4.54kg'], price: 8500, old_price: 9800, currency: 'DA', in_stock: true, badge: 'PROMO', featured: true, image: '/images/whey-protein-concentrate.jpg', image_hover: '/images/chocolate-peanut-butter.jpg', href: '#' },
+  { id: 'creatine-mono-unflavored', name: 'CRÉATINE MONO', brand: 'Scitec Nutrition', category: 'creatine', tags: ['Créatine', 'Force'], description: 'Créatine monohydrate micronisée pure.', flavors: [{ name: 'Non aromatisé', color: '#8f8f8f' }], sizes: ['300g', '500g', '1kg'], price: 6200, old_price: null, currency: 'DA', in_stock: true, badge: null, featured: false, image: '/images/creatine-creapure.jpg', image_hover: '/images/creatine-creapure.jpg', href: '#' },
+  { id: 'bcaa-recovery-watermelon', name: 'BCAA RECOVERY', brand: 'Scitec Nutrition', category: 'bcaa', tags: ['BCAA', 'Récupération'], description: 'Complexe BCAA 2:1:1 avec L-Glutamine.', flavors: [{ name: 'Pastèque', color: '#f49da6' }, { name: 'Mangue', color: '#f4ab21' }], sizes: ['300g', '600g'], price: 7200, old_price: 8400, currency: 'DA', in_stock: true, badge: 'PROMO', featured: true, image: '/images/bcaa-recovery.jpg', image_hover: '/images/bcaa-essential.jpg', href: '#' },
+  { id: 'preworkout-extreme-cherry', name: 'PRE-WORKOUT X', brand: 'Cellucor', category: 'preworkout', tags: ['Pré-Workout', 'Énergie'], description: 'Formule explosive pré-entraînement.', flavors: [{ name: 'Cerise Explosive', color: '#a12a2d' }], sizes: ['300g', '600g'], price: 8900, old_price: 10500, currency: 'DA', in_stock: true, badge: 'BEST-SELLER', featured: true, image: '/images/eliminate-preworkout.jpg', image_hover: '/images/eliminate-preworkout.jpg', href: '#' },
+]
+
+const FLAVOR_COLORS = {
+  'Chocolat': '#3d1c02', 'Vanille': '#f5e6c8', 'Fraise': '#e8a0a0',
+  'Cookies & Cream': '#d0c0b2', 'Chocolat Noir': '#2b1308', 'Caramel Salé': '#d6a45c',
+  'Citron': '#f4e34e', 'Pastèque': '#f49da6', 'Mangue': '#f4ab21',
+  'Fruit de la Passion': '#f3be4e', 'Orange': '#f17b0f', 'Cerise': '#8c1d25',
+  'Cerise Explosive': '#a12a2d', 'Tropical': '#f6c866', 'Fraise Kiwi': '#ffd7d0',
+  'Non aromatisé': '#8f8f8f', 'Ananas': '#fbe38a', 'Citron Vert': '#b8d85a',
+  'Raisin': '#7d3d7b', 'Banane': '#d6c04a',
+}
+
+// ── Image Upload Helper ──────────────────────────────────────
+async function uploadImage(file, folder = 'products') {
+  const ext = file.name.split('.').pop()
+  const filename = `${folder}/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`
+  const { error } = await supabase.storage.from(STORAGE_BUCKET).upload(filename, file, {
+    cacheControl: '3600',
+    upsert: false,
+    contentType: file.type,
+  })
+  if (error) throw error
+  return `${SUPABASE_URL}/storage/v1/object/public/${STORAGE_BUCKET}/${filename}`
+}
+
+// ── ImageUploadField ─────────────────────────────────────────
+function ImageUploadField({ label, value, onChange, folder = 'products' }) {
+  const [uploading, setUploading] = useState(false)
+  const [preview, setPreview] = useState(value || '')
+  const inputRef = useRef(null)
+
+  useEffect(() => { setPreview(value || '') }, [value])
+
+  async function handleFile(e) {
+    const file = e.target.files?.[0]
+    if (!file) return
+    // Local preview immediately
+    const localUrl = URL.createObjectURL(file)
+    setPreview(localUrl)
+    setUploading(true)
+    try {
+      const url = await uploadImage(file, folder)
+      onChange(url)
+      setPreview(url)
+    } catch (err) {
+      alert('Erreur upload: ' + err.message)
+      setPreview(value || '')
+    } finally {
+      setUploading(false)
+      if (inputRef.current) inputRef.current.value = ''
+    }
+  }
+
+  return (
+    <div className="admin-img-field">
+      <label className="admin-img-field__label">{label}</label>
+      <div className="admin-img-field__row">
+        {preview && (
+          <div className="admin-img-field__preview">
+            <img src={preview} alt="preview" onError={() => setPreview('')} />
+            {uploading && <div className="admin-img-field__uploading"><span className="admin-spinner" /> Upload...</div>}
+          </div>
+        )}
+        <div className="admin-img-field__controls">
+          <button
+            type="button"
+            className="admin-btn admin-btn--upload"
+            onClick={() => inputRef.current?.click()}
+            disabled={uploading}
+          >
+            {uploading ? <><span className="admin-spinner" /> Envoi...</> : '📷 Choisir une photo'}
+          </button>
+          <input
+            ref={inputRef}
+            type="file"
+            accept="image/*"
+            style={{ display: 'none' }}
+            onChange={handleFile}
+          />
+          <span className="admin-img-field__or">ou coller un lien</span>
+          <input
+            className="admin-input admin-img-field__url"
+            type="text"
+            value={value || ''}
+            onChange={(e) => { onChange(e.target.value); setPreview(e.target.value) }}
+            placeholder="https://... ou /images/..."
+            disabled={uploading}
+          />
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// ── Toast ────────────────────────────────────────────────────
+function Toast({ toasts }) {
+  return (
+    <div className="admin-toasts">
+      {toasts.map((t) => (
+        <div key={t.id} className={`admin-toast admin-toast--${t.type}`}>
+          {t.type === 'success' ? '✓' : '✕'} {t.message}
+        </div>
+      ))}
+    </div>
+  )
+}
+
+function Spinner() { return <span className="admin-spinner" /> }
+
+// ── Product Modal ────────────────────────────────────────────
+function ProductModal({ product, brands, categories, onSave, onClose, saving }) {
+  const isNew = !product
+  const [form, setForm] = useState(() => {
+    if (!product) return {
+      id: '', name: '', brand: brands[0]?.name || '', category: categories[0]?.id || '',
+      tags: '', description: '', flavors: '', sizes: '',
+      price: '', old_price: '', currency: 'DA', in_stock: true,
+      badge: '', featured: false, image: '', image_hover: '', href: '#',
+    }
+    return {
+      id: product.id || '',
+      name: product.name || '',
+      brand: product.brand || brands[0]?.name || '',
+      category: product.category || categories[0]?.id || '',
+      tags: Array.isArray(product.tags) ? product.tags.join(', ') : '',
+      description: product.description || '',
+      flavors: Array.isArray(product.flavors) ? product.flavors.map(f => typeof f === 'object' ? f.name : f).join(', ') : '',
+      sizes: Array.isArray(product.sizes) ? product.sizes.join(', ') : '',
+      price: product.price !== undefined ? String(product.price) : '',
+      old_price: product.old_price != null ? String(product.old_price) : '',
+      currency: product.currency || 'DA',
+      in_stock: product.in_stock !== undefined ? product.in_stock : true,
+      badge: product.badge || '',
+      featured: product.featured || false,
+      image: product.image || '',
+      image_hover: product.image_hover || '',
+      href: product.href || '#',
+    }
+  })
+
+  function set(field, value) { setForm(p => ({ ...p, [field]: value })) }
+
+  return (
+    <div className="admin-modal-overlay" onClick={onClose}>
+      <div className="admin-modal admin-modal--large" onClick={e => e.stopPropagation()}>
+        <div className="admin-modal__header">
+          <h3>{isNew ? '+ Nouveau produit' : '✎ Modifier le produit'}</h3>
+          <button className="admin-modal__close" onClick={onClose} type="button">✕</button>
+        </div>
+        <form onSubmit={e => { e.preventDefault(); onSave(form, isNew) }} className="admin-form">
+          <div className="admin-form__scroll">
+            <div className="admin-form__grid">
+
+              <div className="admin-form__field admin-form__field--full">
+                <label>ID unique *</label>
+                <input className="admin-input" value={form.id} onChange={e => set('id', e.target.value)} required placeholder="whey-gold-choc" />
+              </div>
+
+              <div className="admin-form__field">
+                <label>Nom du produit *</label>
+                <input className="admin-input" value={form.name} onChange={e => set('name', e.target.value)} required placeholder="WHEY PROTEIN" />
+              </div>
+
+              <div className="admin-form__field">
+                <label>Marque *</label>
+                <select className="admin-input" value={form.brand} onChange={e => set('brand', e.target.value)} required>
+                  {brands.map(b => <option key={b.name} value={b.name}>{b.name}</option>)}
+                </select>
+              </div>
+
+              <div className="admin-form__field">
+                <label>Catégorie *</label>
+                <select className="admin-input" value={form.category} onChange={e => set('category', e.target.value)} required>
+                  {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+                </select>
+              </div>
+
+              <div className="admin-form__field">
+                <label>Prix (DA) *</label>
+                <input className="admin-input" type="number" value={form.price} onChange={e => set('price', e.target.value)} required min="0" step="100" placeholder="8500" />
+              </div>
+
+              <div className="admin-form__field">
+                <label>Ancien prix (promo)</label>
+                <input className="admin-input" type="number" value={form.old_price} onChange={e => set('old_price', e.target.value)} min="0" step="100" placeholder="Vide = pas de promo" />
+              </div>
+
+              <div className="admin-form__field">
+                <label>Badge</label>
+                <input className="admin-input" value={form.badge} onChange={e => set('badge', e.target.value)} placeholder="PROMO / NOUVEAU / BEST-SELLER" />
+              </div>
+
+              <div className="admin-form__field">
+                <label>Devise</label>
+                <input className="admin-input" value={form.currency} onChange={e => set('currency', e.target.value)} placeholder="DA" />
+              </div>
+
+              <div className="admin-form__field admin-form__field--full">
+                <label>Statut</label>
+                <div className="admin-form__toggle-row">
+                  <button type="button" className={`admin-toggle${form.in_stock ? ' active' : ''}`} onClick={() => set('in_stock', !form.in_stock)}>
+                    {form.in_stock ? '✓ En stock' : '✕ Épuisé'}
+                  </button>
+                  <button type="button" className={`admin-toggle${form.featured ? ' active admin-toggle--gold' : ''}`} onClick={() => set('featured', !form.featured)}>
+                    {form.featured ? '★ Vedette' : '☆ Vedette'}
+                  </button>
+                </div>
+              </div>
+
+              <div className="admin-form__field admin-form__field--full">
+                <label>Tags (séparés par virgules)</label>
+                <input className="admin-input" value={form.tags} onChange={e => set('tags', e.target.value)} placeholder="Whey, Protéine, Muscle" />
+              </div>
+
+              <div className="admin-form__field admin-form__field--full">
+                <label>Tailles (séparées par virgules)</label>
+                <input className="admin-input" value={form.sizes} onChange={e => set('sizes', e.target.value)} placeholder="1kg, 2.27kg, 4.54kg" />
+              </div>
+
+              <div className="admin-form__field admin-form__field--full">
+                <label>Saveurs (séparées par virgules)</label>
+                <input className="admin-input" value={form.flavors} onChange={e => set('flavors', e.target.value)} placeholder="Chocolat, Vanille, Fraise" />
+              </div>
+
+              <div className="admin-form__field admin-form__field--full">
+                <label>Description</label>
+                <textarea className="admin-input admin-textarea" value={form.description} onChange={e => set('description', e.target.value)} placeholder="Description du produit..." rows={3} />
+              </div>
+
+              <div className="admin-form__field admin-form__field--full">
+                <ImageUploadField label="Image principale" value={form.image} onChange={v => set('image', v)} />
+              </div>
+
+              <div className="admin-form__field admin-form__field--full">
+                <ImageUploadField label="Image au survol (hover)" value={form.image_hover} onChange={v => set('image_hover', v)} />
+              </div>
+
+            </div>
+          </div>
+          <div className="admin-modal__footer">
+            <button type="button" className="admin-btn" onClick={onClose} disabled={saving}>Annuler</button>
+            <button type="submit" className="admin-btn admin-btn--primary" disabled={saving}>
+              {saving ? <><Spinner /> Enregistrement...</> : isNew ? 'Créer le produit' : 'Enregistrer'}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  )
+}
+
+// ── Main AdminPage ───────────────────────────────────────────
 export default function AdminPage() {
   const navigate = useNavigate()
-  const { data, loading } = useStoreData()
   const [authenticated, setAuthenticated] = useState(false)
   const [pin, setPin] = useState('')
-  const [error, setError] = useState('')
+  const [pinError, setPinError] = useState('')
   const [activeTab, setActiveTab] = useState('products')
-  const [storeData, setStoreData] = useState(null)
-  const [saveStatus, setSaveStatus] = useState('')
+  const [toasts, setToasts] = useState([])
+  const [products, setProducts] = useState([])
+  const [categories, setCategories] = useState([])
+  const [brands, setBrands] = useState([])
+  const [dataLoading, setDataLoading] = useState(false)
+  const [dataError, setDataError] = useState(null)
+  const [menuOpen, setMenuOpen] = useState(false)
 
-  // Check session on mount
+  const addToast = useCallback((message, type = 'success') => {
+    const id = Date.now()
+    setToasts(prev => [...prev, { id, message, type }])
+    setTimeout(() => setToasts(prev => prev.filter(t => t.id !== id)), 3500)
+  }, [])
+
   useEffect(() => {
-    const session = sessionStorage.getItem(SESSION_KEY)
-    if (session === 'authenticated') {
-      setAuthenticated(true)
+    if (sessionStorage.getItem(SESSION_KEY) === 'authenticated') setAuthenticated(true)
+  }, [])
+
+  const fetchAll = useCallback(async () => {
+    setDataLoading(true)
+    setDataError(null)
+    try {
+      const [{ data: p, error: pE }, { data: c, error: cE }, { data: b, error: bE }] = await Promise.all([
+        supabase.from('products').select('*').order('created_at', { ascending: true }),
+        supabase.from('categories').select('*'),
+        supabase.from('brands').select('*').order('name'),
+      ])
+      if (pE) throw pE; if (cE) throw cE; if (bE) throw bE
+      setProducts(p || []); setCategories(c || []); setBrands(b || [])
+    } catch (err) {
+      setDataError(err.message || 'Erreur Supabase')
+    } finally {
+      setDataLoading(false)
     }
   }, [])
 
-  // Load data once authenticated
-  useEffect(() => {
-    if (authenticated && data) {
-      setStoreData(JSON.parse(JSON.stringify(data))) // deep clone
-    }
-  }, [authenticated, data])
+  useEffect(() => { if (authenticated) fetchAll() }, [authenticated, fetchAll])
 
   function handlePinSubmit(e) {
     e.preventDefault()
     if (pin === ADMIN_PIN) {
       setAuthenticated(true)
       sessionStorage.setItem(SESSION_KEY, 'authenticated')
-      setError('')
+      setPinError('')
     } else {
-      setError('Code PIN incorrect')
+      setPinError('Code PIN incorrect')
       setPin('')
     }
   }
@@ -50,43 +348,9 @@ export default function AdminPage() {
     setPin('')
   }
 
-  function handleDownloadJSON() {
-    const json = JSON.stringify(storeData, null, 2)
-    const blob = new Blob([json], { type: 'application/json' })
-    const url = URL.createObjectURL(blob)
-    const a = document.createElement('a')
-    a.href = url
-    a.download = `flexsupps-data-${new Date().toISOString().split('T')[0]}.json`
-    a.click()
-    URL.revokeObjectURL(url)
-    setSaveStatus('✓ Téléchargé')
-    setTimeout(() => setSaveStatus(''), 2000)
-  }
-
-  function handleUploadJSON(e) {
-    const file = e.target.files?.[0]
-    if (!file) return
-    const reader = new FileReader()
-    reader.onload = (ev) => {
-      try {
-        const parsed = JSON.parse(ev.target.result)
-        setStoreData(parsed)
-        setSaveStatus('✓ Fichier importé')
-        setTimeout(() => setSaveStatus(''), 2000)
-      } catch {
-        setSaveStatus('✗ Fichier invalide')
-        setTimeout(() => setSaveStatus(''), 2000)
-      }
-    }
-    reader.readAsText(file)
-  }
-
-  if (loading) {
-    return (
-      <div className="admin-page">
-        <div className="admin-loading">Chargement...</div>
-      </div>
-    )
+  function switchTab(tab) {
+    setActiveTab(tab)
+    setMenuOpen(false)
   }
 
   if (!authenticated) {
@@ -94,315 +358,326 @@ export default function AdminPage() {
       <div className="admin-page">
         <div className="admin-login">
           <div className="admin-login__card">
-            <h1 className="admin-login__title">Administration</h1>
-            <p className="admin-login__subtitle">Entrez votre code PIN</p>
+            <div className="admin-login__logo">
+              <span className="admin-login__logo-flex">FLEX</span>
+              <span className="admin-login__logo-tag">ADMIN</span>
+            </div>
+            <p className="admin-login__sub">Entrez votre code PIN</p>
             <form onSubmit={handlePinSubmit}>
-              <input
-                type="password"
-                className="admin-login__input"
-                placeholder="••••"
-                value={pin}
-                onChange={(e) => setPin(e.target.value)}
-                autoFocus
-                maxLength={6}
-              />
-              {error && <p className="admin-login__error">{error}</p>}
-              <button type="submit" className="admin-login__btn">
-                Connexion
-              </button>
+              <input type="password" className="admin-login__input" placeholder="••••" value={pin}
+                onChange={e => setPin(e.target.value)} autoFocus maxLength={6} />
+              {pinError && <p className="admin-login__error">{pinError}</p>}
+              <button type="submit" className="admin-login__btn">Connexion</button>
             </form>
-            <button
-              className="admin-login__back"
-              onClick={() => navigate('/')}
-            >
-              ← Retour au site
-            </button>
+            <button className="admin-login__back" onClick={() => navigate('/')}>← Retour au site</button>
           </div>
         </div>
       </div>
     )
   }
 
-  if (!storeData) {
-    return (
-      <div className="admin-page">
-        <div className="admin-loading">Initialisation...</div>
-      </div>
-    )
-  }
+  const tabs = [
+    { key: 'products', label: `Produits (${products.length})` },
+    { key: 'categories', label: `Catégories (${categories.length})` },
+    { key: 'brands', label: `Marques (${brands.length})` },
+    { key: 'seed', label: '🌱 Seed' },
+  ]
 
   return (
     <div className="admin-page">
+      <Toast toasts={toasts} />
+
+      {/* Header */}
       <header className="admin-header">
         <div className="admin-header__left">
-          <h1 className="admin-header__title">Panneau d'administration</h1>
-          <p className="admin-header__subtitle">Flex Supps</p>
+          <span className="admin-header__flex">FLEX</span>
+          <span className="admin-header__tag">ADMIN</span>
         </div>
         <div className="admin-header__right">
-          {saveStatus && <span className="admin-header__status">{saveStatus}</span>}
-          <button className="admin-btn" onClick={handleDownloadJSON}>
-            💾 Télécharger JSON
-          </button>
-          <label className="admin-btn">
-            📤 Importer JSON
-            <input
-              type="file"
-              accept=".json"
-              onChange={handleUploadJSON}
-              style={{ display: 'none' }}
-            />
-          </label>
-          <button className="admin-btn secondary" onClick={handleLogout}>
-            Déconnexion
-          </button>
+          <button className="admin-btn admin-btn--icon" onClick={fetchAll} title="Actualiser">↻</button>
+          <button className="admin-btn admin-btn--logout" onClick={handleLogout}>Déconnexion</button>
         </div>
       </header>
 
-      <div className="admin-tabs">
-        <button
-          className={`admin-tab${activeTab === 'products' ? ' active' : ''}`}
-          onClick={() => setActiveTab('products')}
-        >
-          Produits ({storeData.products?.length || 0})
-        </button>
-        <button
-          className={`admin-tab${activeTab === 'categories' ? ' active' : ''}`}
-          onClick={() => setActiveTab('categories')}
-        >
-          Catégories ({storeData.categories?.length || 0})
-        </button>
-        <button
-          className={`admin-tab${activeTab === 'brands' ? ' active' : ''}`}
-          onClick={() => setActiveTab('brands')}
-        >
-          Marques ({storeData.brands?.length || 0})
-        </button>
-        <button
-          className={`admin-tab${activeTab === 'promos' ? ' active' : ''}`}
-          onClick={() => setActiveTab('promos')}
-        >
-          Codes promo ({storeData.promoCodes?.length || 0})
-        </button>
+      {/* Stats */}
+      <div className="admin-stats">
+        <div className="admin-stat"><span className="admin-stat__val">{products.length}</span><span className="admin-stat__lbl">Produits</span></div>
+        <div className="admin-stat"><span className="admin-stat__val admin-stat__val--green">{products.filter(p => p.in_stock).length}</span><span className="admin-stat__lbl">En stock</span></div>
+        <div className="admin-stat"><span className="admin-stat__val admin-stat__val--red">{products.filter(p => !p.in_stock).length}</span><span className="admin-stat__lbl">Épuisés</span></div>
+        <div className="admin-stat"><span className="admin-stat__val admin-stat__val--gold">{products.filter(p => p.featured).length}</span><span className="admin-stat__lbl">Vedettes</span></div>
       </div>
 
+      {/* Tabs */}
+      <div className="admin-tabs">
+        {tabs.map(t => (
+          <button key={t.key} className={`admin-tab${activeTab === t.key ? ' active' : ''}`} onClick={() => switchTab(t.key)}>
+            {t.label}
+          </button>
+        ))}
+      </div>
+
+      {/* Content */}
       <div className="admin-content">
-        {activeTab === 'products' && (
-          <ProductsTab storeData={storeData} setStoreData={setStoreData} />
+        {dataLoading && <div className="admin-loading"><Spinner /> Chargement...</div>}
+        {dataError && (
+          <div className="admin-error">⚠ {dataError} <button className="admin-btn admin-btn--sm" onClick={fetchAll}>Réessayer</button></div>
         )}
-        {activeTab === 'categories' && (
-          <CategoriesTab storeData={storeData} setStoreData={setStoreData} />
+        {!dataLoading && activeTab === 'products' && (
+          <ProductsTab products={products} categories={categories} brands={brands} onRefresh={fetchAll} addToast={addToast} />
         )}
-        {activeTab === 'brands' && (
-          <BrandsTab storeData={storeData} setStoreData={setStoreData} />
+        {!dataLoading && activeTab === 'categories' && (
+          <CategoriesTab categories={categories} onRefresh={fetchAll} addToast={addToast} />
         )}
-        {activeTab === 'promos' && (
-          <PromosTab storeData={storeData} setStoreData={setStoreData} />
+        {!dataLoading && activeTab === 'brands' && (
+          <BrandsTab brands={brands} onRefresh={fetchAll} addToast={addToast} />
+        )}
+        {!dataLoading && activeTab === 'seed' && (
+          <SeedTab addToast={addToast} onRefresh={fetchAll} />
         )}
       </div>
     </div>
   )
 }
 
-// ────────────────────────────────────────────────────────────
-// Products Tab
-// ────────────────────────────────────────────────────────────
-function ProductsTab({ storeData, setStoreData }) {
-  const [editing, setEditing] = useState(null)
-  const [adding, setAdding] = useState(false)
+// ── Products Tab ─────────────────────────────────────────────
+function ProductsTab({ products, categories, brands, onRefresh, addToast }) {
+  const [modal, setModal] = useState(null) // null | 'add' | product object
+  const [saving, setSaving] = useState(false)
+  const [search, setSearch] = useState('')
+  const [filterCat, setFilterCat] = useState('all')
 
-  function handleAdd() {
-    const newProduct = {
-      id: `prod-${Date.now()}`,
-      name: 'Nouveau produit',
-      brand: storeData.brands[0]?.name || 'Marque',
-      category: storeData.categories[0]?.id || 'whey',
-      price: 5000,
-      oldPrice: null,
-      currency: 'DA',
-      image: '/placeholder.jpg',
-      imageHover: null,
-      href: '#',
-      badge: null,
-      description: '',
-      tags: [],
-      flavors: [],
-      sizes: [],
-      inStock: true,
-      featured: false,
+  const filtered = products.filter(p => {
+    const q = search.toLowerCase()
+    const matchSearch = !search || p.name?.toLowerCase().includes(q) || p.brand?.toLowerCase().includes(q)
+    const matchCat = filterCat === 'all' || p.category === filterCat
+    return matchSearch && matchCat
+  })
+
+  async function handleSave(form, isNew) {
+    setSaving(true)
+    try {
+      const flavorsArr = (form.flavors || '').split(',').map(s => s.trim()).filter(Boolean)
+        .map(name => ({ name, color: FLAVOR_COLORS[name] ?? '#777777' }))
+      const payload = {
+        id: form.id.trim(),
+        name: form.name,
+        brand: form.brand,
+        category: form.category,
+        tags: (form.tags || '').split(',').map(s => s.trim()).filter(Boolean),
+        description: form.description,
+        flavors: flavorsArr,
+        sizes: (form.sizes || '').split(',').map(s => s.trim()).filter(Boolean),
+        price: parseFloat(form.price) || 0,
+        old_price: form.old_price ? parseFloat(form.old_price) : null,
+        currency: form.currency || 'DA',
+        in_stock: form.in_stock,
+        badge: form.badge || null,
+        featured: form.featured,
+        image: form.image,
+        image_hover: form.image_hover,
+        href: form.href || '#',
+        updated_at: new Date().toISOString(),
+      }
+      if (isNew) {
+        const { error } = await supabase.from('products').insert(payload)
+        if (error) throw error
+        addToast(`"${form.name}" créé !`)
+      } else {
+        const { error } = await supabase.from('products').update(payload).eq('id', form.id)
+        if (error) throw error
+        addToast(`"${form.name}" mis à jour`)
+      }
+      setModal(null)
+      onRefresh()
+    } catch (err) {
+      addToast(err.message, 'error')
+    } finally {
+      setSaving(false)
     }
-    setStoreData({
-      ...storeData,
-      products: [...storeData.products, newProduct],
-    })
-    setEditing(newProduct.id)
-    setAdding(false)
   }
 
-  function handleDelete(id) {
-    if (!confirm('Supprimer ce produit ?')) return
-    setStoreData({
-      ...storeData,
-      products: storeData.products.filter((p) => p.id !== id),
-    })
+  async function handleDelete(p) {
+    if (!window.confirm(`Supprimer "${p.name}" ?`)) return
+    const { error } = await supabase.from('products').delete().eq('id', p.id)
+    if (error) { addToast(error.message, 'error'); return }
+    addToast(`"${p.name}" supprimé`)
+    onRefresh()
   }
 
-  function handleUpdate(id, field, value) {
-    setStoreData({
-      ...storeData,
-      products: storeData.products.map((p) =>
-        p.id === id ? { ...p, [field]: value } : p
-      ),
-    })
-  }
-
-  function handleToggle(id, field) {
-    setStoreData({
-      ...storeData,
-      products: storeData.products.map((p) =>
-        p.id === id ? { ...p, [field]: !p[field] } : p
-      ),
-    })
+  async function quickToggle(p, field) {
+    const { error } = await supabase.from('products').update({ [field]: !p[field], updated_at: new Date().toISOString() }).eq('id', p.id)
+    if (error) { addToast(error.message, 'error'); return }
+    onRefresh()
   }
 
   return (
     <div className="admin-section">
+      {modal && (
+        <ProductModal
+          product={modal === 'add' ? null : modal}
+          brands={brands}
+          categories={categories}
+          onSave={handleSave}
+          onClose={() => setModal(null)}
+          saving={saving}
+        />
+      )}
+
       <div className="admin-section__header">
-        <h2>Gestion des produits</h2>
-        <button className="admin-btn primary" onClick={() => setAdding(true)}>
-          + Ajouter un produit
-        </button>
+        <h2>Produits</h2>
+        <button className="admin-btn admin-btn--primary" onClick={() => setModal('add')}>+ Ajouter</button>
       </div>
 
-      {adding && (
-        <div className="admin-modal-overlay" onClick={() => setAdding(false)}>
-          <div className="admin-modal" onClick={(e) => e.stopPropagation()}>
-            <h3>Ajouter un produit</h3>
-            <p>Un nouveau produit sera créé avec des valeurs par défaut.</p>
-            <div className="admin-modal__actions">
-              <button className="admin-btn primary" onClick={handleAdd}>
-                Créer
-              </button>
-              <button className="admin-btn" onClick={() => setAdding(false)}>
-                Annuler
-              </button>
+      <div className="admin-filters">
+        <input className="admin-input admin-filters__search" type="text" placeholder="Rechercher..." value={search} onChange={e => setSearch(e.target.value)} />
+        <select className="admin-input admin-filters__cat" value={filterCat} onChange={e => setFilterCat(e.target.value)}>
+          <option value="all">Toutes catégories</option>
+          {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+        </select>
+      </div>
+
+      {filtered.length === 0 ? (
+        <div className="admin-empty">
+          {products.length === 0
+            ? <>Aucun produit. <button className="admin-btn admin-btn--primary admin-btn--sm" onClick={() => setModal('add')}>Ajouter le premier</button></>
+            : 'Aucun résultat'}
+        </div>
+      ) : (
+        <div className="admin-grid">
+          {filtered.map(p => {
+            const catName = categories.find(c => c.id === p.category)?.name || p.category
+            return (
+              <div key={p.id} className={`admin-card${!p.in_stock ? ' admin-card--out' : ''}`}>
+                <div className="admin-card__img">
+                  {p.image
+                    ? <img src={p.image} alt={p.name} onError={e => e.target.style.display = 'none'} />
+                    : <span className="admin-card__noimg">📦</span>}
+                  {p.badge && <span className="admin-card__badge">{p.badge}</span>}
+                  {p.featured && <span className="admin-card__star">★</span>}
+                </div>
+                <div className="admin-card__body">
+                  <p className="admin-card__brand">{p.brand}</p>
+                  <h4 className="admin-card__name">{p.name}</h4>
+                  <p className="admin-card__cat">{catName}</p>
+                  <div className="admin-card__price">
+                    <span>{Number(p.price).toLocaleString('fr-DZ')} {p.currency}</span>
+                    {p.old_price && <span className="admin-card__price-old">{Number(p.old_price).toLocaleString('fr-DZ')}</span>}
+                  </div>
+                  <div className="admin-card__toggles">
+                    <button className={`admin-toggle${p.in_stock ? ' active' : ''}`} onClick={() => quickToggle(p, 'in_stock')}>
+                      {p.in_stock ? '✓ Stock' : '✕ Épuisé'}
+                    </button>
+                    <button className={`admin-toggle${p.featured ? ' active admin-toggle--gold' : ''}`} onClick={() => quickToggle(p, 'featured')}>
+                      {p.featured ? '★' : '☆'} Vedette
+                    </button>
+                  </div>
+                  <div className="admin-card__actions">
+                    <button className="admin-btn admin-btn--sm" onClick={() => setModal(p)}>✎ Modifier</button>
+                    <button className="admin-btn admin-btn--sm admin-btn--danger" onClick={() => handleDelete(p)}>✕</button>
+                  </div>
+                </div>
+              </div>
+            )
+          })}
+        </div>
+      )}
+    </div>
+  )
+}
+
+// ── Categories Tab ───────────────────────────────────────────
+function CategoriesTab({ categories, onRefresh, addToast }) {
+  const [modal, setModal] = useState(null)
+  const [form, setForm] = useState({ id: '', name: '', slug: '', description: '', image: '', href: '#' })
+  const [saving, setSaving] = useState(false)
+
+  function openAdd() { setForm({ id: '', name: '', slug: '', description: '', image: '', href: '#' }); setModal('add') }
+  function openEdit(c) { setForm({ ...c }); setModal('edit') }
+
+  async function handleSave(e) {
+    e.preventDefault()
+    setSaving(true)
+    try {
+      if (modal === 'add') {
+        const { error } = await supabase.from('categories').insert({ ...form })
+        if (error) throw error
+        addToast(`Catégorie "${form.name}" créée`)
+      } else {
+        const { error } = await supabase.from('categories').update({ name: form.name, slug: form.slug, description: form.description, image: form.image, href: form.href }).eq('id', form.id)
+        if (error) throw error
+        addToast(`Catégorie "${form.name}" mise à jour`)
+      }
+      setModal(null)
+      onRefresh()
+    } catch (err) { addToast(err.message, 'error') }
+    finally { setSaving(false) }
+  }
+
+  async function handleDelete(c) {
+    if (!window.confirm(`Supprimer "${c.name}" ?`)) return
+    const { error } = await supabase.from('categories').delete().eq('id', c.id)
+    if (error) { addToast(error.message, 'error'); return }
+    addToast(`"${c.name}" supprimée`)
+    onRefresh()
+  }
+
+  return (
+    <div className="admin-section">
+      {modal && (
+        <div className="admin-modal-overlay" onClick={() => setModal(null)}>
+          <div className="admin-modal" onClick={e => e.stopPropagation()}>
+            <div className="admin-modal__header">
+              <h3>{modal === 'add' ? '+ Nouvelle catégorie' : '✎ Modifier'}</h3>
+              <button className="admin-modal__close" onClick={() => setModal(null)} type="button">✕</button>
             </div>
+            <form onSubmit={handleSave} className="admin-form">
+              <div className="admin-form__scroll">
+                <div className="admin-form__grid">
+                  <div className="admin-form__field admin-form__field--full">
+                    <label>ID *</label>
+                    <input className="admin-input" value={form.id} onChange={e => setForm(p => ({ ...p, id: e.target.value }))} required disabled={modal === 'edit'} placeholder="whey" />
+                  </div>
+                  <div className="admin-form__field">
+                    <label>Nom *</label>
+                    <input className="admin-input" value={form.name} onChange={e => setForm(p => ({ ...p, name: e.target.value }))} required placeholder="WHEY" />
+                  </div>
+                  <div className="admin-form__field">
+                    <label>Slug</label>
+                    <input className="admin-input" value={form.slug || ''} onChange={e => setForm(p => ({ ...p, slug: e.target.value }))} placeholder="whey" />
+                  </div>
+                  <div className="admin-form__field admin-form__field--full">
+                    <label>Description</label>
+                    <input className="admin-input" value={form.description || ''} onChange={e => setForm(p => ({ ...p, description: e.target.value }))} />
+                  </div>
+                </div>
+              </div>
+              <div className="admin-modal__footer">
+                <button type="button" className="admin-btn" onClick={() => setModal(null)}>Annuler</button>
+                <button type="submit" className="admin-btn admin-btn--primary" disabled={saving}>{saving ? <><Spinner /> ...</> : 'Enregistrer'}</button>
+              </div>
+            </form>
           </div>
         </div>
       )}
 
+      <div className="admin-section__header">
+        <h2>Catégories</h2>
+        <button className="admin-btn admin-btn--primary" onClick={openAdd}>+ Ajouter</button>
+      </div>
+
       <div className="admin-table-wrap">
         <table className="admin-table">
-          <thead>
-            <tr>
-              <th>Nom</th>
-              <th>Marque</th>
-              <th>Catégorie</th>
-              <th>Prix</th>
-              <th>Stock</th>
-              <th>Vedette</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
+          <thead><tr><th>ID</th><th>Nom</th><th>Slug</th><th>Actions</th></tr></thead>
           <tbody>
-            {storeData.products.map((product) => (
-              <tr key={product.id}>
-                <td>
-                  {editing === product.id ? (
-                    <input
-                      type="text"
-                      value={product.name}
-                      onChange={(e) => handleUpdate(product.id, 'name', e.target.value)}
-                      className="admin-input"
-                    />
-                  ) : (
-                    product.name
-                  )}
-                </td>
-                <td>
-                  {editing === product.id ? (
-                    <select
-                      value={product.brand}
-                      onChange={(e) => handleUpdate(product.id, 'brand', e.target.value)}
-                      className="admin-input"
-                    >
-                      {storeData.brands.map((b) => (
-                        <option key={b.name} value={b.name}>
-                          {b.name}
-                        </option>
-                      ))}
-                    </select>
-                  ) : (
-                    product.brand
-                  )}
-                </td>
-                <td>
-                  {editing === product.id ? (
-                    <select
-                      value={product.category}
-                      onChange={(e) => handleUpdate(product.id, 'category', e.target.value)}
-                      className="admin-input"
-                    >
-                      {storeData.categories.map((c) => (
-                        <option key={c.id} value={c.id}>
-                          {c.name}
-                        </option>
-                      ))}
-                    </select>
-                  ) : (
-                    storeData.categories.find((c) => c.id === product.category)?.name || product.category
-                  )}
-                </td>
-                <td>
-                  {editing === product.id ? (
-                    <input
-                      type="number"
-                      value={product.price}
-                      onChange={(e) => handleUpdate(product.id, 'price', parseFloat(e.target.value) || 0)}
-                      className="admin-input"
-                      step="100"
-                    />
-                  ) : (
-                    `${product.price.toLocaleString('fr-DZ')} ${product.currency}`
-                  )}
-                </td>
-                <td>
-                  <button
-                    className={`admin-toggle${product.inStock ? ' active' : ''}`}
-                    onClick={() => handleToggle(product.id, 'inStock')}
-                  >
-                    {product.inStock ? 'En stock' : 'Épuisé'}
-                  </button>
-                </td>
-                <td>
-                  <button
-                    className={`admin-toggle${product.featured ? ' active' : ''}`}
-                    onClick={() => handleToggle(product.id, 'featured')}
-                  >
-                    {product.featured ? 'Oui' : 'Non'}
-                  </button>
-                </td>
+            {categories.length === 0 && <tr><td colSpan={4} className="admin-table__empty">Aucune catégorie</td></tr>}
+            {categories.map(c => (
+              <tr key={c.id}>
+                <td><code className="admin-code">{c.id}</code></td>
+                <td><strong>{c.name}</strong></td>
+                <td className="admin-muted">{c.slug}</td>
                 <td className="admin-table__actions">
-                  {editing === product.id ? (
-                    <button
-                      className="admin-btn small"
-                      onClick={() => setEditing(null)}
-                    >
-                      ✓
-                    </button>
-                  ) : (
-                    <button
-                      className="admin-btn small"
-                      onClick={() => setEditing(product.id)}
-                    >
-                      ✎
-                    </button>
-                  )}
-                  <button
-                    className="admin-btn small danger"
-                    onClick={() => handleDelete(product.id)}
-                  >
-                    ✕
-                  </button>
+                  <button className="admin-btn admin-btn--sm" onClick={() => openEdit(c)}>✎</button>
+                  <button className="admin-btn admin-btn--sm admin-btn--danger" onClick={() => handleDelete(c)}>✕</button>
                 </td>
               </tr>
             ))}
@@ -413,379 +688,160 @@ function ProductsTab({ storeData, setStoreData }) {
   )
 }
 
-// ────────────────────────────────────────────────────────────
-// Categories Tab
-// ────────────────────────────────────────────────────────────
-function CategoriesTab({ storeData, setStoreData }) {
-  const [editing, setEditing] = useState(null)
+// ── Brands Tab ───────────────────────────────────────────────
+function BrandsTab({ brands, onRefresh, addToast }) {
+  const [modal, setModal] = useState(null)
+  const [form, setForm] = useState({ name: '', logo: '', href: '#' })
+  const [saving, setSaving] = useState(false)
 
-  function handleAdd() {
-    const newCat = {
-      id: `cat-${Date.now()}`,
-      name: 'Nouvelle catégorie',
-    }
-    setStoreData({
-      ...storeData,
-      categories: [...storeData.categories, newCat],
-    })
-    setEditing(newCat.id)
+  function openAdd() { setForm({ name: '', logo: '', href: '#' }); setModal('add') }
+  function openEdit(b) { setForm({ ...b }); setModal('edit') }
+
+  async function handleSave(e) {
+    e.preventDefault()
+    setSaving(true)
+    try {
+      if (modal === 'add') {
+        const { error } = await supabase.from('brands').insert({ name: form.name, logo: form.logo, href: form.href })
+        if (error) throw error
+        addToast(`Marque "${form.name}" créée`)
+      } else {
+        const { error } = await supabase.from('brands').update({ name: form.name, logo: form.logo, href: form.href }).eq('id', form.id)
+        if (error) throw error
+        addToast(`Marque "${form.name}" mise à jour`)
+      }
+      setModal(null)
+      onRefresh()
+    } catch (err) { addToast(err.message, 'error') }
+    finally { setSaving(false) }
   }
 
-  function handleDelete(id) {
-    if (!confirm('Supprimer cette catégorie ?')) return
-    setStoreData({
-      ...storeData,
-      categories: storeData.categories.filter((c) => c.id !== id),
-    })
-  }
-
-  function handleUpdate(id, field, value) {
-    setStoreData({
-      ...storeData,
-      categories: storeData.categories.map((c) =>
-        c.id === id ? { ...c, [field]: value } : c
-      ),
-    })
+  async function handleDelete(b) {
+    if (!window.confirm(`Supprimer "${b.name}" ?`)) return
+    const { error } = await supabase.from('brands').delete().eq('id', b.id)
+    if (error) { addToast(error.message, 'error'); return }
+    addToast(`"${b.name}" supprimée`)
+    onRefresh()
   }
 
   return (
     <div className="admin-section">
+      {modal && (
+        <div className="admin-modal-overlay" onClick={() => setModal(null)}>
+          <div className="admin-modal" onClick={e => e.stopPropagation()}>
+            <div className="admin-modal__header">
+              <h3>{modal === 'add' ? '+ Nouvelle marque' : '✎ Modifier'}</h3>
+              <button className="admin-modal__close" onClick={() => setModal(null)} type="button">✕</button>
+            </div>
+            <form onSubmit={handleSave} className="admin-form">
+              <div className="admin-form__scroll">
+                <div className="admin-form__grid">
+                  <div className="admin-form__field admin-form__field--full">
+                    <label>Nom *</label>
+                    <input className="admin-input" value={form.name} onChange={e => setForm(p => ({ ...p, name: e.target.value }))} required placeholder="Optimum Nutrition" />
+                  </div>
+                  <div className="admin-form__field admin-form__field--full">
+                    <ImageUploadField label="Logo de la marque" value={form.logo} onChange={v => setForm(p => ({ ...p, logo: v }))} folder="brands" />
+                  </div>
+                </div>
+              </div>
+              <div className="admin-modal__footer">
+                <button type="button" className="admin-btn" onClick={() => setModal(null)}>Annuler</button>
+                <button type="submit" className="admin-btn admin-btn--primary" disabled={saving}>{saving ? <><Spinner /> ...</> : 'Enregistrer'}</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
       <div className="admin-section__header">
-        <h2>Gestion des catégories</h2>
-        <button className="admin-btn primary" onClick={handleAdd}>
-          + Ajouter une catégorie
-        </button>
+        <h2>Marques</h2>
+        <button className="admin-btn admin-btn--primary" onClick={openAdd}>+ Ajouter</button>
       </div>
 
-      <div className="admin-table-wrap">
-        <table className="admin-table">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Nom</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {storeData.categories.map((cat) => (
-              <tr key={cat.id}>
-                <td>
-                  {editing === cat.id ? (
-                    <input
-                      type="text"
-                      value={cat.id}
-                      onChange={(e) => handleUpdate(cat.id, 'id', e.target.value)}
-                      className="admin-input"
-                    />
-                  ) : (
-                    cat.id
-                  )}
-                </td>
-                <td>
-                  {editing === cat.id ? (
-                    <input
-                      type="text"
-                      value={cat.name}
-                      onChange={(e) => handleUpdate(cat.id, 'name', e.target.value)}
-                      className="admin-input"
-                    />
-                  ) : (
-                    cat.name
-                  )}
-                </td>
-                <td className="admin-table__actions">
-                  {editing === cat.id ? (
-                    <button
-                      className="admin-btn small"
-                      onClick={() => setEditing(null)}
-                    >
-                      ✓
-                    </button>
-                  ) : (
-                    <button
-                      className="admin-btn small"
-                      onClick={() => setEditing(cat.id)}
-                    >
-                      ✎
-                    </button>
-                  )}
-                  <button
-                    className="admin-btn small danger"
-                    onClick={() => handleDelete(cat.id)}
-                  >
-                    ✕
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+      <div className="admin-brands-grid">
+        {brands.length === 0 && <div className="admin-empty">Aucune marque</div>}
+        {brands.map(b => (
+          <div key={b.id} className="admin-brand-card">
+            <div className="admin-brand-card__logo">
+              {b.logo
+                ? <img src={b.logo} alt={b.name} onError={e => e.target.style.display = 'none'} />
+                : <span>🏷</span>}
+            </div>
+            <p className="admin-brand-card__name">{b.name}</p>
+            <div className="admin-brand-card__actions">
+              <button className="admin-btn admin-btn--sm" onClick={() => openEdit(b)}>✎</button>
+              <button className="admin-btn admin-btn--sm admin-btn--danger" onClick={() => handleDelete(b)}>✕</button>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   )
 }
 
-// ────────────────────────────────────────────────────────────
-// Brands Tab
-// ────────────────────────────────────────────────────────────
-function BrandsTab({ storeData, setStoreData }) {
-  const [editing, setEditing] = useState(null)
+// ── Seed Tab ─────────────────────────────────────────────────
+function SeedTab({ addToast, onRefresh }) {
+  const [seeding, setSeeding] = useState(false)
+  const [log, setLog] = useState([])
+  const [done, setDone] = useState(false)
 
-  function handleAdd() {
-    const newBrand = {
-      name: 'Nouvelle marque',
-      logo: '/placeholder-logo.svg',
-    }
-    setStoreData({
-      ...storeData,
-      brands: [...storeData.brands, newBrand],
-    })
-    setEditing(newBrand.name)
-  }
+  function appendLog(msg) { setLog(p => [...p, msg]) }
 
-  function handleDelete(name) {
-    if (!confirm('Supprimer cette marque ?')) return
-    setStoreData({
-      ...storeData,
-      brands: storeData.brands.filter((b) => b.name !== name),
-    })
-  }
+  async function handleSeed() {
+    if (!window.confirm('Insérer les données de démo ? Les données existantes avec les mêmes IDs seront écrasées.')) return
+    setSeeding(true); setDone(false); setLog([])
+    try {
+      appendLog('Insertion des catégories...')
+      const { error: cE } = await supabase.from('categories').upsert(SEED_CATEGORIES, { onConflict: 'id' })
+      if (cE) throw new Error('Catégories: ' + cE.message)
+      appendLog(`✓ ${SEED_CATEGORIES.length} catégories insérées`)
 
-  function handleUpdate(oldName, field, value) {
-    setStoreData({
-      ...storeData,
-      brands: storeData.brands.map((b) =>
-        b.name === oldName ? { ...b, [field]: value } : b
-      ),
-    })
-  }
+      appendLog('Insertion des marques...')
+      const { error: bE } = await supabase.from('brands').upsert(
+        SEED_BRANDS.map(b => ({ name: b.name, logo: b.logo, href: b.href })), { onConflict: 'name' }
+      )
+      if (bE) throw new Error('Marques: ' + bE.message)
+      appendLog(`✓ ${SEED_BRANDS.length} marques insérées`)
 
-  return (
-    <div className="admin-section">
-      <div className="admin-section__header">
-        <h2>Gestion des marques</h2>
-        <button className="admin-btn primary" onClick={handleAdd}>
-          + Ajouter une marque
-        </button>
-      </div>
+      appendLog('Insertion des produits...')
+      const { error: pE } = await supabase.from('products').upsert(SEED_PRODUCTS, { onConflict: 'id' })
+      if (pE) throw new Error('Produits: ' + pE.message)
+      appendLog(`✓ ${SEED_PRODUCTS.length} produits insérés`)
 
-      <div className="admin-table-wrap">
-        <table className="admin-table">
-          <thead>
-            <tr>
-              <th>Nom</th>
-              <th>Logo (URL)</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {storeData.brands.map((brand) => (
-              <tr key={brand.name}>
-                <td>
-                  {editing === brand.name ? (
-                    <input
-                      type="text"
-                      value={brand.name}
-                      onChange={(e) => handleUpdate(brand.name, 'name', e.target.value)}
-                      className="admin-input"
-                    />
-                  ) : (
-                    brand.name
-                  )}
-                </td>
-                <td>
-                  {editing === brand.name ? (
-                    <input
-                      type="text"
-                      value={brand.logo}
-                      onChange={(e) => handleUpdate(brand.name, 'logo', e.target.value)}
-                      className="admin-input"
-                    />
-                  ) : (
-                    <span className="admin-table__logo-url">{brand.logo}</span>
-                  )}
-                </td>
-                <td className="admin-table__actions">
-                  {editing === brand.name ? (
-                    <button
-                      className="admin-btn small"
-                      onClick={() => setEditing(null)}
-                    >
-                      ✓
-                    </button>
-                  ) : (
-                    <button
-                      className="admin-btn small"
-                      onClick={() => setEditing(brand.name)}
-                    >
-                      ✎
-                    </button>
-                  )}
-                  <button
-                    className="admin-btn small danger"
-                    onClick={() => handleDelete(brand.name)}
-                  >
-                    ✕
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </div>
-  )
-}
-
-// ────────────────────────────────────────────────────────────
-// Promos Tab
-// ────────────────────────────────────────────────────────────
-function PromosTab({ storeData, setStoreData }) {
-  const [editing, setEditing] = useState(null)
-
-  // Initialize promoCodes if not exists
-  if (!storeData.promoCodes) {
-    storeData.promoCodes = []
-  }
-
-  function handleAdd() {
-    const newPromo = {
-      code: `PROMO${Date.now()}`,
-      discount: 10,
-      type: 'percentage', // 'percentage' or 'fixed'
-      active: true,
-      expiresAt: null,
-    }
-    setStoreData({
-      ...storeData,
-      promoCodes: [...storeData.promoCodes, newPromo],
-    })
-    setEditing(newPromo.code)
-  }
-
-  function handleDelete(code) {
-    if (!confirm('Supprimer ce code promo ?')) return
-    setStoreData({
-      ...storeData,
-      promoCodes: storeData.promoCodes.filter((p) => p.code !== code),
-    })
-  }
-
-  function handleUpdate(oldCode, field, value) {
-    setStoreData({
-      ...storeData,
-      promoCodes: storeData.promoCodes.map((p) =>
-        p.code === oldCode ? { ...p, [field]: value } : p
-      ),
-    })
-  }
-
-  function handleToggle(code) {
-    setStoreData({
-      ...storeData,
-      promoCodes: storeData.promoCodes.map((p) =>
-        p.code === code ? { ...p, active: !p.active } : p
-      ),
-    })
+      appendLog('✓ Terminé !')
+      addToast('Base de données initialisée avec les données de démo')
+      setDone(true)
+      onRefresh()
+    } catch (err) {
+      appendLog('✕ Erreur : ' + err.message)
+      addToast(err.message, 'error')
+    } finally { setSeeding(false) }
   }
 
   return (
     <div className="admin-section">
-      <div className="admin-section__header">
-        <h2>Gestion des codes promo</h2>
-        <button className="admin-btn primary" onClick={handleAdd}>
-          + Ajouter un code promo
+      <div className="admin-section__header"><h2>Initialisation des données</h2></div>
+      <div className="admin-seed">
+        <div className="admin-seed__warning">
+          <strong>⚠ Avant de continuer</strong>
+          <p>Exécutez d'abord le fichier <code>supabase/schema.sql</code> dans l'éditeur SQL de Supabase pour créer les tables. Ensuite, cliquez sur le bouton ci-dessous pour insérer les données de démo.</p>
+        </div>
+        <div className="admin-seed__counts">
+          <div><span>{SEED_CATEGORIES.length}</span>Catégories</div>
+          <div><span>{SEED_BRANDS.length}</span>Marques</div>
+          <div><span>{SEED_PRODUCTS.length}</span>Produits</div>
+        </div>
+        <button className="admin-btn admin-btn--primary admin-btn--lg" onClick={handleSeed} disabled={seeding}>
+          {seeding ? <><Spinner /> Insertion...</> : done ? '✓ Relancer le seed' : '🌱 Initialiser la base de données'}
         </button>
-      </div>
-
-      <div className="admin-table-wrap">
-        <table className="admin-table">
-          <thead>
-            <tr>
-              <th>Code</th>
-              <th>Réduction</th>
-              <th>Type</th>
-              <th>Actif</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {storeData.promoCodes.map((promo) => (
-              <tr key={promo.code}>
-                <td>
-                  {editing === promo.code ? (
-                    <input
-                      type="text"
-                      value={promo.code}
-                      onChange={(e) => handleUpdate(promo.code, 'code', e.target.value.toUpperCase())}
-                      className="admin-input"
-                    />
-                  ) : (
-                    <strong>{promo.code}</strong>
-                  )}
-                </td>
-                <td>
-                  {editing === promo.code ? (
-                    <input
-                      type="number"
-                      value={promo.discount}
-                      onChange={(e) => handleUpdate(promo.code, 'discount', parseFloat(e.target.value) || 0)}
-                      className="admin-input"
-                      step="1"
-                    />
-                  ) : (
-                    promo.discount
-                  )}
-                </td>
-                <td>
-                  {editing === promo.code ? (
-                    <select
-                      value={promo.type}
-                      onChange={(e) => handleUpdate(promo.code, 'type', e.target.value)}
-                      className="admin-input"
-                    >
-                      <option value="percentage">Pourcentage (%)</option>
-                      <option value="fixed">Montant fixe (DA)</option>
-                    </select>
-                  ) : (
-                    promo.type === 'percentage' ? 'Pourcentage' : 'Montant fixe'
-                  )}
-                </td>
-                <td>
-                  <button
-                    className={`admin-toggle${promo.active ? ' active' : ''}`}
-                    onClick={() => handleToggle(promo.code)}
-                  >
-                    {promo.active ? 'Actif' : 'Inactif'}
-                  </button>
-                </td>
-                <td className="admin-table__actions">
-                  {editing === promo.code ? (
-                    <button
-                      className="admin-btn small"
-                      onClick={() => setEditing(null)}
-                    >
-                      ✓
-                    </button>
-                  ) : (
-                    <button
-                      className="admin-btn small"
-                      onClick={() => setEditing(promo.code)}
-                    >
-                      ✎
-                    </button>
-                  )}
-                  <button
-                    className="admin-btn small danger"
-                    onClick={() => handleDelete(promo.code)}
-                  >
-                    ✕
-                  </button>
-                </td>
-              </tr>
+        {log.length > 0 && (
+          <div className="admin-seed__log">
+            {log.map((line, i) => (
+              <div key={i} className={line.startsWith('✓') ? 'ok' : line.startsWith('✕') ? 'err' : ''}>{line}</div>
             ))}
-          </tbody>
-        </table>
+          </div>
+        )}
       </div>
     </div>
   )

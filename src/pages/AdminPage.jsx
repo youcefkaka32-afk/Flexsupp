@@ -477,11 +477,18 @@ export default function AdminPage() {
 }
 
 // ── Products Tab ─────────────────────────────────────────────
+const CATALOG_MAX = 8
+const NEW_MAX = 4
+
 function ProductsTab({ products, categories, brands, onRefresh, addToast }) {
   const [modal, setModal] = useState(null) // null | 'add' | product object
   const [saving, setSaving] = useState(false)
   const [search, setSearch] = useState('')
   const [filterCat, setFilterCat] = useState('all')
+
+  // Live slot counts
+  const catalogCount = products.filter(p => p.show_in_catalog !== false).length
+  const newCount     = products.filter(p => p.show_in_new).length
 
   const filtered = products.filter(p => {
     const q = search.toLowerCase()
@@ -491,6 +498,21 @@ function ProductsTab({ products, categories, brands, onRefresh, addToast }) {
   })
 
   async function handleSave(form, isNew) {
+    // Guard: cap catalog slots
+    const willBeInCatalog = form.show_in_catalog !== false
+    const currentlyInCatalog = !isNew && products.find(p => p.id === form.id)?.show_in_catalog !== false
+    if (willBeInCatalog && !currentlyInCatalog && catalogCount >= CATALOG_MAX) {
+      addToast(`Maximum ${CATALOG_MAX} produits dans le catalogue. Retirez-en un d'abord.`, 'error')
+      return
+    }
+    // Guard: cap new slots
+    const willBeNew = form.show_in_new || false
+    const currentlyNew = !isNew && (products.find(p => p.id === form.id)?.show_in_new || false)
+    if (willBeNew && !currentlyNew && newCount >= NEW_MAX) {
+      addToast(`Maximum ${NEW_MAX} produits dans "Nouveaux produits". Retirez-en un d'abord.`, 'error')
+      return
+    }
+
     setSaving(true)
     try {
       const flavorsArr = (form.flavors || '').split(',').map(s => s.trim()).filter(Boolean)
@@ -536,7 +558,11 @@ function ProductsTab({ products, categories, brands, onRefresh, addToast }) {
   }
 
   async function handleDelete(p) {
-    if (!window.confirm(`Supprimer "${p.name}" ?`)) return
+    const warnings = []
+    if (p.show_in_catalog !== false) warnings.push(`retiré du catalogue accueil (${catalogCount - 1}/${CATALOG_MAX} restants)`)
+    if (p.show_in_new) warnings.push(`retiré des nouveaux produits (${newCount - 1}/${NEW_MAX} restants)`)
+    const warningText = warnings.length > 0 ? `\n\n⚠ Ce produit sera ${warnings.join(' et ')}.` : ''
+    if (!window.confirm(`Supprimer "${p.name}" ?${warningText}`)) return
     const { error } = await supabase.from('products').delete().eq('id', p.id)
     if (error) { addToast(error.message, 'error'); return }
     addToast(`"${p.name}" supprimé`)
@@ -544,7 +570,24 @@ function ProductsTab({ products, categories, brands, onRefresh, addToast }) {
   }
 
   async function quickToggle(p, field) {
-    const { error } = await supabase.from('products').update({ [field]: !p[field], updated_at: new Date().toISOString() }).eq('id', p.id)
+    const newValue = !p[field]
+    // Cap checks on quick-toggle
+    if (field === 'show_in_catalog' && newValue && catalogCount >= CATALOG_MAX) {
+      addToast(`Maximum ${CATALOG_MAX} produits dans le catalogue. Retirez-en un d'abord.`, 'error')
+      return
+    }
+    if (field === 'show_in_new' && newValue && newCount >= NEW_MAX) {
+      addToast(`Maximum ${NEW_MAX} produits dans "Nouveaux produits". Retirez-en un d'abord.`, 'error')
+      return
+    }
+    // Warn on removal if dropping too low
+    if (field === 'show_in_catalog' && !newValue && catalogCount <= 4) {
+      if (!window.confirm(`Il ne restera que ${catalogCount - 1} produit(s) dans le catalogue. Continuer ?`)) return
+    }
+    if (field === 'show_in_new' && !newValue && newCount <= 2) {
+      if (!window.confirm(`Il ne restera que ${newCount - 1} produit(s) dans "Nouveaux produits". Continuer ?`)) return
+    }
+    const { error } = await supabase.from('products').update({ [field]: newValue, updated_at: new Date().toISOString() }).eq('id', p.id)
     if (error) { addToast(error.message, 'error'); return }
     onRefresh()
   }
@@ -567,10 +610,34 @@ function ProductsTab({ products, categories, brands, onRefresh, addToast }) {
         <button className="admin-btn admin-btn--primary" onClick={() => setModal('add')}>+ Ajouter</button>
       </div>
 
+      {/* Slot counters */}
+      <div className="admin-slot-counters">
+        <div className={`admin-slot${catalogCount >= CATALOG_MAX ? ' admin-slot--full' : catalogCount <= 3 ? ' admin-slot--low' : ''}`}>
+          <span className="admin-slot__icon">🏠</span>
+          <span className="admin-slot__label">Catalogue accueil</span>
+          <span className="admin-slot__count">{catalogCount} / {CATALOG_MAX}</span>
+          <div className="admin-slot__bar">
+            <div className="admin-slot__fill" style={{ width: `${Math.min(catalogCount / CATALOG_MAX * 100, 100)}%` }} />
+          </div>
+          {catalogCount >= CATALOG_MAX && <span className="admin-slot__tag full">PLEIN</span>}
+          {catalogCount <= 3 && catalogCount > 0 && <span className="admin-slot__tag low">BAS</span>}
+        </div>
+        <div className={`admin-slot${newCount >= NEW_MAX ? ' admin-slot--full' : newCount <= 1 ? ' admin-slot--low' : ''}`}>
+          <span className="admin-slot__icon">✨</span>
+          <span className="admin-slot__label">Nouveaux produits</span>
+          <span className="admin-slot__count">{newCount} / {NEW_MAX}</span>
+          <div className="admin-slot__bar">
+            <div className="admin-slot__fill" style={{ width: `${Math.min(newCount / NEW_MAX * 100, 100)}%` }} />
+          </div>
+          {newCount >= NEW_MAX && <span className="admin-slot__tag full">PLEIN</span>}
+          {newCount <= 1 && newCount > 0 && <span className="admin-slot__tag low">BAS</span>}
+        </div>
+      </div>
+
       <div className="admin-visibility-banner">
         <div><span className="admin-hint admin-hint--shop">🛒 Boutique</span> Tous les produits apparaissent sur la page boutique.</div>
-        <div><span className="admin-hint admin-hint--home">🏠 Catalogue accueil</span> Les produits avec <strong>🏠 Catalogue</strong> activé apparaissent dans "NOS COMPLÉMENTS SPORTIFS".</div>
-        <div><span className="admin-hint admin-hint--new">✨ Nouveaux produits</span> Les produits avec <strong>✨ Nouveau</strong> activé apparaissent dans la section "NOUVEAUX PRODUITS" (les 4 premiers).</div>
+        <div><span className="admin-hint admin-hint--home">🏠 Catalogue</span> Max <strong>{CATALOG_MAX}</strong> produits dans "NOS COMPLÉMENTS SPORTIFS".</div>
+        <div><span className="admin-hint admin-hint--new">✨ Nouveaux</span> Max <strong>{NEW_MAX}</strong> produits dans "NOUVEAUX PRODUITS".</div>
       </div>
 
       <div className="admin-filters">
@@ -591,6 +658,8 @@ function ProductsTab({ products, categories, brands, onRefresh, addToast }) {
         <div className="admin-grid">
           {filtered.map(p => {
             const catName = categories.find(c => c.id === p.category)?.name || p.category
+            const catalogFull = catalogCount >= CATALOG_MAX && p.show_in_catalog === false
+            const newFull = newCount >= NEW_MAX && !p.show_in_new
             return (
               <div key={p.id} className={`admin-card${!p.in_stock ? ' admin-card--out' : ''}`}>
                 <div className="admin-card__img">
@@ -598,7 +667,6 @@ function ProductsTab({ products, categories, brands, onRefresh, addToast }) {
                     ? <img src={p.image} alt={p.name} onError={e => e.target.style.display = 'none'} />
                     : <span className="admin-card__noimg">📦</span>}
                   {p.badge && <span className="admin-card__badge">{p.badge}</span>}
-                  {p.featured && <span className="admin-card__star">★</span>}
                 </div>
                 <div className="admin-card__body">
                   <p className="admin-card__brand">{p.brand}</p>
@@ -612,10 +680,18 @@ function ProductsTab({ products, categories, brands, onRefresh, addToast }) {
                     <button className={`admin-toggle${p.in_stock ? ' active' : ''}`} onClick={() => quickToggle(p, 'in_stock')}>
                       {p.in_stock ? '✓ Stock' : '✕ Épuisé'}
                     </button>
-                    <button className={`admin-toggle${p.show_in_catalog !== false ? ' active admin-toggle--blue' : ''}`} onClick={() => quickToggle(p, 'show_in_catalog')}>
-                      {p.show_in_catalog !== false ? '🏠 Catalogue' : '— Catalogue'}
+                    <button
+                      className={`admin-toggle${p.show_in_catalog !== false ? ' active admin-toggle--blue' : ''}${catalogFull ? ' admin-toggle--disabled' : ''}`}
+                      onClick={() => quickToggle(p, 'show_in_catalog')}
+                      title={catalogFull ? `Maximum ${CATALOG_MAX} atteint` : ''}
+                    >
+                      {p.show_in_catalog !== false ? '🏠 Catalogue' : `— Catalogue`}
                     </button>
-                    <button className={`admin-toggle${p.show_in_new ? ' active admin-toggle--green' : ''}`} onClick={() => quickToggle(p, 'show_in_new')}>
+                    <button
+                      className={`admin-toggle${p.show_in_new ? ' active admin-toggle--green' : ''}${newFull ? ' admin-toggle--disabled' : ''}`}
+                      onClick={() => quickToggle(p, 'show_in_new')}
+                      title={newFull ? `Maximum ${NEW_MAX} atteint` : ''}
+                    >
                       {p.show_in_new ? '✨ Nouveau' : '— Nouveau'}
                     </button>
                   </div>

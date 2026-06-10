@@ -16,7 +16,13 @@ export default function NewProducts() {
   useScrollReveal({ selector: '.new-products-section__title', from: 'fadeUp', duration: 0.8 }, sectionRef)
   useScrollReveal({ selector: '.new-card', from: 'fadeUp', stagger: 0.1, duration: 0.8, start: 'top 88%' }, sectionRef)
 
-  const newProducts = data ? data.products.filter(p => p.showInNew) : []
+  // Primary: products explicitly flagged show_in_new=true
+  // Fallback: products with badge 'NOUVEAU' (covers Supabase data before show_in_new column was added)
+  const allProducts = data?.products ?? []
+  const flagged = allProducts.filter(p => p.showInNew === true)
+  const newProducts = flagged.length > 0
+    ? flagged
+    : allProducts.filter(p => p.badge === 'NOUVEAU')
 
   function addToCart(product) {
     dispatch({ type: 'ADD', product: {

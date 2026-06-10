@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="0 0 400 400">
+  <defs>
+    <linearGradient id="tubGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#6b0a0f"/>
+      <stop offset="100%" style="stop-color:#3d0509"/>
+    </linearGradient>
+    <linearGradient id="lidGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#111111"/>
+      <stop offset="100%" style="stop-color:#2a2a2a"/>
+    </linearGradient>
+    <linearGradient id="bgGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f8f8f8"/>
+      <stop offset="100%" style="stop-color:#f0f0f0"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="400" fill="url(#bgGrad2)"/>
+  <!-- Shadow -->
+  <ellipse cx="200" cy="340" rx="105" ry="14" fill="#000" opacity="0.12"/>
+  <!-- Tub body -->
+  <rect x="92" y="140" width="216" height="190" rx="20" fill="url(#tubGrad2)"/>
+  <!-- Label band -->
+  <rect x="97" y="165" width="206" height="130" rx="4" fill="rgba(0,0,0,0.3)"/>
+  <!-- White stripe top -->
+  <rect x="97" y="165" width="206" height="3" fill="white" opacity="0.3"/>
+  <!-- White stripe bottom -->
+  <rect x="97" y="292" width="206" height="3" fill="white" opacity="0.3"/>
+  <!-- Product text -->
+  <text x="200" y="210" font-family="Arial Black, sans-serif" font-size="36" font-weight="900" fill="white" text-anchor="middle" letter-spacing="2">BCAA</text>
+  <text x="200" y="238" font-family="Arial, sans-serif" font-size="11" font-weight="700" fill="rgba(255,255,255,0.7)" text-anchor="middle" letter-spacing="4">AMINO ACIDS</text>
+  <text x="200" y="262" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#ff6b6b" text-anchor="middle">RECOVERY POWER</text>
+  <text x="200" y="282" font-family="Arial, sans-serif" font-size="9" fill="rgba(255,255,255,0.4)" text-anchor="middle" letter-spacing="2">2:1:1 RATIO · 300G</text>
+  <!-- Lid -->
+  <rect x="87" y="118" width="226" height="40" rx="14" fill="url(#lidGrad2)"/>
+  <text x="200" y="143" font-family="Arial Black, sans-serif" font-size="11" font-weight="900" fill="white" text-anchor="middle" letter-spacing="3">FLEX SUPPS</text>
+  <!-- Shine highlight -->
+  <rect x="97" y="145" width="7" height="175" rx="3" fill="white" opacity="0.05"/>
+  <!-- Bottom rim -->
+  <rect x="92" y="316" width="216" height="14" rx="8" fill="#1a0203"/>
+</svg>

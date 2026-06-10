@@ -1,0 +1,213 @@
+/* ─────────────────────────────────────────────────────────
+   CTA Banner — Featured Product Spotlight
+   ───────────────────────────────────────────────────────── */
+
+.cta-banner-section {
+  padding: var(--space-6xl) 0;
+  background: var(--black);
+  border-top: 1px solid var(--border);
+  overflow: hidden;
+}
+
+/* Card container */
+.cta-banner-card {
+  position: relative;
+  background: var(--red);
+  border-radius: 16px;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr 0.9fr;
+  align-items: center;
+  gap: var(--space-4xl);
+  padding: var(--space-5xl) var(--space-4xl);
+  box-shadow: 0 24px 60px rgba(227, 27, 35, 0.3);
+}
+
+/* Subtle grid bg texture */
+.cta-banner-card__grid-bg {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── Image column ── */
+.cta-banner-card__image-col {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+
+.cta-banner-card__img {
+  width: 100%;
+  max-width: 280px;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.5));
+}
+
+.cta-banner-card__img-glow {
+  position: absolute;
+  width: 180px;
+  height: 180px;
+  background: radial-gradient(circle, rgba(255,255,255,0.25) 0%, transparent 70%);
+  filter: blur(20px);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ── Copy column ── */
+.cta-banner-card__copy-col {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  z-index: 2;
+}
+
+.cta-banner-card__eyebrow {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  color: rgba(255,255,255,0.75);
+  margin-bottom: 12px;
+  display: block;
+}
+
+.cta-banner-card__title {
+  font-size: clamp(28px, 4vw, 48px);
+  font-weight: 900;
+  line-height: 0.95;
+  letter-spacing: 0.02em;
+  color: var(--white);
+  margin: 0 0 var(--space-m) 0;
+  text-transform: uppercase;
+}
+
+.cta-banner-card__title-accent {
+  color: rgba(255,255,255,0.65);
+  font-style: italic;
+}
+
+.cta-banner-card__desc {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  line-height: 1.65;
+  color: rgba(255,255,255,0.85);
+  margin: 0 0 var(--space-xl) 0;
+  max-width: 360px;
+}
+
+.cta-banner-card__actions {
+  display: flex;
+  gap: var(--space-m);
+  flex-wrap: wrap;
+}
+
+/* Primary in white — inverts against the red bg */
+.cta-banner-card__btn {
+  background: var(--white) !important;
+  color: var(--black) !important;
+  border-color: var(--white) !important;
+  border-radius: var(--radius-m) !important;
+}
+
+.cta-banner-card__btn:hover {
+  background: var(--black) !important;
+  color: var(--white) !important;
+  border-color: var(--black) !important;
+}
+
+/* Secondary outline */
+.cta-banner-card__btn-sec {
+  border-color: rgba(255,255,255,0.5) !important;
+  color: var(--white) !important;
+  border-radius: var(--radius-m) !important;
+}
+
+.cta-banner-card__btn-sec:hover {
+  background: rgba(255,255,255,0.1) !important;
+}
+
+/* ── Stats column ── */
+.cta-banner-card__stats-col {
+  display: flex;
+  flex-direction: column;
+  z-index: 2;
+}
+
+.cta-banner-card__stats-title {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  color: rgba(255,255,255,0.6);
+  margin-bottom: var(--space-m);
+  display: block;
+}
+
+.cta-banner-card__stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.cta-stat-item {
+  background: rgba(0,0,0,0.2);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 8px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.cta-stat-item__val {
+  font-size: 22px;
+  font-weight: 900;
+  color: var(--white);
+  letter-spacing: 0.02em;
+  line-height: 1;
+}
+
+.cta-stat-item__lbl {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  color: rgba(255,255,255,0.65);
+  text-transform: uppercase;
+}
+
+/* ── Responsive ── */
+@media (max-width: 1120px) {
+  .cta-banner-card {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-xl);
+    padding: var(--space-4xl) var(--space-xl);
+  }
+  .cta-banner-card__image-col {
+    grid-column: 1 / -1;
+    order: -1;
+  }
+  .cta-banner-card__img { max-width: 200px; }
+  .cta-banner-card__stats-col { grid-column: 1 / -1; }
+  .cta-banner-card__stats-grid { grid-template-columns: repeat(4, 1fr); }
+}
+
+@media (max-width: 768px) {
+  .cta-banner-card {
+    grid-template-columns: 1fr;
+    gap: var(--space-2xl);
+    text-align: center;
+    padding: var(--space-4xl) var(--space-xl);
+  }
+  .cta-banner-card__copy-col { align-items: center; }
+  .cta-banner-card__desc { max-width: 100%; }
+  .cta-banner-card__stats-grid { grid-template-columns: repeat(2, 1fr); }
+}

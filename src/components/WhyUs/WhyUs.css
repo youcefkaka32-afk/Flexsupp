@@ -1,0 +1,198 @@
+/* ─────────────────────────────────────────────────────────
+   Why Us — Trust Cards + Brand Manifesto
+   ───────────────────────────────────────────────────────── */
+
+/* ── Feature Trust Cards ── */
+.features-trust-section {
+  padding: var(--space-6xl) 0;
+  background: var(--bg-deep);
+  border-top: 1px solid var(--border);
+}
+
+.features-trust-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+
+/* BB.com Feature Card (icon box style) */
+.feature-card {
+  background: var(--bg-dark);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-l);   /* 8px — BB.com spec */
+  padding: 28px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: border-color 0.3s ease, background 0.3s ease;
+}
+
+.feature-card:hover {
+  border-color: var(--red);
+  background: rgba(227, 27, 35, 0.04);
+}
+
+.feature-card__icon {
+  font-size: 28px;
+  display: block;
+  line-height: 1;
+}
+
+.feature-card__title {
+  font-size: 16px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  color: var(--white);
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.feature-card__desc {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--text-dim);
+  margin: 0;
+}
+
+/* ── Manifesto Section ── */
+.why-us-manifesto-section {
+  padding: var(--space-6xl) 0;
+  background: var(--bg-dark);
+  border-top: 1px solid var(--border);
+  overflow: hidden;
+  position: relative;
+}
+
+.manifesto-shell {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 var(--space-3xl);
+}
+
+.manifesto-grid {
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  align-items: center;
+  gap: var(--space-5xl);
+}
+
+/* Watermark logo */
+.manifesto-left-watermark {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.manifesto-bg-logo {
+  max-width: 100%;
+  height: 380px;
+  width: auto;
+  object-fit: contain;
+  opacity: 0.05;
+  filter: grayscale(100%) brightness(1.5);
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Right content */
+.manifesto-right-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.manifesto-est {
+  font-size: clamp(36px, 6vw, 64px);
+  font-weight: 900;
+  letter-spacing: 0.02em;
+  color: var(--white);
+  line-height: 0.9;
+  margin: var(--space-s) 0 var(--space-xl) 0;
+}
+
+.manifesto-body-text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-m);
+}
+
+.manifesto-p-highlight {
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.65;
+  color: var(--white);
+  border-left: 3px solid var(--red);
+  padding-left: var(--space-m);
+}
+
+.manifesto-p {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--text-dim);
+}
+
+.manifesto-decor-divider {
+  width: 60px;
+  height: 1.5px;
+  background: var(--red);
+  margin: var(--space-xl) 0;
+}
+
+.manifesto-author {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.author-name {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: var(--white);
+  text-transform: uppercase;
+}
+
+.author-title {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  color: var(--red);
+}
+
+/* ── Responsive ── */
+@media (max-width: 1200px) {
+  .features-trust-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 1024px) {
+  .manifesto-grid { gap: var(--space-3xl); }
+  .manifesto-bg-logo { height: 300px; }
+}
+
+@media (max-width: 768px) {
+  .features-trust-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .manifesto-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-2xl);
+    text-align: center;
+  }
+  .manifesto-left-watermark { order: 1; }
+  .manifesto-bg-logo { height: 220px; }
+  .manifesto-p-highlight {
+    border-left: none;
+    border-top: 2.5px solid var(--red);
+    padding-left: 0;
+    padding-top: var(--space-m);
+  }
+  .manifesto-decor-divider { margin: var(--space-xl) auto; }
+}

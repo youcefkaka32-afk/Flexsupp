@@ -1,0 +1,290 @@
+{
+  "categories": [
+    {
+      "id": "whey",
+      "name": "WHEY",
+      "slug": "whey",
+      "description": "Protéines de haute qualité pour la récupération musculaire",
+      "image": "https://airzonedz.com/wp-content/uploads/2025/02/run.svg",
+      "href": "#productsSection"
+    },
+    {
+      "id": "creatine",
+      "name": "CRÉATINE",
+      "slug": "creatine",
+      "description": "Boostez votre force et vos performances explosives",
+      "image": "https://airzonedz.com/wp-content/uploads/2025/02/2-800x800.png",
+      "href": "#productsSection"
+    },
+    {
+      "id": "bcaa",
+      "name": "BCAA",
+      "slug": "bcaa",
+      "description": "Acides aminés essentiels pour la récupération et l'endurance",
+      "image": "https://airzonedz.com/wp-content/uploads/2025/02/1-1-800x800.png",
+      "href": "#productsSection"
+    },
+    {
+      "id": "preworkout",
+      "name": "PRÉ-WORKOUT",
+      "slug": "preworkout",
+      "description": "Énergie maximale avant l'entraînement",
+      "image": "https://airzonedz.com/wp-content/uploads/2025/02/run.svg",
+      "href": "#productsSection"
+    }
+  ],
+
+  "products": [
+    {
+      "id": "whey-gold-chocolate",
+      "name": "WHEY PROTEIN CONCENTRATE",
+      "brand": "Optimum Nutrition",
+      "category": "whey",
+      "tags": ["Whey", "Protéine", "Muscle"],
+      "description": "La whey protéine de référence mondiale. Formule ultra-filtrée avec 24g de protéines par portion.",
+      "flavors": ["Chocolat", "Vanille", "Fraise", "Cookies & Cream"],
+      "sizes": ["1kg", "2.27kg", "4.54kg"],
+      "price": 8500,
+      "oldPrice": 9800,
+      "currency": "DA",
+      "inStock": true,
+      "badge": "PROMO",
+      "featured": true,
+      "image": "/images/whey-protein-concentrate.jpg",
+      "imageHover": "/images/chocolate-peanut-butter.jpg",
+      "href": "#"
+    },
+    {
+      "id": "whey-iso-vanilla",
+      "name": "WHEY ISOLAT",
+      "brand": "MyProtein",
+      "category": "whey",
+      "tags": ["Whey", "Isolat", "Lean"],
+      "description": "Isolat de whey ultra-pur, faible en glucides et en lipides. Idéal pour la définition musculaire.",
+      "flavors": ["Vanille", "Chocolat Noir", "Caramel Salé"],
+      "sizes": ["1kg", "2.5kg"],
+      "price": 9200,
+      "oldPrice": null,
+      "currency": "DA",
+      "inStock": true,
+      "badge": "NOUVEAU",
+      "image": "/images/cinnamon-bun-protein.jpg",
+      "imageHover": "/images/chocolate-peanut-butter.jpg",
+      "href": "#"
+    },
+    {
+      "id": "creatine-mono-unflavored",
+      "name": "CRÉATINE MONO",
+      "brand": "Scitec Nutrition",
+      "category": "creatine",
+      "tags": ["Créatine", "Force", "Volume"],
+      "description": "Créatine monohydrate micronisée pure. Augmente la force, la puissance et la masse musculaire.",
+      "flavors": ["Non aromatisé"],
+      "sizes": ["300g", "500g", "1kg"],
+      "price": 6200,
+      "oldPrice": null,
+      "currency": "DA",
+      "inStock": true,
+      "badge": null,
+      "image": "/images/creatine-creapure.jpg",
+      "imageHover": "/images/creatine-creapure.jpg",
+      "href": "#"
+    },
+    {
+      "id": "creatine-hcl-cherry",
+      "name": "CRÉATINE HCL",
+      "brand": "MuscleTech",
+      "category": "creatine",
+      "tags": ["Créatine", "HCL", "Force"],
+      "description": "Créatine HCL à absorption rapide. Pas de phase de charge nécessaire, sans rétention d'eau.",
+      "flavors": ["Cerise", "Citron", "Pastèque"],
+      "sizes": ["200g", "400g"],
+      "price": 7400,
+      "oldPrice": 8200,
+      "currency": "DA",
+      "inStock": true,
+      "badge": "PROMO",
+      "featured": true,
+      "image": "/images/creatine-hcl.jpg",
+      "imageHover": "/images/creatine-creapure.jpg",
+      "href": "#"
+    },
+    {
+      "id": "bcaa-recovery-watermelon",
+      "name": "BCAA RECOVERY",
+      "brand": "Scitec Nutrition",
+      "category": "bcaa",
+      "tags": ["BCAA", "Récupération", "Endurance"],
+      "description": "Complexe BCAA 2:1:1 avec L-Glutamine et électrolytes. Récupération accélérée et réduction des courbatures.",
+      "flavors": ["Pastèque", "Mangue", "Fruit de la Passion", "Orange"],
+      "sizes": ["300g", "600g", "1.2kg"],
+      "price": 7200,
+      "oldPrice": 8400,
+      "currency": "DA",
+      "inStock": true,
+      "badge": "PROMO",
+      "featured": true,
+      "image": "/images/bcaa-recovery.jpg",
+      "imageHover": "/images/bcaa-essential.jpg",
+      "href": "#"
+    },
+    {
+      "id": "bcaa-essential-mango",
+      "name": "BCAA ESSENTIAL",
+      "brand": "BioTechUSA",
+      "category": "bcaa",
+      "tags": ["BCAA", "Acides Aminés", "Performance"],
+      "description": "Formule BCAA enrichie en vitamine B6 pour une meilleure assimilation des acides aminés.",
+      "flavors": ["Mangue", "Ananas", "Framboise"],
+      "sizes": ["250g", "500g"],
+      "price": 5800,
+      "oldPrice": null,
+      "currency": "DA",
+      "inStock": false,
+      "badge": "ÉPUISÉ",
+      "image": "/images/bcaa-essential.jpg",
+      "imageHover": "/images/bcaa-recovery.jpg",
+      "href": "#"
+    },
+    {
+      "id": "preworkout-extreme-cherry",
+      "name": "PRE-WORKOUT X",
+      "brand": "Cellucor",
+      "category": "preworkout",
+      "tags": ["Pré-Workout", "Énergie", "Focus"],
+      "description": "Formule explosive pré-entraînement avec caféine, beta-alanine et L-citrulline. Énergie maximale garantie.",
+      "flavors": ["Cerise Explosive", "Citron Vert", "Raisin"],
+      "sizes": ["300g", "600g"],
+      "price": 8900,
+      "oldPrice": 10500,
+      "currency": "DA",
+      "inStock": true,
+      "badge": "BEST-SELLER",
+      "featured": true,
+      "image": "/images/eliminate-preworkout.jpg",
+      "imageHover": "/images/eliminate-preworkout.jpg",
+      "href": "#"
+    },
+    {
+      "id": "preworkout-pump-tropical",
+      "name": "PUMP FORMULA",
+      "brand": "Optimum Nutrition",
+      "category": "preworkout",
+      "tags": ["Pré-Workout", "Pump", "Sans Caféine"],
+      "description": "Formule pump sans stimulants à base de L-citrulline et d'agmatine. Pour des veines apparentes et une vascularisation maximale.",
+      "flavors": ["Tropical", "Fraise Kiwi"],
+      "sizes": ["400g"],
+      "price": 9600,
+      "oldPrice": null,
+      "currency": "DA",
+      "inStock": true,
+      "badge": "NOUVEAU",
+      "image": "/images/ultra-gainer.jpg",
+      "imageHover": "/images/ultra-gainer.jpg",
+      "href": "#"
+    },
+    {
+      "id": "marine-collagen",
+      "name": "MARINE COLLAGEN",
+      "brand": "MyProtein",
+      "category": "whey",
+      "tags": ["Collagène", "Récupération", "Articulations"],
+      "description": "Collagène marin hydrolysé de haute qualité. Soutient la récupération articulaire et la santé de la peau.",
+      "flavors": ["Non aromatisé", "Citron"],
+      "sizes": ["450g"],
+      "price": 7800,
+      "oldPrice": null,
+      "currency": "DA",
+      "inStock": true,
+      "badge": "NOUVEAU",
+      "featured": true,
+      "image": "/images/marine-collagen.jpg",
+      "imageHover": "/images/marine-collagen.jpg",
+      "href": "#"
+    }
+  ],
+
+  "brands": [
+    {
+      "name": "Optimum Nutrition",
+      "href": "#",
+      "logo": "/images/optimum-nutrition.png"
+    },
+    {
+      "name": "MyProtein",
+      "href": "#",
+      "logo": "/images/myprotein.png"
+    },
+    {
+      "name": "Scitec Nutrition",
+      "href": "#",
+      "logo": "/images/scitec-nutrition.png"
+    },
+    {
+      "name": "BioTechUSA",
+      "href": "#",
+      "logo": "/images/biotechusa.png"
+    },
+    {
+      "name": "BSN",
+      "href": "#",
+      "logo": "/images/bsn.png"
+    },
+    {
+      "name": "MuscleTech",
+      "href": "#",
+      "logo": "/images/muscletech.png"
+    },
+    {
+      "name": "Cellucor",
+      "href": "#",
+      "logo": "/images/cellucor.png"
+    },
+    {
+      "name": "Dymatize",
+      "href": "#",
+      "logo": "/images/dymatize.png"
+    },
+    {
+      "name": "REDCON1",
+      "href": "#",
+      "logo": "/images/redcon1.png"
+    },
+    
+    {
+      "name": "Animal",
+      "href": "#",
+      "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1c/Animal_Pack_logo.svg/1200px-Animal_Pack_logo.svg.png"
+    },
+    {
+      "name": "Mutant",
+      "href": "#",
+      "logo": "/images/mutant.png"
+    },
+    {
+      "name": "PUMA",
+      "href": "#",
+      "logo": "https://airzonedz.com/wp-content/uploads/2025/02/PUMA-e1739663764194.png"
+    },
+    {
+      "name": "NIKE",
+      "href": "#",
+      "logo": "https://airzonedz.com/wp-content/uploads/2025/02/NIKE-e1739663748820-scaled.png"
+    },
+    {
+      "name": "NEW BALANCE",
+      "href": "#",
+      "logo": "https://airzonedz.com/wp-content/uploads/2025/02/new-balance-seeklogo.png"
+    },
+    {
+      "name": "ASICS",
+      "href": "#",
+      "logo": "https://airzonedz.com/wp-content/uploads/2025/02/ASICS.png"
+    },
+    {
+      "name": "ADIDAS",
+      "href": "#",
+      "logo": "https://airzonedz.com/wp-content/uploads/2025/02/ADIDAS-e1739663730827.png"
+    }
+  ]
+}

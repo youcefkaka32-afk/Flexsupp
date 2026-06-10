@@ -1,0 +1,95 @@
+.subhero-promo {
+  background: #F5EBEB;
+  padding: calc(var(--space-5xl) + 1rem) 0 calc(var(--space-5xl) + 1rem);
+  color: #111111;
+  border-bottom: 1px solid var(--border);
+}
+
+.subhero-promo__container {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: var(--space-3xl);
+  align-items: center;
+}
+
+.subhero-promo__left {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.subhero-promo__badge {
+  background: rgba(255, 255, 255, 0.6);
+  padding: var(--space-xs) var(--space-m);
+  border-radius: var(--radius-xl);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--red-accent);
+  margin-bottom: var(--space-l);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-family: 'IBM Plex Mono', monospace;
+}
+
+.subhero-promo__title {
+  font-size: clamp(40px, 6vw, 72px);
+  line-height: 0.95;
+  color: #111111;
+  margin: 0 0 var(--space-l) 0;
+  font-weight: 900;
+  letter-spacing: 0.02em;
+}
+
+.subhero-promo__subtitle {
+  font-size: clamp(15px, 1.4vw, 18px);
+  line-height: 1.65;
+  color: #333333;
+  margin: 0 0 var(--space-2xl) 0;
+  max-width: 540px;
+}
+
+.subhero-promo__btn {
+  background: var(--brand-blue) !important;
+  color: var(--white) !important;
+  border-color: var(--brand-blue) !important;
+  box-shadow: 0px 4px 10px rgba(227, 27, 35, 0.2);
+}
+
+.subhero-promo__btn:hover {
+  background: var(--brand-blue-hover) !important;
+  border-color: var(--brand-blue-hover) !important;
+}
+
+.subhero-promo__right {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.subhero-promo__image-container {
+  max-width: 440px;
+  width: 100%;
+}
+
+.subhero-promo__img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+.subhero-promo__img--logo {
+  max-width: 280px;
+  filter: drop-shadow(0 0 60px rgba(227, 27, 35, 0.3));
+  margin: auto;
+  display: block;
+}
+
+@media (max-width: 768px) {
+  .subhero-promo__container {
+    grid-template-columns: 1fr;
+    gap: var(--space-xl);
+  }
+  .subhero-promo__right {
+    order: -1;
+  }
+}

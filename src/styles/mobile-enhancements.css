@@ -1,0 +1,331 @@
+/* ═══════════════════════════════════════════════════════
+   MOBILE ENHANCEMENTS & TOUCH OPTIMIZATION
+   ═══════════════════════════════════════════════════════ */
+
+/* Ensure viewport is properly set (add to index.html if not present):
+   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+*/
+
+/* ── Prevent Zoom/Scale Issues ─────────────────────────── */
+@media (max-width: 768px) {
+  /* Reset any potential scale transforms */
+  * {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+
+  html {
+    /* Prevent text inflation on mobile */
+    -webkit-text-size-adjust: 100%;
+    -moz-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+}
+
+/* ── Touch Target Minimum Sizes ──────────────────────── */
+@media (max-width: 768px) {
+  
+  /* Ensure buttons and form elements meet 44px minimum */
+  button:not(.catalog-card):not(.product-card):not(.nav-link),
+  input[type="button"], 
+  input[type="submit"],
+  .btn {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Navigation links should be touchable but not forced square */
+  .nav-link {
+    min-height: 44px;
+    padding: 0.5rem 1rem;
+  }
+
+  /* Footer links - just add vertical padding */
+  .footer-link {
+    padding: 8px 0;
+    margin: 4px 0;
+  }
+
+  /* Product card quick add buttons */
+  .catalog-card__quickadd,
+  .new-card__quickadd,
+  .quick-add-btn-slide {
+    min-height: 48px;
+    padding: 12px 24px;
+    font-size: 0.9rem;
+  }
+}
+
+/* ── Prevent Horizontal Scroll ────────────────────────── */
+@media (max-width: 768px) {
+  body, html {
+    overflow-x: hidden;
+    max-width: 100vw;
+  }
+
+  * {
+    max-width: 100%;
+  }
+
+  /* Prevent long words from breaking layout */
+  h1, h2, h3, h4, h5, h6, p {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+
+  /* Handle long URLs and emails */
+  a[href^="mailto:"],
+  a[href^="http"] {
+    word-break: break-all;
+  }
+}
+
+/* ── Improved Readability ──────────────────────────────── */
+@media (max-width: 768px) {
+  
+  /* Increase base font size slightly on mobile */
+  body {
+    font-size: 16px; /* Prevents zoom on input focus */
+  }
+
+  /* Improve line height for readability */
+  p, li {
+    line-height: 1.6;
+  }
+
+  /* Ensure adequate paragraph spacing */
+  p + p {
+    margin-top: 1em;
+  }
+
+  /* Make small labels more readable */
+  .eyebrow,
+  .badge,
+  small,
+  .small-text {
+    font-size: 0.875rem; /* 14px minimum */
+  }
+}
+
+/* ── Form Input Optimization ───────────────────────────── */
+@media (max-width: 768px) {
+  
+  /* Prevent zoom on input focus */
+  input[type="text"],
+  input[type="email"],
+  input[type="tel"],
+  input[type="number"],
+  input[type="search"],
+  textarea,
+  select {
+    font-size: 16px !important; /* Prevents iOS zoom */
+    min-height: 48px;
+    padding: 12px;
+  }
+
+  /* Improve checkbox and radio button tap targets */
+  input[type="checkbox"],
+  input[type="radio"] {
+    min-width: 24px;
+    min-height: 24px;
+    margin: 8px;
+  }
+}
+
+/* ── Modal & Drawer Improvements ───────────────────────── */
+@media (max-width: 768px) {
+  
+  /* Modal close buttons */
+  .modal-close-btn,
+  .drawer-close-btn {
+    min-width: 48px;
+    min-height: 48px;
+    padding: 12px;
+  }
+
+  /* Quick add modal adjustments */
+  .quick-add-modal {
+    max-height: 95vh;
+    margin: 0.5rem;
+  }
+
+  /* Cart drawer full height on mobile */
+  .cart-drawer {
+    max-height: 100vh;
+  }
+}
+
+/* ── Product Grid Improvements ─────────────────────────── */
+@media (max-width: 768px) {
+  
+  /* Ensure product images are tappable */
+  .catalog-card,
+  .product-card,
+  .featured-product-card {
+    min-height: 280px;
+  }
+
+  /* Improve product card spacing */
+  .catalog-grid,
+  .product-grid {
+    gap: 1.25rem;
+  }
+
+  /* Make product titles more readable */
+  .catalog-card__name,
+  .product-card-title {
+    font-size: 1rem;
+    line-height: 1.4;
+  }
+}
+
+/* ── Navigation Improvements ───────────────────────────── */
+@media (max-width: 768px) {
+  
+  /* Sticky header height adjustment */
+  .global-navbar {
+    min-height: 64px;
+  }
+
+  /* Ensure logo is tappable */
+  .navbar-logo {
+    min-height: 48px;
+    padding: 8px 0;
+  }
+
+  /* Mobile menu items */
+  .mobile-menu-item {
+    min-height: 48px;
+    padding: 12px 20px;
+    font-size: 1rem;
+  }
+}
+
+/* ── Image Optimization ────────────────────────────────── */
+@media (max-width: 768px) {
+  
+  /* Prevent images from causing horizontal scroll */
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* Hero images */
+  .hero-image,
+  .banner-image {
+    object-fit: cover;
+    width: 100%;
+  }
+}
+
+/* ── Safe Area Insets (for notched devices) ────────────── */
+@supports (padding: max(0px)) {
+  @media (max-width: 768px) {
+    
+    .global-navbar {
+      padding-left: max(1rem, env(safe-area-inset-left));
+      padding-right: max(1rem, env(safe-area-inset-right));
+    }
+
+    .cart-drawer {
+      padding-bottom: max(1rem, env(safe-area-inset-bottom));
+    }
+
+    .footer {
+      padding-bottom: max(2rem, env(safe-area-inset-bottom));
+    }
+  }
+}
+
+/* ── Smooth Scrolling & Performance ────────────────────── */
+@media (max-width: 768px) {
+  
+  /* Enable smooth scrolling */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Optimize scrolling performance */
+  * {
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Reduce motion for users who prefer it */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+/* ── Focus Indicators (Accessibility) ──────────────────── */
+@media (max-width: 768px) {
+  
+  /* Visible focus for keyboard navigation */
+  a:focus-visible,
+  button:focus-visible,
+  input:focus-visible,
+  select:focus-visible,
+  textarea:focus-visible {
+    outline: 2px solid var(--red);
+    outline-offset: 2px;
+  }
+}
+
+/* ── Landscape Orientation Adjustments ─────────────────── */
+@media (max-width: 768px) and (orientation: landscape) {
+  
+  /* Reduce vertical padding in landscape */
+  .site-section {
+    padding: 3rem 0;
+  }
+
+  .hero {
+    min-height: 80vh;
+  }
+
+  /* Adjust modal heights */
+  .quick-add-modal,
+  .cart-drawer {
+    max-height: 90vh;
+  }
+}
+
+/* ── Print Styles ──────────────────────────────────────── */
+@media print {
+  
+  /* Hide unnecessary elements when printing */
+  .global-navbar,
+  .cart-icon-btn,
+  .mobile-menu-button,
+  .scroll-to-top,
+  .announcement-bar {
+    display: none !important;
+  }
+
+  /* Ensure content is readable */
+  body {
+    font-size: 12pt;
+    line-height: 1.5;
+    color: #000;
+    background: #fff;
+  }
+}
+
+/* ── Dark Mode Support (Optional) ──────────────────────── */
+@media (prefers-color-scheme: dark) {
+  @media (max-width: 768px) {
+    
+    /* Adjust for dark mode if needed */
+    .cta-section {
+      /* Background already white, could add dark mode variant */
+    }
+  }
+}

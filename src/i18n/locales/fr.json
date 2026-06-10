@@ -1,0 +1,295 @@
+{
+  "nav": {
+    "home": "Accueil",
+    "shop": "Boutique",
+    "about": "À propos"
+  },
+  "announcement": {
+    "freeShipping": "LIVRAISON GRATUITE",
+    "freeShippingDesc": "dès 5 000 DA d'achat",
+    "packDiscount": "-15% sur les packs",
+    "packCode": "avec le code",
+    "cod": "Paiement à la livraison disponible partout en Algérie"
+  },
+  "hero": {
+    "nav": {
+      "home": "ACCUEIL",
+      "shop": "BOUTIQUE",
+      "about": "À PROPOS"
+    },
+    "login": "CONNEXION / INSCRIPTION"
+  },
+  "subhero": {
+    "badge": "Authenticité · Performance · Résultats",
+    "title": "LA NUTRITION DES VRAIS COMPÉTITEURS",
+    "subtitle": "Des compléments 100% authentiques, sélectionnés avec rigueur et testés en laboratoire. Approvisionnés directement auprès des fabricants officiels internationaux.",
+    "cta": "DÉCOUVRIR LA BOUTIQUE"
+  },
+  "trustbar": {
+    "shipping": { "title": "LIVRAISON NATIONALE", "desc": "Dans toutes les wilayas." },
+    "algerian": { "title": "FIÈREMENT ALGÉRIEN", "desc": "Produits authentiques garantis." },
+    "freeShipping": { "title": "LIVRAISON GRATUITE", "desc": "À partir de 5000 DA d'achat." },
+    "secure": { "title": "PAIEMENT SÉCURISÉ", "desc": "100% sécurisé et fiable." }
+  },
+  "catalog": {
+    "title": "NOS COMPLÉMENTS SPORTIFS",
+    "byCategory": "PAR CATÉGORIE",
+    "byGoal": "PAR OBJECTIF",
+    "allProducts": "TOUS LES PRODUITS",
+    "allGoals": "TOUS LES OBJECTIFS",
+    "buildMuscle": "PRISE DE MASSE",
+    "increaseStrength": "GAIN DE FORCE",
+    "speedRecovery": "RÉCUPÉRATION",
+    "maxPerformance": "PERFORMANCE MAX",
+    "from": "À partir de",
+    "quickAdd": "AJOUT RAPIDE",
+    "outOfStock": "ÉPUISÉ",
+    "sale": "PROMO"
+  },
+  "brands": {
+    "eyebrow": "PARTENAIRES",
+    "title": "MARQUES D'ÉLITE",
+    "copy": "Nous stockons exclusivement les marques les plus reconnues et certifiées dans l'industrie mondiale de la nutrition sportive."
+  },
+  "reviews": {
+    "title": "AVIS PRODUITS FLEX SUPPS",
+    "count": "5 000+ Avis Clients"
+  },
+  "workbanner": {
+    "eyebrow": "CONSTRUIS TON CORPS. CONSTRUIS TON ESPRIT. CONSTRUIS TA VIE.™",
+    "title": "PASSONS AU TRAVAIL.",
+    "text": "Notre mission est de vous fournir les outils et ressources pour bâtir votre corps selon vos objectifs de santé et de bien-être. Des programmes aux compléments en passant par les équipements, chaque aspect de votre routine commence ici.",
+    "cta": "QUI SOMMES-NOUS"
+  },
+  "newProducts": {
+    "title": "NOUVEAUX PRODUITS",
+    "quickAdd": "AJOUT RAPIDE",
+    "outOfStock": "ÉPUISÉ"
+  },
+  "tools": {
+    "title": "OUTILS & CALCULATEURS",
+    "readMore": "LIRE PLUS",
+    "items": [
+      {
+        "category": "CORPS",
+        "title": "MORPHOTYPES : COMMENT S'ENTRAÎNER ET MANGER SELON SON CORPS",
+        "desc": "Êtes-vous ectomorphe, mésomorphe ou endomorphe ? Découvrez votre morphotype pour personnaliser votre entraînement et nutrition !"
+      },
+      {
+        "category": "CALORIES",
+        "title": "CALCULATEUR DE CALORIES BRÛLÉES À L'EXERCICE",
+        "desc": "Combien de calories avez-vous brûlées en marchant, courant ou soulevant des poids ? Calculez pour plus de 100 activités !"
+      },
+      {
+        "category": "CALORIES / LIPIDES",
+        "title": "CALCULATEUR DE LIPIDES : COMBIEN DE GRAMMES DE GRAISSES PAR JOUR ?",
+        "desc": "Les graisses sont des nutriments essentiels. Voici comment calculer votre apport optimal en graisses saines..."
+      },
+      {
+        "category": "CALORIES",
+        "title": "CALCULATEUR BMR : CONNAISSEZ VOTRE MÉTABOLISME DE BASE",
+        "desc": "Savoir combien de calories votre corps brûle chaque jour est essentiel pour adapter votre nutrition à vos objectifs."
+      }
+    ]
+  },
+  "social": {
+    "bio": "Compléments authentiques, conseils d'entraînement et motivation. Suivez pour des mises à jour quotidiennes et des exclusivités en boutique.",
+    "followers": "Abonnés",
+    "posts": "Publications",
+    "following": "Abonnements",
+    "follow": "SUIVRE"
+  },
+  "ticker": "RESTEZ INSPIRÉ. RESTEZ FORT. ",
+  "footer": {
+    "newsletter": {
+      "eyebrow": "RESTEZ CONNECTÉ",
+      "title": "REJOIGNEZ LA COMMUNAUTÉ ÉLITE",
+      "desc": "Abonnez-vous pour recevoir des offres spéciales, des cadeaux et des deals exclusifs.",
+      "placeholder": "Entrez votre adresse email",
+      "btn": "S'ABONNER",
+      "thanks": "Merci pour votre inscription !"
+    },
+    "brandDesc": "La source premium de fitness et compléments. Performance brute, qualité authentifiée et conseils experts.",
+    "support": "SUPPORT",
+    "inquire": "PRODUITS",
+    "company": "ENTREPRISE",
+    "headquarters": "SIÈGE SOCIAL",
+    "customerSupport": "SERVICE CLIENT",
+    "whatsapp": "WhatsApp",
+    "copyright": "© 2026 Flex Supps. Tous droits réservés.",
+    "badges": {
+      "cod": "💳 PAIEMENT À LA LIVRAISON",
+      "shipping": "🚚 LIVRAISON NATIONALE",
+      "authentic": "🛡️ 100% AUTHENTIQUE"
+    }
+  },
+  "cart": {
+    "title": "Panier",
+    "empty": "Votre panier est vide",
+    "remove": "Retirer",
+    "total": "Total",
+    "checkout": "Commander via WhatsApp",
+    "increase": "Augmenter la quantité",
+    "decrease": "Diminuer la quantité"
+  },
+  "checkout": {
+    "title": "Votre commande",
+    "summary": "Récapitulatif",
+    "yourInfo": "Vos informations",
+    "fullName": "Nom complet",
+    "namePlaceholder": "Ex : Ahmed Benali",
+    "phone": "Numéro de téléphone",
+    "phonePlaceholder": "0555 123 456",
+    "wilaya": "Wilaya",
+    "wilayaPlaceholder": "— Choisir votre wilaya —",
+    "confirm": "Confirmer via WhatsApp",
+    "note": "Appuyer sur \"Confirmer\" ouvrira WhatsApp avec votre commande pré-remplie.\nEnvoyez le message pour finaliser votre achat.",
+    "errors": {
+      "name": "Veuillez entrer votre nom.",
+      "phone": "Numéro invalide (ex: 0555123456).",
+      "wilaya": "Veuillez choisir votre wilaya."
+    },
+    "whatsappMessage": {
+      "header": "🛒 *NOUVELLE COMMANDE — FLEX SUPPS*",
+      "qty": "Qté",
+      "price": "Prix",
+      "total": "TOTAL",
+      "customerInfo": "👤 *Informations client*",
+      "name": "Nom",
+      "phone": "Tél",
+      "wilaya": "Wilaya",
+      "footer": "_Envoyé depuis flexsupps.dz_"
+    }
+  },
+  "shop": {
+    "title": "BOUTIQUE",
+    "results": "produit",
+    "results_plural": "produits",
+    "showFilters": "Afficher filtres",
+    "hideFilters": "Masquer filtres",
+    "filters": "Filtres",
+    "sortBy": "Trier par",
+    "reset": "Réinitialiser les filtres",
+    "noResults": "Aucun produit ne correspond à vos filtres.",
+    "resetBtn": "Réinitialiser",
+    "productType": "TYPE DE PRODUIT",
+    "allProducts": "Tous les produits",
+    "availability": "DISPONIBILITÉ",
+    "inStockOnly": "En stock uniquement",
+    "budget": "BUDGET",
+    "brand": "MARQUE",
+    "sort": {
+      "featured": "En vedette",
+      "az": "A → Z",
+      "za": "Z → A",
+      "priceAsc": "Prix : croissant",
+      "priceDesc": "Prix : décroissant",
+      "bestSeller": "Meilleures ventes",
+      "new": "Nouveautés"
+    },
+    "viewProducts": "Voir",
+    "quickAdd": "AJOUT RAPIDE +",
+    "outOfStock": "ÉPUISÉ",
+    "flavor": "Saveur",
+    "size": "Format",
+    "quantity": "Quantité",
+    "addToCart": "Ajouter au panier",
+    "inStock": "EN STOCK",
+    "rupture": "RUPTURE DE STOCK"
+  },
+  "product": {
+    "back": "← Retour à la boutique",
+    "loading": "Chargement du produit...",
+    "notFound": "Produit introuvable",
+    "notFoundDesc": "Le produit que vous recherchez n'existe pas ou a été supprimé.",
+    "backToShop": "Retour à la boutique",
+    "inStock": "EN STOCK",
+    "outOfStock": "RUPTURE DE STOCK",
+    "readMore": "Lire la suite",
+    "readLess": "Lire moins",
+    "selectedFlavor": "Saveur sélectionnée",
+    "size": "Format",
+    "quantity": "Quantité",
+    "addToCart": "Ajouter au panier",
+    "fullDescription": "Description complète",
+    "ingredients": "Ingrédients",
+    "ingredientsText": "Ingrédients premium spécialement formulés pour les sportifs : protéines de lactosérum, arômes naturels, émulsifiants et édulcorants. Sans compromis sur le goût.",
+    "nutritionTitle": "Informations nutritionnelles",
+    "nutritionText": "Pour 30g : 24g de protéines, 3g de glucides, 1.5g de lipides. Valeurs indicatives, adaptées à l'entraînement et à la récupération.",
+    "usageTitle": "Conseils d'utilisation",
+    "usageText": "Mélanger une portion dans 200–250ml d'eau ou de lait. À consommer après l'entraînement ou au petit-déjeuner pour optimiser la récupération musculaire.",
+    "relatedEyebrow": "PRODUITS ASSOCIÉS",
+    "relatedTitle": "Vous pourriez aussi aimer",
+    "thumbnail": "miniature"
+  },
+  "about": {
+    "tagline": "DÉPASSEZ VOS LIMITES. DOMINEZ VOTRE POTENTIEL.",
+    "scrollDown": "DÉFILEZ POUR DÉCOUVRIR",
+    "story1": "NOUS NE VENDONS PAS DE SIMPLES COMPLÉMENTS.",
+    "story1Sub": "FLEX SUPPS est né en 2019 d'une vision radicale : doter les athlètes algériens de la nutrition sportive la plus pure et authentique du monde.",
+    "story2": "PAS DE COMPROMIS. PAS DE CONTREFAÇONS.",
+    "story2Sub": "Chaque pot, chaque dose est sélectionnée avec rigueur, testée en laboratoire, et provient exclusivement de fabricants officiels internationaux.",
+    "story3": "LA SEULE BOUTIQUE DES VRAIS COMPÉTITEURS.",
+    "story3Sub": "Que vous cherchiez la force brute, la récupération extrême ou une énergie explosive, nous vous fournissons les armes nécessaires pour triompher.",
+    "statsTitle": "LA SUPRÉMATIE EN CHIFFRES",
+    "stats": {
+      "years": "ANNÉES D'EXCELLENCE",
+      "athletes": "ATHLÈTES SATISFAITS",
+      "loyalty": "TAUX DE FIDÉLITÉ CLIENT",
+      "authentic": "AUTHENTICITÉ GARANTIE"
+    },
+    "contactEyebrow": "REJOIGNEZ LA TRIBU",
+    "contactTitle": "PRÊT À TRANSFORMER ?",
+    "whatsappBtn": "COMMENCER SUR WHATSAPP",
+    "store": "BOUTIQUE PHYSIQUE",
+    "seeMap": "[VOIR CARTE]",
+    "phone": "TÉLÉPHONE",
+    "instagram": "INSTAGRAM"
+  },
+  "contact": {
+    "eyebrow": "CONTACT",
+    "title": "NOUS CONTACTER",
+    "desc": "Une question sur nos formules ? Besoin d'un conseil personnalisé ou d'une demande de partenariat ? Contactez notre équipe d'experts directement via ce formulaire ou rejoignez-nous sur nos réseaux. Votre satisfaction est notre seule priorité.",
+    "nameLabel": "VOTRE NOM",
+    "namePlaceholder": "Entrez votre nom",
+    "emailLabel": "VOTRE EMAIL",
+    "emailPlaceholder": "Entrez votre adresse mail",
+    "msgLabel": "VOTRE MESSAGE",
+    "msgPlaceholder": "Écrivez votre message...",
+    "submit": "ENVOYER",
+    "successMsg": "Votre message a été envoyé avec succès !",
+    "mapLink": "→ VOIR LA CARTE SUR GOOGLE MAPS",
+    "address": "BOUTIQUE PHYSIQUE :"
+  },
+  "whyUs": {
+    "eyebrow": "POURQUOI NOUS CHOISIR",
+    "title": "LA DIFFÉRENCE FLEX SUPPS",
+    "features": {
+      "authentic": { "title": "100% AUTHENTIQUE", "desc": "Chaque produit est sourcé directement auprès des fabricants officiels. Zéro contrefaçon, garantie absolue." },
+      "delivery": { "title": "LIVRAISON RAPIDE", "desc": "Livraison express partout en Algérie. Paiement à la livraison disponible sur toutes les wilayas." },
+      "certified": { "title": "FORMULES CERTIFIÉES", "desc": "Toutes nos marques sont certifiées et testées en laboratoire. Performance réelle, résultats prouvés." },
+      "support": { "title": "SUPPORT EXPERT", "desc": "Notre équipe d'experts en nutrition sportive vous guide dans le choix des meilleurs compléments." }
+    },
+    "manifestoEyebrow": "FONDATEUR ET PHILOSOPHIE",
+    "est": "EST. 2023",
+    "highlight": "FLEX SUPPS a été fondé avec une passion brute pour le culturisme et le dépassement de soi. Notre mission est simple : offrir aux athlètes algériens l'élite absolue de la nutrition sportive.",
+    "body": "Notre équipe sélectionne rigoureusement chaque marque et chaque formule. Nous travaillons directement avec les fabricants officiels internationaux pour garantir une authenticité à 100%, sans aucun compromis. Que vous cherchiez la force explosive, la récupération rapide ou l'endurance extrême, nous vous fournissons les outils nécessaires pour dominer votre potentiel.",
+    "author": "FLEX SUPPS ELITE TEAM",
+    "authorTitle": "TRAIN HARD. STAY PURE."
+  },
+  "ctabanner": {
+    "eyebrow": "FORMULE EXPLOSIVE",
+    "title": "PRE-WORKOUT",
+    "accent": "IGNITE",
+    "desc": "Boost d'énergie instantané. Focus extrême. Zéro crash. Notre pre-workout de nouvelle génération repousse toutes vos limites.",
+    "buy": "ACHETER MAINTENANT",
+    "details": "VOIR LES DÉTAILS",
+    "composition": "COMPOSITION",
+    "stats": {
+      "caffeine": "CAFÉINE PURE",
+      "betaAlanine": "BETA-ALANINE",
+      "citrulline": "L-CITRULLINE",
+      "noSugar": "SUCRES AJOUTÉS"
+    }
+  }
+}

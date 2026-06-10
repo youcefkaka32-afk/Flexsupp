@@ -1,0 +1,167 @@
+/* ─────────────────────────────────────────────────────────
+   Categories — Light Tile Grid Style
+   ───────────────────────────────────────────────────────── */
+
+.categories-section {
+  padding: var(--space-6xl) 0;
+  background: #ffffff;
+  border-top: 1px solid rgba(0,0,0,0.08);
+}
+
+/* Ensure title uses dark text on light background */
+.categories-section .section-title {
+  color: #000000;
+}
+
+.categories-section .eyebrow {
+  color: var(--red);
+}
+
+.categories-section .btn {
+  border-color: rgba(0,0,0,0.15);
+  color: #000000;
+}
+
+.categories-section .btn:hover {
+  background: var(--red);
+  border-color: var(--red);
+  color: #ffffff;
+}
+
+/* 4-column grid on desktop */
+.categories-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+
+/* Individual tile card */
+.category-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  background: #f8f8f8;
+  border: 1px solid rgba(0,0,0,0.08);
+  border-radius: 12px;
+  padding: 28px 24px;
+  text-decoration: none;
+  color: #000000;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.category-tile:hover {
+  border-color: var(--red);
+  box-shadow: 0 10px 30px rgba(227, 27, 35, 0.06);
+}
+
+/* Red top accent stripe */
+.category-tile__accent {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--red);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.category-tile:hover .category-tile__accent {
+  transform: scaleX(1);
+}
+
+/* Icon */
+.category-tile__icon {
+  font-size: 32px;
+  margin-bottom: 16px;
+  display: block;
+  line-height: 1;
+  color: var(--red);
+}
+
+/* Name */
+.category-tile__name {
+  font-size: clamp(18px, 2vw, 24px);
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #000000;
+  margin: 0 0 10px 0;
+  line-height: 1;
+}
+
+/* Description */
+.category-tile__desc {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  line-height: 1.55;
+  color: rgba(0,0,0,0.55);
+  margin: 0 0 auto 0;
+  padding-bottom: 20px;
+}
+
+/* Footer row */
+.category-tile__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 16px;
+  border-top: 1px solid rgba(0,0,0,0.08);
+  padding-top: 16px;
+}
+
+.category-tile__count {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--red);
+}
+
+.category-tile__arrow {
+  font-size: 18px;
+  color: rgba(0,0,0,0.35);
+  transition: color 0.3s, transform 0.3s;
+}
+
+.category-tile:hover .category-tile__arrow {
+  color: var(--red);
+  transform: translateX(4px);
+}
+
+/* Skeleton */
+.category-tile--skeleton {
+  min-height: 220px;
+  background: rgba(0,0,0,0.06);
+  border-color: transparent;
+  animation: skelPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes skelPulse {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.6; }
+}
+
+/* "View All" btn */
+.categories-view-all {
+  white-space: nowrap;
+  align-self: flex-end;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+  .categories-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .categories-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}

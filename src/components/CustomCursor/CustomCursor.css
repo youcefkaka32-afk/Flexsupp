@@ -1,0 +1,32 @@
+.global-custom-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 8px;
+  height: 8px;
+  background-color: var(--red);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 999999; /* Higher than everything including navbar */
+  transform: translate(-50%, -50%);
+  transition: 
+    width 0.2s cubic-bezier(0.22, 1, 0.36, 1),
+    height 0.2s cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 0.2s cubic-bezier(0.22, 1, 0.36, 1),
+    border 0.2s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform, width, height, background-color, border, opacity;
+  opacity: 1;
+}
+
+.global-custom-cursor.is-hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.global-custom-cursor.is-hovered {
+  width: 28px;
+  height: 28px;
+  background-color: transparent;
+  border: 1.5px solid var(--red);
+}

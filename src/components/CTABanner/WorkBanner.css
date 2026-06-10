@@ -1,0 +1,209 @@
+/* ─────────────────────────────────────────────────────────
+   Let's Get To Work Banner
+   ───────────────────────────────────────────────────────── */
+
+.work-banner {
+  width: 100%;
+  position: relative;
+  padding-bottom: 0;
+  overflow: visible;
+  background-image: url('/images/banner-texture.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* Semi-transparent red overlay to keep brand color while showing texture */
+.work-banner::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: rgba(180, 0, 0, 0.55);
+}
+
+.work-banner__eyebrow-strip,
+.work-banner__main {
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Eyebrow strip inside the red bg ── */
+.work-banner__eyebrow-strip {
+  padding: 14px 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.work-banner__eyebrow {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.92);
+  text-align: center;
+  font-style: italic;
+}
+
+/* ── Inset box — hangs below the red section ── */
+.work-banner__main {
+  position: relative;
+  width: calc(100% - 60px);
+  max-width: 1400px;
+  margin: 0 auto;
+  height: 480px;
+  overflow: hidden;
+  margin-bottom: -100px;
+  z-index: 10;
+}
+
+/* ── Video fills entire inset box ── */
+.work-banner__video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+}
+
+/* ── Dark overlay — right half ── */
+.work-banner__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    transparent 40%,
+    rgba(15,15,15,0.88) 50%,
+    rgba(15,15,15,0.96) 100%
+  );
+  z-index: 1;
+}
+
+/* ── Text content — right side over overlay ── */
+.work-banner__content {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.work-banner__content-inner {
+  width: 52%;
+  padding: 3rem 4rem 3rem 2.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.work-banner__title {
+  font-size: clamp(2.4rem, 4vw, 3.8rem);
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: #ffffff;
+  margin: 0;
+}
+
+.work-banner__text {
+  font-size: 15px;
+  line-height: 1.75;
+  color: rgba(255,255,255,0.75);
+  margin: 0;
+  max-width: 440px;
+}
+
+.work-banner__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  align-self: flex-start;
+  background: var(--red);
+  color: #ffffff;
+  border: none;
+  padding: 12px 28px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.work-banner__btn:hover {
+  background: var(--red-dark);
+  transform: translateY(-2px);
+}
+
+/* ── Mute button ── */
+.work-banner__mute-btn {
+  position: absolute;
+  bottom: 0.75rem;
+  left: 0.75rem;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.55);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 3;
+  transition: background 0.2s;
+}
+
+.work-banner__mute-btn:hover {
+  background: rgba(0,0,0,0.85);
+}
+
+/* ── Responsive ── */
+@media (max-width: 1024px) {
+  .work-banner__main {
+    width: calc(100% - 40px);
+    height: 340px;
+  }
+}
+
+@media (max-width: 768px) {
+  .work-banner {
+    padding-bottom: 40px;
+  }
+
+  .work-banner__main {
+    width: calc(100% - 24px);
+    height: auto;
+    min-height: 440px;
+    margin-bottom: -40px;
+  }
+
+  .work-banner__overlay {
+    background: linear-gradient(
+      to top,
+      rgba(15,15,15,0.96) 0%,
+      rgba(15,15,15,0.75) 45%,
+      transparent 70%
+    );
+  }
+
+  .work-banner__content {
+    align-items: flex-end;
+    justify-content: flex-start;
+  }
+
+  .work-banner__content-inner {
+    width: 100%;
+    padding: 2rem 1.5rem;
+  }
+}

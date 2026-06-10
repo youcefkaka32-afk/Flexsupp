@@ -1,0 +1,267 @@
+/* CTA Section Component */
+.cta-section {
+  position: relative;
+  overflow: hidden;
+  padding: 6rem 0;
+  background: #ffffff;
+}
+
+.cta-container {
+  position: relative;
+  max-width: 80rem;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 3rem 2rem;
+  text-align: center;
+}
+
+/* Badge */
+.cta-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.375rem 1rem;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(0, 0, 0, 0.6);
+  opacity: 0;
+}
+
+/* Title */
+.cta-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900;
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  line-height: 1.1;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: #000000;
+  margin: 0;
+  opacity: 0;
+}
+
+/* Description */
+.cta-description {
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: rgba(0, 0, 0, 0.6);
+  max-width: 600px;
+  margin: 0;
+  opacity: 0;
+}
+
+/* Action Button */
+.cta-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 1rem 2.5rem;
+  margin-top: 1rem;
+  background: var(--red);
+  border: 2px solid var(--red);
+  border-radius: 8px;
+  color: #ffffff;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  opacity: 0;
+}
+
+.cta-button svg {
+  flex-shrink: 0;
+}
+
+/* Button shine effect */
+.cta-button::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    110deg,
+    transparent 25%,
+    rgba(255, 255, 255, 0.25) 50%,
+    transparent 75%
+  );
+  background-size: 200% 100%;
+  background-position: 200% center;
+  transition: background-position 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+  pointer-events: none;
+  z-index: 1;
+  border-radius: inherit;
+}
+
+.cta-button:hover::after {
+  background-position: -200% center;
+}
+
+.cta-button > * {
+  position: relative;
+  z-index: 2;
+}
+
+.cta-button:hover {
+  background: var(--red-dark);
+  border-color: var(--red-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(255, 0, 0, 0.4);
+}
+
+/* Contact Info Grid */
+.cta-contact-info {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 2rem;
+  width: 100%;
+  max-width: 900px;
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  opacity: 0;
+}
+
+.cta-contact-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  text-align: center;
+  /* Ensure adequate touch target */
+  min-height: 60px;
+  justify-content: center;
+}
+
+.cta-contact-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(0, 0, 0, 0.4);
+}
+
+.cta-contact-value {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #000000;
+  text-decoration: none;
+  transition: color 0.2s;
+  /* Ensure tappable area */
+  padding: 0.5rem;
+  margin: -0.5rem;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cta-contact-value:hover {
+  color: var(--red);
+}
+
+/* Glow Effect */
+.cta-glow {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  border-radius: 1rem;
+  opacity: 0;
+  background: radial-gradient(
+    circle at 50% 120%, 
+    rgba(255, 0, 0, 0.08) 0%,
+    rgba(255, 0, 0, 0.04) 30%,
+    transparent 70%
+  );
+  mask-image: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 1) 8rem);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .cta-section {
+    padding: 4rem 0;
+  }
+
+  .cta-container {
+    padding: 2rem 1.5rem;
+    gap: 1.25rem;
+  }
+
+  .cta-title {
+    font-size: clamp(1.75rem, 8vw, 2.5rem);
+  }
+
+  .cta-description {
+    font-size: 1rem;
+    line-height: 1.7;
+  }
+
+  .cta-button {
+    padding: 1rem 2rem;
+    font-size: 0.95rem;
+    width: 100%;
+    max-width: 400px;
+  }
+
+  /* Improve label readability on mobile */
+  .cta-contact-label {
+    font-size: 0.8rem;
+  }
+
+  .cta-contact-value {
+    font-size: 1rem;
+  }
+
+  .cta-contact-info {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .cta-section {
+    padding: 3rem 0;
+  }
+
+  .cta-container {
+    padding: 1.5rem 1rem;
+  }
+
+  .cta-title {
+    font-size: clamp(1.5rem, 10vw, 2rem);
+  }
+
+  .cta-description {
+    font-size: 0.95rem;
+  }
+
+  .cta-button {
+    font-size: 0.9rem;
+    padding: 0.875rem 1.75rem;
+  }
+
+  /* Stack contact info on very small screens */
+  .cta-contact-info {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  /* Larger touch targets on small screens */
+  .cta-contact-value {
+    min-height: 48px;
+    font-size: 1.05rem;
+  }
+}

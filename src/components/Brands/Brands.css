@@ -1,0 +1,248 @@
+/* ─────────────────────────────────────────────────────────
+   Brands — Living Marquee Wall
+   ───────────────────────────────────────────────────────── */
+
+.brands-wall-section {
+  background: #F8FBFF;
+  padding: var(--space-6xl) 0;
+  overflow: hidden;
+  border-top: 1px solid #EFF1F7;
+  border-bottom: 1px solid #dde3ec;
+  position: relative;
+  color: #000000;
+}
+
+.brands-wall-section .eyebrow {
+  color: var(--red);
+}
+
+.brands-wall-section .section-title {
+  color: #000000;
+}
+
+.brands-wall-section .section-copy {
+  color: rgba(0,0,0,0.55);
+}
+
+.brands-wall-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-xl);
+  margin-bottom: var(--space-5xl);
+}
+
+.brands-wall-copy {
+  max-width: 420px;
+  text-align: right;
+  color: var(--text-gray);
+}
+
+.brands-wall-content {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+}
+
+.brands-marquee-row {
+  display: flex;
+  overflow: hidden;
+  user-select: none;
+  width: 100%;
+  position: relative;
+  padding: 0; /* no vertical padding so logos sit flush */
+}
+
+.brands-marquee-row::before,
+.brands-marquee-row::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 120px;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.brands-marquee-row::before {
+  left: 0;
+  background: linear-gradient(90deg, #FFFFFF 0%, transparent 100%);
+}
+
+.brands-marquee-row::after {
+  right: 0;
+  background: linear-gradient(270deg, #FFFFFF 0%, transparent 100%);
+}
+
+.brands-marquee-track {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 0; /* remove gap between logo tiles */
+}
+
+.row-left .brands-marquee-track {
+  animation: marqueeLeft 32s linear infinite;
+}
+
+.row-right .brands-marquee-track {
+  animation: marqueeRight 40s linear infinite;
+}
+
+.brands-marquee-row:hover .brands-marquee-track {
+  animation-play-state: paused;
+}
+
+@keyframes marqueeLeft {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes marqueeRight {
+  0% { transform: translateX(-50%); }
+  100% { transform: translateX(0%); }
+}
+
+/* ScrollVelocity helpers */
+.scroll-velocity-container {
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.sv-row {
+  display: block;
+  width: 100%;
+}
+
+.sv-track {
+  display: flex;
+  align-items: center;
+  gap: 24px; /* spacing between tiles */
+  will-change: transform;
+}
+
+.sv-row-left .sv-track {
+  animation-name: marqueeLeft;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+.sv-row-right .sv-track {
+  animation-name: marqueeRight;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+/* Ensure the track is twice the width and the duplicated children each take 50% */
+.sv-track {
+  display: flex;
+  align-items: center;
+  min-width: 200%;
+  gap: 24px;
+}
+
+.sv-track .sv-inner {
+  flex: 0 0 50%;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.brands-row-inner {
+  display: flex;
+  gap: 0;
+  align-items: center;
+}
+
+/* Make sure the duplicated inner block doesn't get announced */
+.sv-inner[aria-hidden="true"] {
+  pointer-events: none;
+}
+
+.brand-logo-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 220px; /* equal tile width */
+  height: 96px;
+  padding: 0;
+  margin: 0;
+  background: transparent;
+  box-shadow: none;
+  border: none;
+  border-radius: 0;
+  opacity: 1;
+}
+
+.brand-logo-item:hover {
+  transform: none;
+}
+
+.brand-logo-item img {
+  max-height: 64px;
+  width: auto;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
+  border: none;
+  border-radius: 0;
+}
+
+/* Direct image styling when rendering logos inline in the velocity rows */
+.brand-logo-img {
+  max-height: 64px;
+  width: auto;
+  display: block;
+  margin: 0 auto;
+  padding: 0;
+  object-fit: contain;
+  border: none;
+  border-radius: 0;
+}
+
+.brand-logo-fallback {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: rgba(0, 0, 0, 0.28);
+  text-transform: uppercase;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .brands-wall-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-m);
+  }
+  .brands-wall-copy {
+    text-align: left;
+    max-width: 100%;
+  }
+  
+  /* Make brand logos bigger on mobile */
+  .brand-logo-item {
+    padding: 0;
+    flex: 0 0 180px;
+    height: 100px;
+  }
+  
+  .brand-logo-item img,
+  .brand-logo-img {
+    max-height: 70px !important;
+    width: auto;
+  }
+  
+  /* Adjust marquee spacing */
+  .sv-track {
+    gap: 16px;
+  }
+  
+  .sv-track .sv-inner {
+    gap: 16px;
+  }
+}

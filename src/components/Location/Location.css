@@ -1,0 +1,238 @@
+/* ─────────────────────────────────────────────────────────
+   Contact Section — Sports Brand Style
+   ───────────────────────────────────────────────────────── */
+
+.contact-sports-section {
+  position: relative;
+  padding: var(--space-6xl) 0;
+  background: var(--bg-deep);
+  border-top: 1px solid var(--border);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+
+.contact-sports-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  filter: grayscale(100%) brightness(0.22) contrast(1.1); /* Grayscale moody gym bg */
+  z-index: 0;
+  pointer-events: none;
+}
+
+.contact-sports-overlay {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(8, 8, 8, 0.4) 0%, rgba(8, 8, 8, 0.95) 100%);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.contact-layout-grid {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: var(--space-5xl);
+  align-items: center;
+}
+
+/* ── Left Column ── */
+.contact-left-col {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.contact-left__eyebrow {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  margin-bottom: var(--space-s);
+}
+
+.contact-left__title {
+  font-size: clamp(32px, 5vw, 56px);
+  font-weight: 900;
+  letter-spacing: 0.02em;
+  color: var(--white);
+  line-height: 0.95;
+  margin: 0 0 var(--space-xl) 0;
+}
+
+.contact-left__desc {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--text-dim);
+  margin-bottom: var(--space-3xl);
+  max-width: 460px;
+}
+
+.contact-left__socials {
+  display: flex;
+  gap: var(--space-m);
+  margin-bottom: var(--space-4xl);
+}
+
+.social-icon-circle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--white);
+  transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.social-icon-circle:hover {
+  background: var(--red);
+  border-color: var(--red);
+  color: var(--white);
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(227, 27, 35, 0.3);
+}
+
+.contact-left__address {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.address-lbl {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--red);
+}
+
+.address-val {
+  font-size: 16px;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  color: var(--white);
+  margin: 0;
+}
+
+.map-link {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  color: rgba(255, 255, 255, 0.6);
+  text-decoration: none;
+  font-weight: 600;
+  margin-top: var(--space-s);
+  transition: color 0.3s;
+}
+
+.map-link:hover {
+  color: var(--red);
+}
+
+/* ── Right Column: Floating Contact Card ── */
+.contact-right-col {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.contact-card {
+  background: rgba(12, 12, 14, 0.85); /* Slightly translucent dark surface */
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--card-radius);
+  padding: var(--space-4xl);
+  width: 100%;
+  max-width: 440px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 25px 50px -12px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-s);
+  margin-bottom: var(--space-xl);
+}
+
+.form-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: var(--text-dim);
+}
+
+.form-input {
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--white);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--input-radius);
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  padding: var(--space-sm) var(--space-m);
+  min-height: 44px; /* Touch target minimum */
+  width: 100%;
+  transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  outline: none;
+}
+
+.form-input:focus {
+  border-color: var(--red);
+  background: rgba(255, 255, 255, 0.06);
+  box-shadow: 0 0 0 3px rgba(227, 27, 35, 0.15);
+}
+
+.form-input::placeholder {
+  color: var(--text-muted);
+  opacity: 0.6;
+}
+
+.form-input.text-area {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.submit-form-btn {
+  width: 100%;
+  letter-spacing: 0.2em;
+  font-weight: 900;
+  min-height: 44px;
+  margin-top: var(--space-s);
+}
+
+/* ── Responsive ── */
+@media (max-width: 1024px) {
+  .contact-layout-grid {
+    gap: var(--space-3xl);
+  }
+  .contact-card {
+    padding: var(--space-3xl);
+  }
+}
+
+@media (max-width: 820px) {
+  .contact-layout-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-4xl);
+  }
+  .contact-left-col {
+    align-items: center;
+    text-align: center;
+  }
+  .contact-left__desc {
+    max-width: 100%;
+  }
+  .contact-right-col {
+    justify-content: center;
+  }
+  .contact-card {
+    max-width: 100%;
+  }
+}

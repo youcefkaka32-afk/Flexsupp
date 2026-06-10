@@ -1,0 +1,24 @@
+.text-animate {
+  display: inline-block;
+  overflow: visible;
+}
+
+.ta-item {
+  display: inline-block;
+  will-change: transform, opacity, filter;
+}
+.ta-root {
+  display: inline-block;
+}
+
+.ta-unit {
+  display: inline-block;
+  white-space: pre;
+  will-change: transform, opacity, filter;
+}
+
+.ta-word {
+  margin-right: 0.28em;
+}
+
+.ta-char { }

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Frame Viewer</title>
+  <style>
+    body {
+      background: #111;
+      color: #fff;
+      font-family: sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+    #viewer {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+    img {
+      max-width: 90vw;
+      max-height: 70vh;
+      border: 2px solid #333;
+    }
+    .controls {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      background: #333;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+    }
+    button:hover {
+      background: #444;
+    }
+    #info {
+      font-size: 18px;
+      font-weight: bold;
+    }
+    .ranges {
+      display: flex;
+      gap: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div id="viewer">
+    <div class="ranges">
+      <button onclick="setRange(115, 131)">Transition 115-131</button>
+      <button onclick="setRange(147, 162)">Transition 147-162</button>
+      <button onclick="setRange(1, 180)">All Frames (1-180)</button>
+    </div>
+    <img id="frameImg" src="" alt="Frame">
+    <div id="info">Frame: 115</div>
+    <div class="controls">
+      <button onclick="prev()">Prev</button>
+      <button onclick="playPause()" id="playBtn">Play</button>
+      <button onclick="next()">Next</button>
+    </div>
+  </div>
+
+  <script>
+    let startFrame = 115;
+    let endFrame = 131;
+    let currentFrame = 115;
+    let playing = false;
+    let interval = null;
+
+    const img = document.getElementById('frameImg');
+    const info = document.getElementById('info');
+    const playBtn = document.getElementById('playBtn');
+
+    function update() {
+      const padded = String(currentFrame).padStart(3, '0');
+      img.src = `/ezgif-5545a7a067b626e2-jpg/ezgif-frame-${padded}.jpg`;
+      info.textContent = `Frame: ${currentFrame} / [${startFrame} - ${endFrame}]`;
+    }
+
+    function prev() {
+      currentFrame--;
+      if (currentFrame < startFrame) currentFrame = endFrame;
+      update();
+    }
+
+    function next() {
+      currentFrame++;
+      if (currentFrame > endFrame) currentFrame = startFrame;
+      update();
+    }
+
+    function setRange(start, end) {
+      startFrame = start;
+      endFrame = end;
+      currentFrame = start;
+      update();
+    }
+
+    function playPause() {
+      if (playing) {
+        clearInterval(interval);
+        playBtn.textContent = 'Play';
+        playing = false;
+      } else {
+        interval = setInterval(next, 100);
+        playBtn.textContent = 'Pause';
+        playing = true;
+      }
+    }
+
+    // Initialize
+    update();
+  </script>
+</body>
+</html>

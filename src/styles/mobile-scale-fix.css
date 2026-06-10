@@ -1,0 +1,183 @@
+/* ═══════════════════════════════════════════════════════
+   MOBILE SCALE FIX - Addresses "zoomed in" appearance
+   ═══════════════════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+  
+  /* Reset body and html to ensure proper scaling */
+  html, body {
+    width: 100%;
+    max-width: 100vw;
+    overflow-x: hidden;
+  }
+
+  /* Ensure all container elements fit within viewport */
+  .section-shell,
+  .about-hero__content,
+  .boutique-layout,
+  .product-page-shell {
+    max-width: 100vw;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  /* Fix product cards - SHOW 2 PER ROW on mobile */
+  .catalog-grid,
+  .featured-product-grid,
+  .new-products-grid,
+  .boutique-product-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 0.75rem;
+    width: 100%;
+  }
+
+  .catalog-card,
+  .premium-product-card,
+  .new-card,
+  .best-seller-card {
+    max-width: 100%;
+  }
+
+  /* Adjust product card padding for 2-column layout */
+  .catalog-card,
+  .premium-product-card,
+  .new-card {
+    padding: 0.75rem;
+  }
+
+  /* Fix product images */
+  .catalog-card__img,
+  .card-main-image,
+  .new-card__img {
+    width: 100%;
+    height: auto;
+    max-height: 200px;
+    object-fit: contain;
+  }
+
+  /* Product card titles smaller for 2-column */
+  .catalog-card__name,
+  .card-name,
+  .new-card__name {
+    font-size: 0.85rem !important;
+    line-height: 1.3;
+  }
+
+  /* Product prices */
+  .catalog-card__price,
+  .card-price {
+    font-size: 0.9rem !important;
+  }
+
+  /* Fix testimonials/reviews - Better layout */
+  .review-card {
+    max-width: 100%;
+    padding: 1.5rem;
+    min-height: auto;
+  }
+
+  .reviews-carousel-track {
+    gap: 1rem;
+  }
+
+  .review-card {
+    flex: 0 0 90%;
+    max-width: 90%;
+  }
+
+  /* Fix hero sections */
+  .hero,
+  .about-hero {
+    min-height: 70vh;
+  }
+
+  /* Fix section titles */
+  .section-title,
+  .about-hero__title,
+  h1, h2 {
+    font-size: clamp(1.75rem, 6vw, 2.5rem) !important;
+    line-height: 1.2;
+  }
+
+  /* Fix any absolute or fixed positioning issues */
+  .global-navbar {
+    width: 100%;
+    max-width: 100vw;
+  }
+
+  /* Fix footer */
+  .footer {
+    max-width: 100vw;
+  }
+
+  /* Ensure images don't break layout */
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* Fix any large paddings that might cause overflow */
+  * {
+    box-sizing: border-box;
+  }
+}
+
+/* Specific fixes for very small screens */
+@media (max-width: 480px) {
+  
+  /* Still show 2 products per row even on small screens */
+  .catalog-grid,
+  .featured-product-grid,
+  .new-products-grid,
+  .boutique-product-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 0.5rem;
+  }
+
+  /* Further reduce padding on small devices */
+  .section-shell {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+
+  /* Make product cards more compact */
+  .catalog-card,
+  .premium-product-card,
+  .new-card {
+    padding: 0.5rem;
+  }
+
+  /* Smaller product images on tiny screens */
+  .catalog-card__img,
+  .card-main-image,
+  .new-card__img {
+    max-height: 160px;
+  }
+
+  /* Even smaller text on very small screens */
+  .catalog-card__name,
+  .card-name,
+  .new-card__name {
+    font-size: 0.75rem !important;
+  }
+
+  /* Reduce font sizes further */
+  .section-title,
+  h1, h2 {
+    font-size: clamp(1.5rem, 8vw, 2rem) !important;
+  }
+}
+
+/* Fix for landscape mode on mobile */
+@media (max-width: 768px) and (orientation: landscape) {
+  
+  .hero,
+  .about-hero {
+    min-height: 90vh;
+  }
+
+  .section-title,
+  h1, h2 {
+    font-size: clamp(1.5rem, 5vw, 2rem) !important;
+  }
+}

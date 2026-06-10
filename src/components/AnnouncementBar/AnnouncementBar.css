@@ -1,0 +1,56 @@
+/* ─────────────────────────────────────────────────────────
+   Announcement Bar — Promotional Strip
+   ───────────────────────────────────────────────────────── */
+
+.announcement-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10000;
+  background: var(--red);
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.announcement-bar__inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 var(--space-m);
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.announcement-bar__text {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  color: #fff;
+  letter-spacing: 0.02em;
+}
+
+.announcement-bar__text strong {
+  font-weight: 700;
+}
+
+.announcement-bar__code {
+  background: rgba(255,255,255,0.2);
+  padding: 1px 6px;
+  border-radius: 2px;
+  font-family: 'IBM Plex Mono', monospace;
+  letter-spacing: 0.12em;
+  font-size: 11px;
+}
+
+@media (max-width: 768px) {
+  .announcement-bar {
+    height: 30px;
+  }
+  .announcement-bar__text {
+    font-size: 10px;
+  }
+}

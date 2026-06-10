@@ -1,9 +1,8 @@
 -- =====================================================
--- Flex Supps — Supabase Schema
--- Run this ONCE in the Supabase SQL Editor
+-- Flex Supps — Supabase Schema (safe to re-run)
 -- =====================================================
 
--- Products table
+-- Tables
 create table if not exists products (
   id text primary key,
   name text not null,
@@ -26,7 +25,6 @@ create table if not exists products (
   updated_at timestamptz default now()
 );
 
--- Categories table
 create table if not exists categories (
   id text primary key,
   name text not null,
@@ -36,7 +34,6 @@ create table if not exists categories (
   href text default '#'
 );
 
--- Brands table
 create table if not exists brands (
   id serial primary key,
   name text not null unique,
@@ -49,37 +46,43 @@ alter table products enable row level security;
 alter table categories enable row level security;
 alter table brands enable row level security;
 
--- Public read access
+-- Drop existing policies first (safe to re-run)
+drop policy if exists "Public can read products" on products;
+drop policy if exists "Public can read categories" on categories;
+drop policy if exists "Public can read brands" on brands;
+drop policy if exists "Authenticated can manage products" on products;
+drop policy if exists "Authenticated can manage categories" on categories;
+drop policy if exists "Authenticated can manage brands" on brands;
+drop policy if exists "Anon can manage products" on products;
+drop policy if exists "Anon can manage categories" on categories;
+drop policy if exists "Anon can manage brands" on brands;
+
+-- Recreate policies
 create policy "Public can read products" on products for select using (true);
 create policy "Public can read categories" on categories for select using (true);
 create policy "Public can read brands" on brands for select using (true);
 
--- Anon write access (PIN-protected admin dashboard)
 create policy "Anon can manage products" on products for all to anon using (true) with check (true);
 create policy "Anon can manage categories" on categories for all to anon using (true) with check (true);
 create policy "Anon can manage brands" on brands for all to anon using (true) with check (true);
 
--- =====================================================
 -- Storage bucket for product images
--- Run this separately in the SQL Editor
--- =====================================================
 insert into storage.buckets (id, name, public)
 values ('product-images', 'product-images', true)
 on conflict (id) do nothing;
 
--- Allow public to read images
+drop policy if exists "Public can view product images" on storage.objects;
+drop policy if exists "Anon can upload product images" on storage.objects;
+drop policy if exists "Anon can delete product images" on storage.objects;
+
 create policy "Public can view product images"
   on storage.objects for select
   using (bucket_id = 'product-images');
 
--- Allow anon to upload images (admin dashboard)
 create policy "Anon can upload product images"
-  on storage.objects for insert
-  to anon
+  on storage.objects for insert to anon
   with check (bucket_id = 'product-images');
 
--- Allow anon to delete images (admin dashboard)
 create policy "Anon can delete product images"
-  on storage.objects for delete
-  to anon
+  on storage.objects for delete to anon
   using (bucket_id = 'product-images');

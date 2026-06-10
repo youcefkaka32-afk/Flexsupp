@@ -199,16 +199,24 @@ function ProductModal({ product, brands, categories, onSave, onClose, saving }) 
 
               <div className="admin-form__field">
                 <label>Marque *</label>
-                <select className="admin-input" value={form.brand} onChange={e => set('brand', e.target.value)} required>
-                  {brands.map(b => <option key={b.name} value={b.name}>{b.name}</option>)}
-                </select>
+                {brands.length === 0 ? (
+                  <div className="admin-input-warn">⚠ Aucune marque — allez dans l'onglet <strong>Marques</strong> pour en ajouter d'abord</div>
+                ) : (
+                  <select className="admin-input" value={form.brand} onChange={e => set('brand', e.target.value)} required>
+                    {brands.map(b => <option key={b.name} value={b.name}>{b.name}</option>)}
+                  </select>
+                )}
               </div>
 
               <div className="admin-form__field">
                 <label>Catégorie *</label>
-                <select className="admin-input" value={form.category} onChange={e => set('category', e.target.value)} required>
-                  {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
-                </select>
+                {categories.length === 0 ? (
+                  <div className="admin-input-warn">⚠ Aucune catégorie — allez dans l'onglet <strong>Catégories</strong> pour en ajouter d'abord</div>
+                ) : (
+                  <select className="admin-input" value={form.category} onChange={e => set('category', e.target.value)} required>
+                    {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+                  </select>
+                )}
               </div>
 
               <div className="admin-form__field">
@@ -232,14 +240,19 @@ function ProductModal({ product, brands, categories, onSave, onClose, saving }) 
               </div>
 
               <div className="admin-form__field admin-form__field--full">
-                <label>Statut</label>
+                <label>Visibilité</label>
                 <div className="admin-form__toggle-row">
                   <button type="button" className={`admin-toggle${form.in_stock ? ' active' : ''}`} onClick={() => set('in_stock', !form.in_stock)}>
                     {form.in_stock ? '✓ En stock' : '✕ Épuisé'}
                   </button>
                   <button type="button" className={`admin-toggle${form.featured ? ' active admin-toggle--gold' : ''}`} onClick={() => set('featured', !form.featured)}>
-                    {form.featured ? '★ Vedette' : '☆ Vedette'}
+                    {form.featured ? '★ Vedette (page accueil)' : '☆ Vedette (page accueil)'}
                   </button>
+                </div>
+                <div className="admin-visibility-hint">
+                  <span className="admin-hint admin-hint--shop">🛒 Shop</span> Tous les produits apparaissent sur la page boutique.
+                  <br />
+                  <span className="admin-hint admin-hint--home">🏠 Accueil</span> Seuls les produits <strong>Vedette ★</strong> apparaissent sur la page d'accueil (max 4).
                 </div>
               </div>
 
@@ -526,6 +539,11 @@ function ProductsTab({ products, categories, brands, onRefresh, addToast }) {
       <div className="admin-section__header">
         <h2>Produits</h2>
         <button className="admin-btn admin-btn--primary" onClick={() => setModal('add')}>+ Ajouter</button>
+      </div>
+
+      <div className="admin-visibility-banner">
+        <div><span className="admin-hint admin-hint--home">🏠 Accueil</span> Les produits marqués <strong>★ Vedette</strong> apparaissent sur la page d'accueil (les 4 premiers).</div>
+        <div><span className="admin-hint admin-hint--shop">🛒 Boutique</span> Tous les produits actifs apparaissent sur la page boutique.</div>
       </div>
 
       <div className="admin-filters">

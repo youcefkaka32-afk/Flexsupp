@@ -392,7 +392,34 @@ select.admin-input { cursor: pointer; }
 .admin-form__field label { font-size: .72rem; font-weight: 600; color: var(--a-muted); text-transform: uppercase; letter-spacing: .05em; }
 .admin-form__toggle-row { display: flex; gap: .4rem; flex-wrap: wrap; }
 
-/* ── Seed tab ────────────────────────────────────── */
+/* ── Visibility hints ────────────────────────────── */
+.admin-visibility-banner {
+  display: flex; gap: .75rem; flex-wrap: wrap;
+  padding: .75rem 1rem; margin-bottom: 1.25rem;
+  background: var(--a-surface); border: 1px solid var(--a-border);
+  border-radius: var(--a-r); font-size: .8rem; color: var(--a-muted);
+  line-height: 1.6;
+}
+.admin-visibility-banner > div { flex: 1; min-width: 200px; }
+.admin-visibility-hint {
+  margin-top: .5rem; padding: .625rem .75rem;
+  background: var(--a-bg2); border: 1px solid var(--a-border);
+  border-radius: var(--a-r); font-size: .78rem; color: var(--a-muted); line-height: 1.7;
+}
+.admin-hint {
+  display: inline-block; padding: 1px 7px; border-radius: 4px;
+  font-size: .7rem; font-weight: 700; margin-right: .3rem;
+}
+.admin-hint--home { background: rgba(245,158,11,.15); color: var(--a-gold); border: 1px solid rgba(245,158,11,.3); }
+.admin-hint--shop { background: rgba(59,130,246,.15); color: #60a5fa; border: 1px solid rgba(59,130,246,.3); }
+
+/* ── Input warning ───────────────────────────────── */
+.admin-input-warn {
+  padding: .6rem .8rem;
+  background: rgba(245,158,11,.08); border: 1px solid rgba(245,158,11,.25);
+  border-radius: var(--a-r); color: var(--a-gold); font-size: .8rem; line-height: 1.5;
+}
+.admin-input-warn strong { color: #fff; }
 .admin-seed { max-width: 600px; display: flex; flex-direction: column; gap: 1.25rem; }
 .admin-seed__warning {
   padding: 1rem 1.1rem; background: rgba(245,158,11,.06);

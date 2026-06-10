@@ -397,7 +397,9 @@ function PremiumProductCard({ product, dispatch, openDrawer }) {
       >
         <div className="card-image-wrap">
           <LazyImage src={product.image} alt={product.name} className="card-main-image" />
-          {product.imageHover && <LazyImage className="card-hover-image" src={product.imageHover} alt="" />}
+          {product.imageHover && product.imageHover !== product.image && (
+                    <img className="card-hover-image" src={product.imageHover} alt="" aria-hidden="true" />
+                  )}
           {product.badge && <span className="card-badge font-display">{product.badge}</span>}
           {discount && <span className="card-discount font-display">-{discount}%</span>}
           {/* Zoom icon */}

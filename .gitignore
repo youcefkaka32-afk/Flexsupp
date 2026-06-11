@@ -6,3 +6,26 @@ dist/
 *.log
 .DS_Store
 Thumbs.db
+
+# Build debug files
+build-debug.txt
+build-output.txt
+full-build-debug.txt
+vite-output.txt
+
+# Loose root-level images (not part of src or public)
+*.jpg
+*.jpeg
+*.png
+*.webp
+*.mp4
+*.svg
+*.gif
+
+# Old design / reference docs in root
+*.md
+*.html
+!index.html
+
+# Reference / design files
+ezgif-5545a7a067b626e2-jpg/

@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
 import { AnimatePresence } from 'framer-motion'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, lazy, Suspense } from 'react'
 import './styles/global.css'
 import './styles/mobile-enhancements.css'
 import './styles/mobile-scale-fix.css'
@@ -13,11 +13,13 @@ import CustomCursor    from './components/CustomCursor/CustomCursor'
 import AnnouncementBar from './components/AnnouncementBar/AnnouncementBar'
 import ScrollToTop     from './components/ui/ScrollToTop'
 import Loader          from './components/Loader/Loader'
-import HomePage        from './pages/HomePage'
-import ShopPage        from './pages/ShopPage'
-import ProductPage     from './pages/ProductPage'
-import AboutPage       from './pages/AboutPage'
-import AdminPage       from './pages/AdminPage'
+
+// Lazy-load pages — each becomes its own JS chunk
+const HomePage   = lazy(() => import('./pages/HomePage'))
+const ShopPage   = lazy(() => import('./pages/ShopPage'))
+const ProductPage = lazy(() => import('./pages/ProductPage'))
+const AboutPage  = lazy(() => import('./pages/AboutPage'))
+const AdminPage  = lazy(() => import('./pages/AdminPage'))
 
 
 function AnimatedRoutes() {
@@ -35,13 +37,15 @@ function AnimatedRoutes() {
       {!isAdmin && <CustomCursor />}
       {!isAdmin && <PageCurtain />}
       <AnimatePresence mode="wait">
-        <Routes location={location} key={location.pathname}>
-          <Route path="/" element={<PageTransition><HomePage /></PageTransition>} />
-          <Route path="/shop" element={<PageTransition><ShopPage /></PageTransition>} />
-          <Route path="/boutique/:id" element={<PageTransition><ProductPage /></PageTransition>} />
-          <Route path="/about" element={<PageTransition><AboutPage /></PageTransition>} />
-          <Route path="/admin" element={<AdminPage />} />
-        </Routes>
+        <Suspense fallback={null}>
+          <Routes location={location} key={location.pathname}>
+            <Route path="/" element={<PageTransition><HomePage /></PageTransition>} />
+            <Route path="/shop" element={<PageTransition><ShopPage /></PageTransition>} />
+            <Route path="/boutique/:id" element={<PageTransition><ProductPage /></PageTransition>} />
+            <Route path="/about" element={<PageTransition><AboutPage /></PageTransition>} />
+            <Route path="/admin" element={<AdminPage />} />
+          </Routes>
+        </Suspense>
       </AnimatePresence>
       {!isAdmin && <CartDrawer />}
       {!isAdmin && <CheckoutModal />}

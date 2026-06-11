@@ -47,6 +47,7 @@ export default function LazyImage({ src, alt, className = '', ...props }) {
         <img
           src={src}
           alt={alt}
+          decoding="async"
           onLoad={() => setLoaded(true)}
           className={`lazy-image-el ${loaded ? 'is-visible' : ''} ${className}`}
           {...props}

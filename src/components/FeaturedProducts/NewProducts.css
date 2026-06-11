@@ -50,7 +50,8 @@
   padding: 4px var(--space-s);
   border-radius: var(--radius-xs);
   color: #FFFFFF;
-  z-index: 2;
+  z-index: 10;
+  pointer-events: none;
 }
 
 .new-card__tag.sale {

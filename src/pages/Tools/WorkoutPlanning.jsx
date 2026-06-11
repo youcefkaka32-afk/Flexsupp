@@ -132,7 +132,11 @@ export default function WorkoutPlanning() {
 
   return (
     <div className="tool-page">
-      <div className="tool-hero">
+      <div className="tool-hero" style={{
+        backgroundImage: 'linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.7)), url(https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=1470&auto=format&fit=crop)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+      }}>
         <div className="section-shell">
           <h1 className="tool-hero__title font-display">{t.title}</h1>
           <p className="tool-hero__subtitle">{t.subtitle}</p>
@@ -151,40 +155,154 @@ export default function WorkoutPlanning() {
             <div className="body-type-grid" style={{ gridTemplateColumns: 'repeat(2, 1fr)', marginBottom: 'var(--space-5xl)' }}>
               {t.principles.items.map((item, index) => (
                 <div key={index} className="body-type-card" style={{ textAlign: 'left' }}>
+                  <div style={{ 
+                    width: '60px', 
+                    height: '60px', 
+                    marginBottom: 'var(--space-m)', 
+                    borderRadius: 'var(--radius-m)',
+                    background: 'var(--red)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: '28px',
+                    fontWeight: '900',
+                    color: '#FFFFFF'
+                  }}>
+                    {index + 1}
+                  </div>
                   <h4>{item.name}</h4>
                   <p>{item.desc}</p>
                 </div>
               ))}
             </div>
 
+            {/* Workout Images */}
+            <div style={{ 
+              display: 'grid', 
+              gridTemplateColumns: '1fr 1fr', 
+              gap: 'var(--space-xl)',
+              marginBottom: 'var(--space-5xl)'
+            }}>
+              <img 
+                src="https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?q=80&w=1470&auto=format&fit=crop"
+                alt="Strength training"
+                style={{ width: '100%', height: '300px', objectFit: 'cover', borderRadius: 'var(--radius-l)', boxShadow: 'var(--shadow-card)' }}
+              />
+              <img 
+                src="https://images.unsplash.com/photo-1574680096145-d05b474e2155?q=80&w=1469&auto=format&fit=crop"
+                alt="Workout planning"
+                style={{ width: '100%', height: '300px', objectFit: 'cover', borderRadius: 'var(--radius-l)', boxShadow: 'var(--shadow-card)' }}
+              />
+            </div>
+
             {/* Training Splits */}
             <h2 className="article-title font-display">{t.splits.title}</h2>
-            <div className="article-content" style={{ marginBottom: 'var(--space-5xl)' }}>
-              <ul>
-                {t.splits.items.map((item, index) => (
-                  <li key={index} dangerouslySetInnerHTML={{ __html: item }} />
-                ))}
-              </ul>
+            <div className="visual-diagram">
+              <div className="diagram-grid" style={{ gridTemplateColumns: 'repeat(2, 1fr)' }}>
+                {t.splits.items.map((item, index) => {
+                  const [title, desc] = item.split(':**')
+                  return (
+                    <div key={index} className="diagram-item" style={{ textAlign: 'left' }}>
+                      <h5 dangerouslySetInnerHTML={{ __html: title.replace('**', '') }} />
+                      <p>{desc}</p>
+                    </div>
+                  )
+                })}
+              </div>
             </div>
 
             {/* Session Structure */}
             <h2 className="article-title font-display">{t.structure.title}</h2>
-            <div className="article-content" style={{ marginBottom: 'var(--space-5xl)' }}>
-              <ol>
-                {t.structure.steps.map((step, index) => (
-                  <li key={index} dangerouslySetInnerHTML={{ __html: step }} />
-                ))}
-              </ol>
+            <div style={{ 
+              background: 'linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%)',
+              borderRadius: 'var(--radius-l)',
+              padding: 'var(--space-3xl)',
+              marginBottom: 'var(--space-5xl)'
+            }}>
+              {t.structure.steps.map((step, index) => {
+                const [title, desc] = step.split(':**')
+                return (
+                  <div key={index} style={{ 
+                    display: 'flex',
+                    alignItems: 'flex-start',
+                    gap: 'var(--space-l)',
+                    marginBottom: index < t.structure.steps.length - 1 ? 'var(--space-xl)' : '0',
+                    paddingBottom: index < t.structure.steps.length - 1 ? 'var(--space-xl)' : '0',
+                    borderBottom: index < t.structure.steps.length - 1 ? '2px solid #ddd' : 'none'
+                  }}>
+                    <div style={{ 
+                      minWidth: '50px',
+                      height: '50px',
+                      borderRadius: '50%',
+                      background: 'var(--red)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontSize: '24px',
+                      fontWeight: '900',
+                      color: '#FFFFFF',
+                      flexShrink: 0
+                    }}>
+                      {index + 1}
+                    </div>
+                    <div>
+                      <h4 style={{ 
+                        fontFamily: 'Barlow Condensed, sans-serif',
+                        fontSize: '22px',
+                        fontWeight: '900',
+                        color: '#111',
+                        marginBottom: 'var(--space-xs)',
+                        textTransform: 'uppercase'
+                      }} dangerouslySetInnerHTML={{ __html: title.replace('**', '') }} />
+                      <p style={{ 
+                        fontSize: '16px',
+                        lineHeight: '1.6',
+                        color: '#666',
+                        margin: 0
+                      }}>{desc}</p>
+                    </div>
+                  </div>
+                )
+              })}
             </div>
+
+            {/* Exercise demonstration image */}
+            <img 
+              src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=1470&auto=format&fit=crop"
+              alt="Exercise demonstration"
+              style={{ 
+                width: '100%', 
+                height: '400px', 
+                objectFit: 'cover', 
+                borderRadius: 'var(--radius-l)', 
+                marginBottom: 'var(--space-5xl)',
+                boxShadow: 'var(--shadow-card)'
+              }}
+            />
 
             {/* Pro Tips */}
             <h2 className="article-title font-display">{t.tips.title}</h2>
-            <div className="article-content">
-              <ul>
-                {t.tips.items.map((tip, index) => (
-                  <li key={index}>{tip}</li>
-                ))}
-              </ul>
+            <div className="diagram-grid" style={{ gridTemplateColumns: 'repeat(3, 1fr)' }}>
+              {t.tips.items.map((tip, index) => (
+                <div key={index} className="info-box" style={{ margin: 0 }}>
+                  <div style={{ 
+                    width: '40px',
+                    height: '40px',
+                    borderRadius: '50%',
+                    background: 'var(--red)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: '20px',
+                    fontWeight: '900',
+                    color: '#FFFFFF',
+                    marginBottom: 'var(--space-m)'
+                  }}>
+                    ✓
+                  </div>
+                  <p style={{ fontSize: '15px', lineHeight: '1.7', color: '#333' }}>{tip}</p>
+                </div>
+              ))}
             </div>
           </div>
         </div>

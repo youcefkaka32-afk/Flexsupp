@@ -79,7 +79,11 @@ Important: BMI is a screening tool, not a diagnosis. Consult a healthcare profes
 
   return (
     <div className="tool-page">
-      <div className="tool-hero">
+      <div className="tool-hero" style={{
+        backgroundImage: 'linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.7)), url(https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?q=80&w=1470&auto=format&fit=crop)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+      }}>
         <div className="section-shell">
           <h1 className="tool-hero__title font-display">{t.title}</h1>
           <p className="tool-hero__subtitle">{t.subtitle}</p>
@@ -88,47 +92,73 @@ Important: BMI is a screening tool, not a diagnosis. Consult a healthcare profes
 
       <div className="tool-content">
         <div className="section-shell">
-          <div className="tool-calculator">
-            <div className="calc-inputs">
-              <div className="calc-field">
-                <label className="calc-label font-display">{t.weightLabel}</label>
-                <input
-                  type="number"
-                  className="calc-input"
-                  value={weight}
-                  onChange={(e) => setWeight(e.target.value)}
-                  placeholder="70"
-                />
+          <div className="tool-layout">
+            <div className="tool-calculator">
+              <div className="calc-inputs">
+                <div className="calc-field">
+                  <label className="calc-label font-display">{t.weightLabel}</label>
+                  <input
+                    type="number"
+                    className="calc-input"
+                    value={weight}
+                    onChange={(e) => setWeight(e.target.value)}
+                    placeholder="70"
+                  />
+                </div>
+
+                <div className="calc-field">
+                  <label className="calc-label font-display">{t.heightLabel}</label>
+                  <input
+                    type="number"
+                    className="calc-input"
+                    value={height}
+                    onChange={(e) => setHeight(e.target.value)}
+                    placeholder="175"
+                  />
+                </div>
+
+                <button 
+                  className="calc-button font-display"
+                  onClick={calculateBMI}
+                >
+                  {t.calculate}
+                </button>
               </div>
 
-              <div className="calc-field">
-                <label className="calc-label font-display">{t.heightLabel}</label>
-                <input
-                  type="number"
-                  className="calc-input"
-                  value={height}
-                  onChange={(e) => setHeight(e.target.value)}
-                  placeholder="175"
-                />
-              </div>
+              {bmi && (
+                <div className="calc-result">
+                  <div className="result-value">
+                    <span className="result-label font-display">{t.result}:</span>
+                    <span className="result-number font-display">{bmi}</span>
+                  </div>
+                  <div className="result-category">{category}</div>
+                </div>
+              )}
 
-              <button 
-                className="calc-button font-display"
-                onClick={calculateBMI}
-              >
-                {t.calculate}
-              </button>
+              {/* BMI Chart Visual */}
+              <div className="bmi-chart">
+                <div className="bmi-range" style={{ background: '#60A5FA', flex: '18.5' }}>
+                  <span>&lt;18.5</span>
+                </div>
+                <div className="bmi-range" style={{ background: '#34D399', flex: '6.4' }}>
+                  <span>18.5-24.9</span>
+                </div>
+                <div className="bmi-range" style={{ background: '#FBBF24', flex: '5' }}>
+                  <span>25-29.9</span>
+                </div>
+                <div className="bmi-range" style={{ background: '#EF4444', flex: '10' }}>
+                  <span>30+</span>
+                </div>
+              </div>
             </div>
 
-            {bmi && (
-              <div className="calc-result">
-                <div className="result-value">
-                  <span className="result-label font-display">{t.result}:</span>
-                  <span className="result-number font-display">{bmi}</span>
-                </div>
-                <div className="result-category">{category}</div>
-              </div>
-            )}
+            <div className="tool-sidebar">
+              <img 
+                src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?q=80&w=1470&auto=format&fit=crop"
+                alt="BMI measurement"
+                className="sidebar-image"
+              />
+            </div>
           </div>
 
           <div className="tool-article">

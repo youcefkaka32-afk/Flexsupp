@@ -74,7 +74,11 @@ export default function BodyTypes() {
 
   return (
     <div className="tool-page">
-      <div className="tool-hero">
+      <div className="tool-hero" style={{
+        backgroundImage: 'linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.7)), url(https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=1470&auto=format&fit=crop)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+      }}>
         <div className="section-shell">
           <h1 className="tool-hero__title font-display">{t.title}</h1>
           <p className="tool-hero__subtitle">{t.subtitle}</p>
@@ -91,6 +95,22 @@ export default function BodyTypes() {
             <div className="body-type-grid">
               {t.types.map((type, index) => (
                 <div key={index} className="body-type-card">
+                  <div style={{ 
+                    width: '120px', 
+                    height: '120px', 
+                    margin: '0 auto var(--space-l)', 
+                    borderRadius: '50%',
+                    background: `linear-gradient(135deg, ${index === 0 ? '#60A5FA' : index === 1 ? '#34D399' : '#F59E0B'} 0%, ${index === 0 ? '#3B82F6' : index === 1 ? '#10B981' : '#D97706'} 100%)`,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: '48px',
+                    fontWeight: '900',
+                    color: '#FFFFFF',
+                    boxShadow: '0 4px 12px rgba(0,0,0,0.15)'
+                  }}>
+                    {index === 0 ? '|' : index === 1 ? '▼' : '●'}
+                  </div>
                   <h4>{type.name}</h4>
                   <p style={{ fontWeight: '600', color: '#333', marginBottom: 'var(--space-m)' }}>
                     {type.traits}
@@ -99,10 +119,39 @@ export default function BodyTypes() {
                     <strong>Nutrition:</strong> {type.nutrition}
                   </p>
                   <p>
-                    <strong>Entraînement:</strong> {type.training}
+                    <strong>{lang === 'fr' ? 'Entraînement' : 'Training'}:</strong> {type.training}
                   </p>
                 </div>
               ))}
+            </div>
+
+            {/* Visual comparison */}
+            <div className="visual-diagram" style={{ marginTop: 'var(--space-5xl)' }}>
+              <h3 className="diagram-title font-display">
+                {lang === 'fr' ? 'Comparaison Visuelle' : 'Visual Comparison'}
+              </h3>
+              <div style={{ 
+                display: 'grid', 
+                gridTemplateColumns: 'repeat(3, 1fr)', 
+                gap: 'var(--space-2xl)',
+                marginTop: 'var(--space-2xl)'
+              }}>
+                <img 
+                  src="https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?q=80&w=1470&auto=format&fit=crop"
+                  alt="Ectomorph"
+                  style={{ width: '100%', height: '300px', objectFit: 'cover', borderRadius: 'var(--radius-m)' }}
+                />
+                <img 
+                  src="https://images.unsplash.com/photo-1605296867304-46d5465a13f1?q=80&w=1470&auto=format&fit=crop"
+                  alt="Mesomorph"
+                  style={{ width: '100%', height: '300px', objectFit: 'cover', borderRadius: 'var(--radius-m)' }}
+                />
+                <img 
+                  src="https://images.unsplash.com/photo-1566241440091-ec10de8db2e1?q=80&w=1466&auto=format&fit=crop"
+                  alt="Endomorph"
+                  style={{ width: '100%', height: '300px', objectFit: 'cover', borderRadius: 'var(--radius-m)' }}
+                />
+              </div>
             </div>
 
             <h3 className="article-title" style={{ marginTop: 'var(--space-5xl)', fontSize: '2rem' }}>

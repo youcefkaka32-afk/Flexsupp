@@ -120,7 +120,11 @@ Important: These estimates are starting points. Adjust based on your results and
 
   return (
     <div className="tool-page">
-      <div className="tool-hero">
+      <div className="tool-hero" style={{
+        backgroundImage: 'linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.7)), url(https://images.unsplash.com/photo-1490645935967-10de6ba17061?q=80&w=1470&auto=format&fit=crop)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+      }}>
         <div className="section-shell">
           <h1 className="tool-hero__title font-display">{t.title}</h1>
           <p className="tool-hero__subtitle">{t.subtitle}</p>
@@ -129,7 +133,8 @@ Important: These estimates are starting points. Adjust based on your results and
 
       <div className="tool-content">
         <div className="section-shell">
-          <div className="tool-calculator">
+          <div className="tool-layout">
+            <div className="tool-calculator">
             <div className="calc-inputs" style={{ gridTemplateColumns: '1fr 1fr' }}>
               <div className="calc-field">
                 <label className="calc-label font-display">{t.genderLabel}</label>
@@ -221,6 +226,52 @@ Important: These estimates are starting points. Adjust based on your results and
               </div>
             )}
           </div>
+
+          <div className="tool-sidebar">
+            <img 
+              src="https://images.unsplash.com/photo-1498837167922-ddd27525d352?q=80&w=1470&auto=format&fit=crop"
+              alt="Healthy nutrition"
+              className="sidebar-image"
+            />
+            <div className="info-box">
+              <h4>{lang === 'fr' ? 'Conseil' : 'Tip'}</h4>
+              <p>
+                {lang === 'fr' 
+                  ? 'Suivez vos calories pendant 2 semaines et ajustez en fonction de vos résultats. Pesez-vous à la même heure chaque semaine.'
+                  : 'Track your calories for 2 weeks and adjust based on your results. Weigh yourself at the same time each week.'}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div className="visual-diagram">
+          <h3 className="diagram-title font-display">
+            {lang === 'fr' ? 'Répartition des Macronutriments' : 'Macronutrient Distribution'}
+          </h3>
+          <div className="diagram-grid">
+            <div className="diagram-item">
+              <h5>{lang === 'fr' ? 'Protéines' : 'Protein'}</h5>
+              <p style={{ fontSize: '32px', fontWeight: '900', color: 'var(--red)', margin: 'var(--space-m) 0' }}>
+                25-35%
+              </p>
+              <p>{lang === 'fr' ? 'Construction musculaire' : 'Muscle building'}</p>
+            </div>
+            <div className="diagram-item">
+              <h5>{lang === 'fr' ? 'Glucides' : 'Carbs'}</h5>
+              <p style={{ fontSize: '32px', fontWeight: '900', color: 'var(--red)', margin: 'var(--space-m) 0' }}>
+                40-50%
+              </p>
+              <p>{lang === 'fr' ? 'Énergie pour l\'entraînement' : 'Energy for training'}</p>
+            </div>
+            <div className="diagram-item">
+              <h5>{lang === 'fr' ? 'Lipides' : 'Fats'}</h5>
+              <p style={{ fontSize: '32px', fontWeight: '900', color: 'var(--red)', margin: 'var(--space-m) 0' }}>
+                20-30%
+              </p>
+              <p>{lang === 'fr' ? 'Hormones et santé' : 'Hormones and health'}</p>
+            </div>
+          </div>
+        </div>
 
           <div className="tool-article">
             <h2 className="article-title font-display">{t.about}</h2>

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import '../styles/admin.css'
 import { supabase } from '../lib/supabase'
 
-const ADMIN_PIN = '1234'
+const ADMIN_PIN = import.meta.env.VITE_ADMIN_PIN || '1234'
 const SESSION_KEY = 'flexsupps_admin_session'
 const STORAGE_BUCKET = 'product-images'
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL

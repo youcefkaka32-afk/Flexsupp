@@ -1,12 +1,14 @@
-import { cn } from '../../lib/utils'
-
 export function StripedPattern({ className, ...props }) {
   return (
     <svg
-      className={cn(
-        'pointer-events-none absolute inset-0 h-full w-full',
-        className
-      )}
+      style={{
+        pointerEvents: 'none',
+        position: 'absolute',
+        inset: 0,
+        height: '100%',
+        width: '100%',
+      }}
+      className={className}
       {...props}
     >
       <defs>

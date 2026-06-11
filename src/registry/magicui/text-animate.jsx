@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import { motion, useInView } from 'framer-motion'
 import './text-animate.css'
 
@@ -23,6 +23,25 @@ export default function TextAnimate({
 }) {
   const ref = useRef(null)
   const inView = useInView(ref, { once })
+  const [revealed, setRevealed] = useState(false)
+
+  useEffect(() => {
+    if (typeof window === 'undefined') {
+      setRevealed(true)
+      return
+    }
+    if (window.revealSite) {
+      setRevealed(true)
+      return
+    }
+    const interval = setInterval(() => {
+      if (window.revealSite) {
+        setRevealed(true)
+        clearInterval(interval)
+      }
+    }, 50)
+    return () => clearInterval(interval)
+  }, [])
 
   const text = typeof children === 'string' || typeof children === 'number' ? String(children) : ''
   const units = by === 'word' ? text.split(/(\s+)/) : Array.from(text)
@@ -51,7 +70,7 @@ export default function TextAnimate({
       ref={ref}
       className={`ta-root ${className}`.trim()}
       initial="hidden"
-      animate={inView ? 'visible' : 'hidden'}
+      animate={inView && revealed ? 'visible' : 'hidden'}
       variants={container}
       aria-hidden={false}
       {...props}

@@ -268,10 +268,8 @@ export default function AboutPage() {
       </section>
 
       {/* ── FOUNDERS STORY STRIP ── */}
-      <div className="about-story-strip" style={{ position: 'relative', overflow: 'hidden' }}>
-        <StripedPattern 
-          className="text-white opacity-[0.15]"
-        />
+      <div className="about-story-strip" style={{ position: 'relative', overflow: 'hidden', color: 'white' }}>
+        <StripedPattern style={{ opacity: 0.15 }} />
         <div style={{ width: 'min(1100px, calc(100vw - 60px))', margin: '0 auto', position: 'relative', zIndex: 1 }}>
           <h2 className="font-display">{t('whyUs.manifestoEyebrow')}</h2>
         </div>

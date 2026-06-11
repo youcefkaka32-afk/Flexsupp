@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Clear Loader Session</title>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      background: #1a1a1a;
+      color: white;
+    }
+    .container {
+      text-align: center;
+      padding: 2rem;
+      background: #2a2a2a;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+    }
+    button {
+      background: #E31B23;
+      color: white;
+      border: none;
+      padding: 1rem 2rem;
+      font-size: 1.1rem;
+      border-radius: 4px;
+      cursor: pointer;
+      margin: 0.5rem;
+      transition: all 0.2s;
+    }
+    button:hover {
+      background: #ff3339;
+      transform: translateY(-2px);
+    }
+    .status {
+      margin-top: 1rem;
+      padding: 1rem;
+      background: #333;
+      border-radius: 4px;
+      font-family: monospace;
+    }
+    a {
+      color: #4fc3f7;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🎬 Loader Session Test</h1>
+    <p>Use this to test the first-load transition</p>
+    
+    <button onclick="clearSession()">Clear Session Storage</button>
+    <button onclick="checkSession()">Check Status</button>
+    
+    <div class="status" id="status">
+      Click "Check Status" to see current state
+    </div>
+
+    <p style="margin-top: 2rem;">
+      <a href="http://localhost:3000" target="_blank">Open Site →</a>
+    </p>
+  </div>
+
+  <script>
+    function clearSession() {
+      sessionStorage.removeItem('loader_shown');
+      document.getElementById('status').innerHTML = 
+        '✅ Cleared! <strong>loader_shown</strong> removed from sessionStorage.<br>' +
+        'Click the link above to see first-load transition.';
+    }
+
+    function checkSession() {
+      const loaderShown = sessionStorage.getItem('loader_shown');
+      const status = loaderShown === 'true' 
+        ? '⚠️ <strong>loader_shown = true</strong><br>You will see repeat visit (flash)' 
+        : '✨ <strong>loader_shown = null</strong><br>You will see first-load transition (curtains + reveal)';
+      document.getElementById('status').innerHTML = status;
+    }
+
+    // Auto-check on load
+    checkSession();
+  </script>
+</body>
+</html>

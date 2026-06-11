@@ -448,15 +448,22 @@ export default function Hero() {
       s.glMaterial = mat
       scene.add(new THREE.Mesh(new THREE.PlaneGeometry(2, 2), mat))
 
-        bgARef.current.style.display = 'none'
-        bgBRef.current.style.display = 'none'
         renderSlide(s.currentIndex, true, true)
 
         const clock = new THREE.Clock()
+        let firstFrameRendered = false
         function animateGL() {
           rafGL = requestAnimationFrame(animateGL)
           mat.uniforms.uTime.value = clock.getElapsedTime()
           renderer.render(scene, camera)
+          if (!firstFrameRendered) {
+            firstFrameRendered = true
+            canvas.classList.add('is-ready')
+            setTimeout(() => {
+              if (bgARef.current) bgARef.current.style.display = 'none'
+              if (bgBRef.current) bgBRef.current.style.display = 'none'
+            }, 1100)
+          }
         }
         animateGL()
 

@@ -13,13 +13,24 @@ const BRAND_PHRASES = [
   'LOAD: COMPLETED.'
 ]
 
-export default function Loader({ onComplete }) {
+export default function Loader({ onComplete, onExitStart }) {
   const [exiting, setExiting] = useState(false)
   const [progress, setProgress] = useState(0)
   const [animatedProgress, setAnimatedProgress] = useState(0)
-  
+
   const done = useRef(false)
-  const isFirstLoad = useRef(sessionStorage.getItem('loader_shown') !== 'true').current
+  const isFirstLoad = useRef(
+    typeof window !== 'undefined' 
+      ? sessionStorage.getItem('loader_shown') !== 'true'
+      : true
+  ).current
+  const finishTriggered = useRef(false)
+
+  // Debug logging
+  useEffect(() => {
+    console.log('[Loader] isFirstLoad:', isFirstLoad)
+    console.log('[Loader] sessionStorage.loader_shown:', typeof window !== 'undefined' ? sessionStorage.getItem('loader_shown') : 'N/A')
+  }, [])
 
   // Mouse Glow Position Tracking
   const mouseX = useMotionValue(0)
@@ -28,7 +39,7 @@ export default function Loader({ onComplete }) {
   const springY = useSpring(mouseY, { damping: 45, stiffness: 250 })
 
   useEffect(() => {
-    // Initial mouse center coordinates
+    if (typeof window === 'undefined') return
     mouseX.set(window.innerWidth / 2)
     mouseY.set(window.innerHeight / 2)
 
@@ -40,105 +51,94 @@ export default function Loader({ onComplete }) {
     return () => window.removeEventListener('mousemove', handleMouseMove)
   }, [mouseX, mouseY])
 
-  // LERP progress smooth animation
+  // Smoothly animate `animatedProgress` toward `progress`
+  // THIS is the single source of truth for triggering exit —
+  // only fires when the *visual* counter has actually reached 100%.
   useEffect(() => {
     if (!isFirstLoad) return
 
     let rAF
-    const updateAnimatedProgress = () => {
+    const animate = () => {
       setAnimatedProgress((prev) => {
         const diff = progress - prev
-        if (Math.abs(diff) < 0.05) {
-          if (progress === 100 && !exiting) {
-            // Initiate exit sequence
+        const absDiff = Math.abs(diff)
+        const factor = 0.22
+        if (absDiff < 0.6) {
+          // snap to target and trigger exit if finished
+          if (progress === 100 && !exiting && !finishTriggered.current) {
+            finishTriggered.current = true
+            console.log('🎬 Loader reached 100% — calling onExitStart and starting curtain lift')
             setExiting(true)
+            onExitStart?.()
             setTimeout(() => {
+              console.log('✅ Loader complete — marking loader_shown in sessionStorage')
+              try { sessionStorage.setItem('loader_shown', 'true') } catch (e) {}
               onComplete?.()
-            }, 1200) // Staggered delay + wipe finish
+            }, 1600)
           }
           return progress
         }
-        return prev + diff * 0.08 // smooth interpolation factor
+        return prev + diff * factor
       })
-      rAF = requestAnimationFrame(updateAnimatedProgress)
+      rAF = requestAnimationFrame(animate)
     }
-    rAF = requestAnimationFrame(updateAnimatedProgress)
-    return () => cancelAnimationFrame(rAF)
-  }, [progress, exiting, onComplete, isFirstLoad])
+    rAF = requestAnimationFrame(animate)
+    return () => {
+      cancelAnimationFrame(rAF)
+      // Reset so StrictMode's double-mount doesn't block the exit trigger
+      finishTriggered.current = false
+    }
+  }, [progress, exiting, onComplete, isFirstLoad, onExitStart])
 
-  // Real Byte-level loading
+  // Deterministic progress driver — replace fragile byte-tracking
   useEffect(() => {
     if (done.current) return
     done.current = true
 
     if (!isFirstLoad) {
-      // Skip loader and trigger quick red flash
-      setTimeout(() => onComplete?.(), 350)
+      console.log('[Loader] Repeat visit detected — showing flash')
+      // fast skip for repeat visits
+      // Start flash exit immediately, trigger reveal AFTER flash is gone
+      setTimeout(() => {
+        console.log('[Loader] Flash complete — calling onComplete')
+        try { sessionStorage.setItem('loader_shown', 'true') } catch (e) {}
+        onComplete?.()
+      }, 380)
+      // Trigger content reveal just before flash completes
+      setTimeout(() => {
+        console.log('[Loader] Triggering onExitStart for content reveal')
+        onExitStart?.()
+      }, 300)
       return
     }
 
-    sessionStorage.setItem('loader_shown', 'true')
+    let raf
+    const DURATION = 1300
+    const start = performance.now()
 
-    const assets = [
-      { url: '/flexlgo.svg', size: 2263162 },
-      { url: '/flexlgo.png', size: 1012724 },
-      { url: '/images/HEROMAINIMAGElol.png', size: 1632328 },
-      { url: '/images/c4_desktop_70e66224-52c0-46d5-b5a9-86620b340202.jpg', size: 411191 },
-      { url: '/images/evl_desktop_0b65638c-50ae-47d4-9f34-47bf6d136326.jpg', size: 457766 },
-      { url: '/images/mass_desktop.jpg', size: 653047 },
-      { url: '/images/nutrex_desktop_4cf46f31-4a8d-4ace-a1c8-9abc2010b7ca.jpg', size: 413475 },
-      { url: '/fitness.mp4', size: 6096441 }
-    ]
-
-    const totalBytes = assets.reduce((acc, curr) => acc + curr.size, 0)
-    const loadedBytesMap = {}
-
-    // Initialize map with 0s
-    assets.forEach(a => { loadedBytesMap[a.url] = 0 })
-
-    // Safeguard timeout (6 seconds max)
-    const safeguardTimer = setTimeout(() => {
-      setProgress(100)
-    }, 6000)
-
-    const updateProgress = () => {
-      const currentLoaded = Object.values(loadedBytesMap).reduce((acc, curr) => acc + curr, 0)
-      const pct = Math.min(Math.floor((currentLoaded / totalBytes) * 100), 100)
+    // This timer ONLY drives setProgress from 0→100.
+    // Exit is handled exclusively by the smooth interpolator above.
+    const step = (ts) => {
+      const elapsed = Math.max(0, ts - start)
+      const pct = Math.min(100, Math.floor((elapsed / DURATION) * 100))
       setProgress((prev) => Math.max(prev, pct))
-    }
 
-    const loadAsset = async (asset) => {
-      try {
-        const response = await fetch(asset.url)
-        if (!response.body) {
-          loadedBytesMap[asset.url] = asset.size
-          updateProgress()
-          return
-        }
-
-        const reader = response.body.getReader()
-        let receivedBytes = 0
-
-        while (true) {
-          const { done, value } = await reader.read()
-          if (done) break
-          receivedBytes += value.length
-          loadedBytesMap[asset.url] = receivedBytes
-          updateProgress()
-        }
-      } catch (err) {
-        console.warn(`Asset preloading failed for ${asset.url}:`, err)
-        loadedBytesMap[asset.url] = asset.size
-        updateProgress()
+      if (elapsed >= DURATION) {
+        // Ensure we land exactly at 100 — the interpolator will
+        // detect this and trigger the exit sequence.
+        setProgress(100)
+        return
       }
+      raf = requestAnimationFrame(step)
     }
 
-    assets.forEach(loadAsset)
-
+    raf = requestAnimationFrame(step)
     return () => {
-      clearTimeout(safeguardTimer)
+      if (raf) cancelAnimationFrame(raf)
+      // Reset so the effect can run again after StrictMode's double-mount
+      done.current = false
     }
-  }, [isFirstLoad, onComplete])
+  }, [isFirstLoad])
 
   if (!isFirstLoad) {
     return (
@@ -151,7 +151,6 @@ export default function Loader({ onComplete }) {
     )
   }
 
-  // Calculate current phrase
   const phraseIndex = Math.min(
     Math.floor((animatedProgress / 100) * BRAND_PHRASES.length),
     BRAND_PHRASES.length - 1
@@ -159,8 +158,7 @@ export default function Loader({ onComplete }) {
   const currentPhrase = BRAND_PHRASES[phraseIndex]
 
   return (
-    <div className={`page-loader ${progress === 100 ? 'is-ready' : ''}`}>
-      {/* Stochastic Curtain Grid Rise */}
+    <div className={`page-loader ${progress === 100 ? 'is-ready' : ''} ${exiting ? 'is-exiting' : ''}`}>
       <div className="page-loader__curtains">
         {[0, 1, 2, 3].map((i) => (
           <motion.div
@@ -169,30 +167,23 @@ export default function Loader({ onComplete }) {
             initial={{ y: '0%' }}
             animate={exiting ? { y: '-100%' } : { y: '0%' }}
             transition={{
-              duration: 0.9,
+              duration: 1.1,
               ease: [0.85, 0, 0.15, 1],
-              delay: i === 0 ? 0.05 : i === 1 ? 0.22 : i === 2 ? 0.12 : 0.28 // Stochastic stagger
+              delay: i === 0 ? 0.1 : i === 1 ? 0.26 : i === 2 ? 0.16 : 0.32
             }}
           />
         ))}
       </div>
 
-      {/* Grid line framework */}
       <div className="page-loader__grid-line page-loader__grid-line--v1" />
       <div className="page-loader__grid-line page-loader__grid-line--v2" />
       <div className="page-loader__grid-line page-loader__grid-line--h1" />
       <div className="page-loader__grid-line page-loader__grid-line--h2" />
 
-      {/* Interactive glowing halo */}
-      <motion.div
-        className="loader-radial-glow"
-        style={{ left: springX, top: springY }}
-      />
+      <motion.div className="loader-radial-glow" style={{ left: springX, top: springY }} />
 
-      {/* Fine technical scanlines */}
       <div className="loader-scanlines" />
 
-      {/* Loader Interface content */}
       <motion.div
         className="page-loader__content"
         animate={exiting ? { opacity: 0, scale: 0.95, y: -30 } : { opacity: 1, scale: 1, y: 0 }}
@@ -200,7 +191,6 @@ export default function Loader({ onComplete }) {
       >
         <div className="loader-corners" />
 
-        {/* Liquid filled logo */}
         <div className="page-loader__logo-wrapper">
           <img src="/flexlgo.png" className="logo-base" alt="" />
           <div className="logo-fill" style={{ height: `${animatedProgress}%` }}>
@@ -208,14 +198,11 @@ export default function Loader({ onComplete }) {
           </div>
         </div>
 
-        {/* Typography block */}
         <div className="page-loader__info">
           <span className="loader-percent font-display">
             {Math.round(animatedProgress).toString().padStart(3, '0')}%
           </span>
-          <span className="loader-phrase">
-            {currentPhrase}
-          </span>
+          <span className="loader-phrase">{currentPhrase}</span>
         </div>
       </motion.div>
     </div>

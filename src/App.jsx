@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
-import { AnimatePresence } from 'framer-motion'
-import { useState, useEffect, lazy, Suspense } from 'react'
+import { AnimatePresence, motion } from 'framer-motion'
+import { useState, useEffect, useRef, lazy, Suspense } from 'react'
 import './styles/global.css'
 import './styles/mobile-enhancements.css'
 import './styles/mobile-scale-fix.css'
@@ -12,7 +12,10 @@ import PageTransition, { PageCurtain } from './components/PageTransition/PageTra
 import CustomCursor    from './components/CustomCursor/CustomCursor'
 import AnnouncementBar from './components/AnnouncementBar/AnnouncementBar'
 import ScrollToTop     from './components/ui/ScrollToTop'
-import Loader          from './components/Loader/Loader'
+import LoaderReveal    from './components/Loader/LoaderReveal'
+
+// Video loader available but not used
+// import LoaderRevealVideo from './components/Loader/LoaderRevealVideo'
 
 // Lazy-load pages — each becomes its own JS chunk
 const HomePage   = lazy(() => import('./pages/HomePage'))
@@ -55,23 +58,59 @@ function AnimatedRoutes() {
 }
 
 export default function App() {
-  const [loading, setLoading] = useState(true)
+  const [revealComplete, setRevealComplete] = useState(false)
   const isAdmin = typeof window !== 'undefined' && window.location.pathname.startsWith('/admin')
   
+  // Check if first load
+  const forceFirstLoad = typeof window !== 'undefined' && window.location.search.includes('firstload')
+  const isFirstLoad = forceFirstLoad || (typeof window !== 'undefined' && sessionStorage.getItem('loader_shown') !== 'true')
+
+  console.log('[App] 🎬 Starting with:', { isFirstLoad, forceFirstLoad, revealComplete })
+
   useEffect(() => {
     if (isAdmin) {
       document.body.style.overflow = ''
+      setRevealComplete(true)
       return
     }
-    if (loading) document.body.style.overflow = 'hidden'
-    else document.body.style.overflow = ''
-  }, [loading, isAdmin])
+    // Lock scroll during reveal
+    if (!revealComplete) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = ''
+    }
+  }, [revealComplete, isAdmin])
 
   return (
     <CartProvider>
       <BrowserRouter>
-        {!isAdmin && loading && <Loader onComplete={() => setLoading(false)} />}
-        <AnimatedRoutes />
+        {/* Content - hide completely until reveal on first load */}
+        <motion.div
+          initial={{ opacity: isFirstLoad ? 0 : 1 }}
+          animate={{ opacity: revealComplete || !isFirstLoad ? 1 : 0 }}
+          transition={{
+            duration: 1.2,
+            ease: [0.16, 1, 0.3, 1],
+            delay: 0,
+          }}
+          style={{ 
+            width: '100%', 
+            minHeight: '100vh',
+          }}
+        >
+          <AnimatedRoutes />
+        </motion.div>
+
+        {/* Curtain reveal overlay - lifts away to reveal content */}
+        {!isAdmin && (
+          <LoaderReveal 
+            isFirstLoad={isFirstLoad}
+            onComplete={() => {
+              console.log('[App] ✅ Reveal complete')
+              setRevealComplete(true)
+            }}
+          />
+        )}
       </BrowserRouter>
     </CartProvider>
   )

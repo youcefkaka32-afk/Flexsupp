@@ -16,6 +16,15 @@
   pointer-events: all;
   overflow: hidden;
   isolation: isolate;
+  opacity: 1;
+  transition: opacity 0.45s ease-out;
+}
+
+/* Graceful fade-out during curtain exit — prevents flash on unmount */
+.page-loader.is-exiting {
+  opacity: 0;
+  transition: opacity 0.5s ease-out 0.9s; /* delay matches curtain animation end */
+  pointer-events: none;
 }
 
 /* ── 4 Vertical Curtain Columns ───────────────────────── */
@@ -116,6 +125,9 @@
   height: 260px;
   user-select: none;
   flex-shrink: 0;
+  /* Smooth CSS glow instead of relying on image glow */
+  filter: drop-shadow(0 0 60px rgba(227, 27, 35, 0.7))
+          drop-shadow(0 0 100px rgba(227, 27, 35, 0.4));
 }
 
 /* Ghost outline — always visible */
@@ -146,9 +158,7 @@
   width: 260px;
   height: 260px;
   object-fit: contain;
-  /* Bright glow so it pops on the dark background */
-  filter: drop-shadow(0 0 16px rgba(227, 27, 35, 0.45))
-          brightness(1.15);
+  filter: brightness(1.1);
 }
 
 /* ── Percentage counter ───────────────────────────────── */

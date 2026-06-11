@@ -2,30 +2,23 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useLocation } from 'react-router-dom'
 
 /* ─────────────────────────────────────────────────────────
-   Seamless page transitions:
-   - Exit: fast fade + 12px lift (100ms)
-   - Enter: fade + 20px rise (480ms ease-out, 80ms delay)
-   - Curtain: single black panel sweeps in then out
-   Total feel: ~560ms, smooth and non-jarring
+   PageTransition — animates on navigations BETWEEN pages
    ───────────────────────────────────────────────────────── */
 
 const pageVariants = {
-  initial: {
-    opacity: 0,
-    y: 20,
-  },
+  initial: { opacity: 0, y: 18 },
   animate: {
     opacity: 1,
     y: 0,
     transition: {
       duration: 0.52,
       ease: [0.22, 1, 0.36, 1],
-      delay: 0.08,
+      delay: 0.06,
     },
   },
   exit: {
     opacity: 0,
-    y: -12,
+    y: -10,
     transition: {
       duration: 0.18,
       ease: [0.55, 0, 1, 0.45],
@@ -48,9 +41,7 @@ export default function PageTransition({ children }) {
 }
 
 /* ─────────────────────────────────────────────────────────
-   PageCurtain — a thin red line that sweeps across on nav.
-   Kept lightweight: no heavy dark panel, just a brand stripe
-   that confirms navigation happened, then vanishes.
+   PageCurtain — red stripe sweep on navigation
    ───────────────────────────────────────────────────────── */
 export function PageCurtain() {
   const location = useLocation()

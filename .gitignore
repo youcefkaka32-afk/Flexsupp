@@ -13,19 +13,57 @@ build-output.txt
 full-build-debug.txt
 vite-output.txt
 
-# Loose root-level images (not part of src or public)
-*.jpg
-*.jpeg
-*.png
-*.webp
-*.mp4
-*.svg
-*.gif
+# Loose root-level junk files (NOT inside public/ or src/)
+/3000x900px_desktop.jpg
+/3000x900px_desktop.webp
+/719nSRR98DL.jpg
+/81gq678bzQL.jpg
+/a Cinematic Fitness Video...SONY FX6.mp4
+/ChocolatePeanutButterProteinShake.jpg
+/CinnamonBunProteinPowder.jpg
+/CREATINE [Creapure] (300G).jpg
+/EliminateThermogenicFatBurner.jpg
+/HEROIMAGEMOBILE.jpg
+/HEROMAINIMAGElol.png
+/IMAGEABOUTUS.png
+/MARINE COLLAGEN (450G).jpg
+/Running.png
+/Sneakrs.png
+/Superfly.png
+/Supplement Online Shop Design.jpg
+/The Box.jpg
+/ULTRA GAINER (5000G) (Strawberry).jpg
+/WHEY PROTEIN CONCENTRATE (4000G) (Strawberry).jpg
+/dz-04.svg
+/flexlgo.png
+/flexlgo.svg
+/Algeria_location_map.svg
+/s-l400.jpg
+/screencapture-shop-bodybuilding-2026-06-09-15_48_12.png
 
-# Old design / reference docs in root
-*.md
-*.html
-!index.html
+# Root-level reference/design docs
+/ADMIN_GUIDE.md
+/airzonedz.com-DESIGN.md
+/airzonedz_com.html
+/AIRZONE_DEFINITIVE_PROMPT.md
+/AIRZONE_HERO_PROMPT.md
+/DESIGN.md
+/MOBILE_FIXES_APPLIED.md
+/MOBILE_HERO_IMAGE_UPDATE.md
+/MOBILE_LAYOUT_FIXES.md
+/MOBILE_OPTIMIZATION_REPORT.md
+/MOBILE_OPTIMIZATION_SUMMARY.md
+/PRODUCT.md
+/PROJECT_STATUS.md
+/TRANSLATION_REPORT.md
+/SHOP_PAGE_MOBILE_FIXES.md
+/shop.bodybuilding.com-DESIGN.md
+/supplement-store-master-prompt.md
+/frame_viewer.html
+/build-debug.txt
+/build-output.txt
+/full-build-debug.txt
+/vite-output.txt
 
-# Reference / design files
-ezgif-5545a7a067b626e2-jpg/
+# Frames folder
+/ezgif-5545a7a067b626e2-jpg/

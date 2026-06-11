@@ -624,7 +624,7 @@ img { display: block; max-width: 100%; }
 }
 .scroll-to-top {
   position: fixed;
-  bottom: 2rem;
+  bottom: 5.5rem;
   right: 2rem;
   width: 46px;
   height: 46px;

@@ -1,9 +1,19 @@
+// Hero slide images — desktop + mobile pairs (numbered 1-5)
+const desktop1 = '/images/desktopheroimagesnotmain (1).jpg'
+const desktop2 = '/images/desktopheroimagesnotmain (2).jpg'
+const desktop3 = '/images/desktopheroimagesnotmain (3).jpg'
+const desktop4 = '/images/desktopheroimagesnotmain (4).jpg'
+const desktop5 = '/images/desktopheroimagesnotmain (5).jpg'
+
+const mobile1 = '/images/mobileheroimagesnotmain (1).png'
+const mobile2 = '/images/mobileheroimagesnotmain (2).png'
+const mobile3 = '/images/mobileheroimagesnotmain (3).png'
+const mobile4 = '/images/mobileheroimagesnotmain (4).png'
+const mobile5 = '/images/mobileheroimagesnotmain (5).png'
+
+// Slide 0 keeps its own main hero image
 const heroMainImage = '/images/HEROMAINIMAGElol.png'
 const heroMainImageMobile = '/HEROIMAGEMOBILE.jpg'
-const c4Image = '/images/c4_desktop_70e66224-52c0-46d5-b5a9-86620b340202.jpg'
-const evlImage = '/images/evl_desktop_0b65638c-50ae-47d4-9f34-47bf6d136326.jpg'
-const massImage = '/images/mass_desktop.jpg'
-const nutrexImage = '/images/nutrex_desktop_4cf46f31-4a8d-4ace-a1c8-9abc2010b7ca.jpg'
 
 // HERO SLIDES
 export const slides = [
@@ -33,7 +43,8 @@ export const slides = [
     ctaHref: '/shop',
     ctaProminent: false,
     goal: 'energy',
-    image: c4Image,
+    image: desktop1,
+    imageMobile: mobile1,
     titleStyle: { top: '54%', left: '50%', align: 'center', width: 'auto' },
     titleSplit: { front: [0, 1, 2, 3, 4, 5, 6, 7], back: [], outlines: [] },
     shoe: 'running',
@@ -51,7 +62,8 @@ export const slides = [
     ctaHref: '/shop',
     ctaProminent: false,
     goal: 'energy',
-    image: evlImage,
+    image: desktop2,
+    imageMobile: mobile2,
     titleStyle: { top: '54%', left: '50%', align: 'center', width: 'auto' },
     titleSplit: { front: [0, 1, 2], back: [], outlines: [] },
     shoe: 'sneakers',
@@ -68,7 +80,8 @@ export const slides = [
     ctaHref: '/shop',
     ctaProminent: false,
     goal: 'muscle',
-    image: massImage,
+    image: desktop3,
+    imageMobile: mobile3,
     titleStyle: { top: '54%', left: '50%', align: 'center', width: 'auto' },
     titleSplit: { front: [0, 1, 2, 3], back: [], outlines: [] },
     shoe: 'superfly',
@@ -85,7 +98,8 @@ export const slides = [
     ctaHref: '/shop',
     ctaProminent: false,
     goal: 'force',
-    image: nutrexImage,
+    image: desktop4,
+    imageMobile: mobile4,
     titleStyle: { top: '54%', left: '50%', align: 'center', width: 'auto' },
     titleSplit: { front: [0, 1, 2, 3, 4, 5], back: [], outlines: [] },
     shoe: 'running',
@@ -110,6 +124,3 @@ export const shoeMarkup = {
 // Use the useProductData() hook in components.
 // This file only exports the hero/slide config
 // that is needed before the JSON fetch completes.
-//
-// To edit products, categories or brands:
-//   -> open public/data/products.json

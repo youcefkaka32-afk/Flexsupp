@@ -6,7 +6,7 @@ import { supabase } from '../lib/supabase'
 const ADMIN_PIN = '1234'
 const SESSION_KEY = 'flexsupps_admin_session'
 const STORAGE_BUCKET = 'product-images'
-const SUPABASE_URL = 'https://lazryrfxndirnqmwcapt.supabase.co'
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL
 
 // ── Seed Data ────────────────────────────────────────────────
 const SEED_CATEGORIES = [

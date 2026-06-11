@@ -121,8 +121,8 @@
 */
 .page-loader__logo-wrapper {
   position: relative;
-  width: 260px;
-  height: 260px;
+  width: 340px;
+  height: 340px;
   user-select: none;
   flex-shrink: 0;
   /* Smooth CSS glow instead of relying on image glow */
@@ -134,8 +134,8 @@
 .logo-base {
   position: absolute;
   inset: 0;
-  width: 260px;
-  height: 260px;
+  width: 340px;
+  height: 340px;
   object-fit: contain;
   opacity: 0.08;
 }
@@ -155,8 +155,8 @@
   position: absolute;
   bottom: 0;
   left: 0;
-  width: 260px;
-  height: 260px;
+  width: 340px;
+  height: 340px;
   object-fit: contain;
   filter: brightness(1.1);
 }

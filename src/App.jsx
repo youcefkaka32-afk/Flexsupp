@@ -25,10 +25,10 @@ const AboutPage  = lazy(() => import('./pages/AboutPage'))
 const AdminPage  = lazy(() => import('./pages/AdminPage'))
 
 // Tool pages
-const BMICalculator = lazy(() => import('./pages/tools/BMICalculator'))
-const CalorieCalculator = lazy(() => import('./pages/tools/CalorieCalculator'))
-const BodyTypes = lazy(() => import('./pages/tools/BodyTypes'))
-const WorkoutPlanning = lazy(() => import('./pages/tools/WorkoutPlanning'))
+const BMICalculator = lazy(() => import('./pages/Tools/BMICalculator'))
+const CalorieCalculator = lazy(() => import('./pages/Tools/CalorieCalculator'))
+const BodyTypes = lazy(() => import('./pages/Tools/BodyTypes'))
+const WorkoutPlanning = lazy(() => import('./pages/Tools/WorkoutPlanning'))
 
 
 function AnimatedRoutes() {

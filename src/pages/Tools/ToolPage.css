@@ -1,7 +1,39 @@
 /* Tool Page Styles */
 .tool-page {
   min-height: 100vh;
-  background: #FFFFFF;
+  background: linear-gradient(180deg, #FFFFFF 0%, #f8f8f8 50%, #FFFFFF 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Decorative background elements */
+.tool-page::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(circle at 10% 20%, rgba(227, 27, 35, 0.03) 0%, transparent 50%),
+    radial-gradient(circle at 90% 80%, rgba(227, 27, 35, 0.04) 0%, transparent 50%),
+    radial-gradient(circle at 50% 50%, rgba(0, 0, 0, 0.01) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Decorative geometric shapes */
+.tool-page::after {
+  content: '';
+  position: absolute;
+  top: 20%;
+  right: -100px;
+  width: 400px;
+  height: 400px;
+  background: linear-gradient(135deg, rgba(227, 27, 35, 0.04) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
 }
 
 .tool-hero {
@@ -28,15 +60,70 @@
 
 .tool-content {
   padding: var(--space-6xl) 0;
+  position: relative;
+  z-index: 1;
+}
+
+/* Decorative side elements */
+.tool-content::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 30%;
+  width: 120px;
+  height: 300px;
+  background: linear-gradient(90deg, rgba(227, 27, 35, 0.06) 0%, transparent 100%);
+  clip-path: polygon(0 0, 100% 20%, 100% 80%, 0 100%);
+  pointer-events: none;
+}
+
+.tool-content::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  bottom: 20%;
+  width: 150px;
+  height: 250px;
+  background: linear-gradient(270deg, rgba(227, 27, 35, 0.05) 0%, transparent 100%);
+  clip-path: polygon(0 20%, 100% 0, 100% 100%, 0 80%);
+  pointer-events: none;
 }
 
 /* Calculator Styles */
 .tool-calculator {
-  background: #f5f5f5;
+  background: #FFFFFF;
   border-radius: var(--radius-l);
   padding: var(--space-4xl);
   margin-bottom: var(--space-5xl);
-  box-shadow: var(--shadow-card);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Decorative corner accent */
+.tool-calculator::before {
+  content: '';
+  position: absolute;
+  top: -50px;
+  right: -50px;
+  width: 150px;
+  height: 150px;
+  background: linear-gradient(135deg, var(--red) 0%, transparent 70%);
+  opacity: 0.08;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.tool-calculator::after {
+  content: '';
+  position: absolute;
+  bottom: -30px;
+  left: -30px;
+  width: 120px;
+  height: 120px;
+  background: linear-gradient(45deg, rgba(227, 27, 35, 0.06) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
 }
 
 .calc-inputs {
@@ -191,6 +278,20 @@
 .tool-article {
   max-width: 800px;
   margin: 0 auto;
+  position: relative;
+}
+
+/* Decorative quotation mark or accent */
+.tool-article::before {
+  content: '';
+  position: absolute;
+  top: -20px;
+  left: -40px;
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, rgba(227, 27, 35, 0.06) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
 }
 
 .article-title {
@@ -199,6 +300,20 @@
   margin-bottom: var(--space-xl);
   color: #111;
   text-transform: uppercase;
+  position: relative;
+  display: inline-block;
+}
+
+/* Underline accent */
+.article-title::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  width: 60px;
+  height: 4px;
+  background: var(--red);
+  border-radius: 2px;
 }
 
 .article-content {
@@ -249,17 +364,38 @@
 }
 
 .body-type-card {
-  background: #f5f5f5;
+  background: linear-gradient(135deg, #ffffff 0%, #f8f8f8 100%);
   padding: var(--space-xl);
   border-radius: var(--radius-m);
   text-align: center;
   transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(0,0,0,0.05);
+}
+
+/* Decorative accent line */
+.body-type-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--red) 0%, transparent 80%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
 
 .body-type-card:hover {
   transform: translateY(-8px);
-  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+  box-shadow: 0 12px 28px rgba(0,0,0,0.15);
   background: #FFFFFF;
+  border-color: rgba(227, 27, 35, 0.1);
+}
+
+.body-type-card:hover::before {
+  opacity: 1;
 }
 
 .body-type-card h4 {
@@ -311,12 +447,38 @@
 
 /* Visual Diagram Styles */
 .visual-diagram {
-  background: #f9f9f9;
+  background: linear-gradient(135deg, #fafafa 0%, #ffffff 100%);
   border-radius: var(--radius-l);
   padding: var(--space-2xl);
   margin: var(--space-3xl) 0;
-  box-shadow: var(--shadow-card);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.06);
   text-align: center;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(227, 27, 35, 0.08);
+}
+
+/* Decorative corner stripes */
+.visual-diagram::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(90deg, var(--red) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.visual-diagram::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 60%;
+  height: 4px;
+  background: linear-gradient(270deg, var(--red) 0%, transparent 100%);
+  pointer-events: none;
 }
 
 .diagram-title {
@@ -393,6 +555,16 @@
     padding: var(--space-2xl);
   }
 
+  .tool-calculator::before,
+  .tool-calculator::after {
+    opacity: 0.5;
+  }
+
+  .tool-content::before,
+  .tool-content::after {
+    display: none;
+  }
+
   .result-value {
     flex-direction: column;
     gap: var(--space-m);
@@ -412,6 +584,11 @@
 
   .article-content {
     font-size: 16px;
+  }
+
+  .article-title::after {
+    width: 40px;
+    height: 3px;
   }
 
   .bmi-chart {

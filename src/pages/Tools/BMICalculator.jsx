@@ -36,6 +36,30 @@ Pour la plupart des adultes, un IMC idéal se situe entre 18,5 et 24,9. Un IMC:
 
 Important: L'IMC est un outil de dépistage, pas un diagnostic. Consultez un professionnel de santé pour une évaluation complète.`,
     },
+    ar: {
+      title: 'حاسبة مؤشر كتلة الجسم',
+      subtitle: 'احسب مؤشر كتلة جسمك',
+      weightLabel: 'الوزن (كجم)',
+      heightLabel: 'الطول (سم)',
+      calculate: 'احسب',
+      result: 'مؤشر كتلة جسمك',
+      categories: {
+        underweight: 'نقص الوزن',
+        normal: 'وزن طبيعي',
+        overweight: 'زيادة الوزن',
+        obese: 'سمنة',
+      },
+      about: 'حول مؤشر كتلة الجسم',
+      aboutText: `مؤشر كتلة الجسم (BMI) هو مقياس يستخدم طولك ووزنك لتحديد ما إذا كان وزنك صحيًا.
+
+بالنسبة لمعظم البالغين، يتراوح مؤشر كتلة الجسم المثالي بين 18.5 و 24.9. مؤشر كتلة الجسم:
+• أقل من 18.5 يشير إلى نقص الوزن
+• بين 18.5 و 24.9 يعتبر طبيعيًا
+• بين 25 و 29.9 يشير إلى زيادة الوزن
+• 30 أو أكثر يشير إلى السمنة
+
+مهم: مؤشر كتلة الجسم هو أداة فحص وليس تشخيصًا. استشر أخصائي صحة للحصول على تقييم كامل.`,
+    },
     en: {
       title: 'BMI Calculator',
       subtitle: 'Calculate your Body Mass Index',

@@ -65,6 +65,98 @@ export default function WorkoutPlanning() {
           'Hydratez-vous avant, pendant et après l\'entraînement',
         ],
       },
+      
+      premium: {
+        title: 'Programme d\'Entraînement Complet',
+        subtitle: 'Guide PDF Professionnel',
+        price: '2000',
+        currency: 'DA',
+        description: 'Obtenez un programme d\'entraînement complet basé sur la science avec des guides visuels détaillés, des protocoles de progression et des recommandations nutritionnelles.',
+        features: [
+          'Programme structuré pour tous les niveaux',
+          'Guides visuels pour chaque exercice',
+          'Nombre de répétitions et séries optimisés',
+          'Méthodes de progression validées',
+        ],
+        orderWhatsApp: 'COMMANDER VIA WHATSAPP',
+        orderEmail: 'Ou par email:',
+      },
+    },
+    ar: {
+      title: 'تخطيط التمرين',
+      subtitle: 'نظّم جلساتك للحصول على نتائج مثالية',
+      intro: `التخطيط الفعال هو مفتاح النجاح في كمال الأجسام واللياقة البدنية. سواء كنت مبتدئاً أو متقدماً، تنظيم تمارينك يعظم النتائج ويقلل من مخاطر الإصابة.`,
+      
+      principles: {
+        title: 'المبادئ الأساسية',
+        items: [
+          {
+            name: 'الحمل التدريجي',
+            desc: 'زد الشدة تدريجياً (الوزن، التكرارات، الحجم) لمواصلة التقدم.',
+          },
+          {
+            name: 'الخصوصية',
+            desc: 'تدرب وفقاً لأهدافك المحددة (قوة، تضخم، قدرة على التحمل).',
+          },
+          {
+            name: 'الاستشفاء',
+            desc: 'الراحة ضرورية - العضلات تنمو أثناء الاستشفاء، وليس أثناء التدريب.',
+          },
+          {
+            name: 'الدورية',
+            desc: 'نوّع الشدة والحجم في دورات لتجنب الثبات.',
+          },
+        ],
+      },
+
+      splits: {
+        title: 'أنواع التقسيمات',
+        items: [
+          '**كامل الجسم (3 مرات/أسبوع):** مثالي للمبتدئين، يحفز كامل الجسم كل جلسة',
+          '**علوي/سفلي (4 مرات/أسبوع):** توازن جيد، يسمح بحجم أكبر لكل مجموعة عضلية',
+          '**دفع/سحب/أرجل (6 مرات/أسبوع):** للمتقدمين، حجم عالي، استشفاء محسن',
+          '**تقسيم عضلي (5-6 مرات/أسبوع):** مجموعة عضلية واحدة في اليوم، حجم أقصى لكل عضلة',
+        ],
+      },
+
+      structure: {
+        title: 'هيكل الجلسة',
+        steps: [
+          '**الإحماء (5-10 دقائق):** كارديو خفيف + حركة المفاصل',
+          '**التنشيط (5 دقائق):** تمارين تنشيط للعضلات المستهدفة',
+          '**التمارين الرئيسية (30-40 دقيقة):** حركات مركبة ثقيلة',
+          '**تمارين العزل (15-20 دقيقة):** عمل مستهدف',
+          '**التهدئة (5 دقائق):** تمدد خفيف',
+        ],
+      },
+
+      tips: {
+        title: 'نصائح احترافية',
+        items: [
+          'تتبع أداءك في دفتر تدريب',
+          'أعط الأولوية لجودة التنفيذ على الكمية',
+          'نوّع التمارين كل 4-6 أسابيع',
+          'استمع لجسمك - تكيف حسب الحاجة',
+          'نم 7-9 ساعات في الليلة للاستشفاء الأمثل',
+          'اشرب الماء قبل وأثناء وبعد التدريب',
+        ],
+      },
+      
+      premium: {
+        title: 'برنامج تدريب كامل',
+        subtitle: 'دليل PDF احترافي',
+        price: '2000',
+        currency: 'دج',
+        description: 'احصل على برنامج تدريب كامل مبني على العلم مع أدلة بصرية مفصلة، بروتوكولات التقدم، وتوصيات غذائية.',
+        features: [
+          'برنامج منظم لجميع المستويات',
+          'أدلة بصرية لكل تمرين',
+          'عدد التكرارات والمجموعات المثلى',
+          'طرق التقدم المثبتة',
+        ],
+        orderWhatsApp: 'اطلب عبر واتساب',
+        orderEmail: 'أو عبر البريد:',
+      },
     },
     en: {
       title: 'Workout Planning',
@@ -124,6 +216,22 @@ export default function WorkoutPlanning() {
           'Sleep 7-9h per night for optimal recovery',
           'Hydrate before, during, and after training',
         ],
+      },
+      
+      premium: {
+        title: 'Complete Training Program',
+        subtitle: 'Professional PDF Guide',
+        price: '2000',
+        currency: 'DA',
+        description: 'Get a complete science-based training program with detailed visual guides, progression protocols, and nutritional recommendations.',
+        features: [
+          'Structured program for all levels',
+          'Visual guides for each exercise',
+          'Optimized rep and set ranges',
+          'Validated progression methods',
+        ],
+        orderWhatsApp: 'ORDER VIA WHATSAPP',
+        orderEmail: 'Or by email:',
       },
     },
   }
@@ -304,6 +412,121 @@ export default function WorkoutPlanning() {
                 </div>
               ))}
             </div>
+
+            {/* Premium Program Section */}
+            <div style={{
+              background: 'linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%)',
+              borderRadius: 'var(--radius-l)',
+              padding: 'var(--space-5xl) var(--space-3xl)',
+              marginTop: 'var(--space-6xl)',
+              color: '#FFFFFF',
+              position: 'relative',
+              overflow: 'hidden',
+            }}>
+              {/* Background image overlay */}
+              <div style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                backgroundImage: 'url(/images/etraining-program.png)',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                opacity: 0.15,
+                zIndex: 0,
+              }} />
+              
+              <div style={{ position: 'relative', zIndex: 1, textAlign: 'center', maxWidth: '800px', margin: '0 auto' }}>
+                <h2 className="font-display" style={{ fontSize: 'clamp(2.5rem, 5vw, 3.5rem)', fontWeight: '900', marginBottom: 'var(--space-m)', textTransform: 'uppercase' }}>
+                  {t.premium.title}
+                </h2>
+                <p style={{ fontSize: '20px', marginBottom: 'var(--space-l)', opacity: 0.9 }}>
+                  {t.premium.subtitle}
+                </p>
+                <p style={{ fontSize: '18px', lineHeight: '1.8', marginBottom: 'var(--space-3xl)', opacity: 0.85 }}>
+                  {t.premium.description}
+                </p>
+
+                {/* Features Grid */}
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 'var(--space-l)', marginBottom: 'var(--space-4xl)', textAlign: 'left' }}>
+                  {t.premium.features.map((feature, index) => (
+                    <div key={index} style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-m)' }}>
+                      <div style={{ 
+                        width: '30px',
+                        height: '30px',
+                        borderRadius: '50%',
+                        background: 'var(--red)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontSize: '16px',
+                        flexShrink: 0
+                      }}>
+                        ✓
+                      </div>
+                      <p style={{ fontSize: '16px', margin: 0 }}>{feature}</p>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Price */}
+                <div style={{ marginBottom: 'var(--space-3xl)' }}>
+                  <p className="font-display" style={{ fontSize: '64px', fontWeight: '900', lineHeight: '1', color: 'var(--red)' }}>
+                    {t.premium.price} <span style={{ fontSize: '36px' }}>{t.premium.currency}</span>
+                  </p>
+                </div>
+
+                {/* Order Button */}
+                <button 
+                  onClick={() => {
+                    const message = encodeURIComponent(
+                      lang === 'fr' 
+                        ? `Bonjour! Je suis intéressé par le Programme d'Entraînement Complet (2000 DA).`
+                        : lang === 'ar'
+                        ? `مرحباً! أنا مهتم ببرنامج التدريب الكامل (2000 دج).`
+                        : `Hello! I'm interested in the Complete Training Program (2000 DA).`
+                    )
+                    window.open(`https://wa.me/213553628299?text=${message}`, '_blank')
+                  }}
+                  style={{
+                    padding: 'var(--space-l) var(--space-4xl)',
+                    background: '#25D366',
+                    color: '#FFFFFF',
+                    border: 'none',
+                    borderRadius: 'var(--radius-m)',
+                    fontSize: '20px',
+                    fontWeight: '900',
+                    letterSpacing: '0.05em',
+                    cursor: 'pointer',
+                    transition: 'all 0.3s ease',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: 'var(--space-m)',
+                    marginBottom: 'var(--space-l)',
+                  }}
+                  className="font-display"
+                  onMouseOver={(e) => {
+                    e.target.style.transform = 'translateY(-4px)'
+                    e.target.style.boxShadow = '0 8px 20px rgba(37, 211, 102, 0.4)'
+                  }}
+                  onMouseOut={(e) => {
+                    e.target.style.transform = 'translateY(0)'
+                    e.target.style.boxShadow = 'none'
+                  }}
+                >
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+                  </svg>
+                  {t.premium.orderWhatsApp}
+                </button>
+
+                <p style={{ fontSize: '16px', opacity: 0.8 }}>
+                  {t.premium.orderEmail} <a href="mailto:Kanardodjamel34@gmail.com" style={{ color: 'var(--red)', textDecoration: 'none', fontWeight: '700' }}>Kanardodjamel34@gmail.com</a>
+                </p>
+              </div>
+            </div>
+
           </div>
         </div>
       </div>

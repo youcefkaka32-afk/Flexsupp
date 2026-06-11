@@ -37,6 +37,37 @@ export default function BodyTypes() {
 • Restez cohérent et patient - les changements prennent du temps
 • Consultez un professionnel pour un plan personnalisé`,
     },
+    ar: {
+      title: 'دليل أنواع الجسم',
+      subtitle: 'إكتومورف، ميزومورف، أم إندومورف؟',
+      intro: `فهم نوع جسمك (أو النمط الجسدي) يمكن أن يساعدك على تخصيص تدريبك وتغذيتك للحصول على نتائج أفضل. بينما معظم الناس عبارة عن مزيج من هذه الأنواع الثلاثة، يمكن أن يوجه تحديد نوعك السائد اختياراتك.`,
+      types: [
+        {
+          name: 'إكتومورف',
+          traits: 'بنية نحيفة ورشيقة، التمثيل الغذائي سريع، صعوبة في زيادة الوزن',
+          nutrition: 'سعرات حرارية عالية، كربوهيدرات وفيرة، 5-6 وجبات/يوم',
+          training: 'تدريب قوة ثقيل، جلسات قصيرة، كارديو محدود',
+        },
+        {
+          name: 'ميزومورف',
+          traits: 'بنية رياضية طبيعية، اكتساب عضلات سهل، التمثيل الغذائي متوازن',
+          nutrition: 'ماكروز متوازنة (40% كربوهيدرات، 30% بروتين، 30% دهون)',
+          training: 'تنوع في التدريب، قوة + كارديو، استشفاء مناسب',
+        },
+        {
+          name: 'إندومورف',
+          traits: 'إطار أكبر، اكتساب سهل (عضلات ودهون)، التمثيل الغذائي بطيء',
+          nutrition: 'كربوهيدرات مضبوطة، بروتين عالي، حصص معتدلة',
+          training: 'كارديو منتظم، دوائر، تدريب استقلابي',
+        },
+      ],
+      tips: 'نصائح عامة',
+      tipsText: `• حدد نوعك السائد ولكن اعترف بأنك فريد
+• اضبط نهجك تدريجياً بناءً على نتائجك
+• الجينات تؤثر ولكن لا تحدد إمكاناتك
+• كن متسقاً وصبوراً - التغييرات تستغرق وقتاً
+• استشر متخصصاً للحصول على خطة شخصية`,
+    },
     en: {
       title: 'Body Types Guide',
       subtitle: 'Ectomorph, Mesomorph, or Endomorph?',
@@ -130,28 +161,17 @@ export default function BodyTypes() {
               <h3 className="diagram-title font-display">
                 {lang === 'fr' ? 'Comparaison Visuelle' : 'Visual Comparison'}
               </h3>
-              <div style={{ 
-                display: 'grid', 
-                gridTemplateColumns: 'repeat(3, 1fr)', 
-                gap: 'var(--space-2xl)',
-                marginTop: 'var(--space-2xl)'
-              }}>
-                <img 
-                  src="https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?q=80&w=1470&auto=format&fit=crop"
-                  alt="Ectomorph"
-                  style={{ width: '100%', height: '300px', objectFit: 'cover', borderRadius: 'var(--radius-m)' }}
-                />
-                <img 
-                  src="https://images.unsplash.com/photo-1605296867304-46d5465a13f1?q=80&w=1470&auto=format&fit=crop"
-                  alt="Mesomorph"
-                  style={{ width: '100%', height: '300px', objectFit: 'cover', borderRadius: 'var(--radius-m)' }}
-                />
-                <img 
-                  src="https://images.unsplash.com/photo-1566241440091-ec10de8db2e1?q=80&w=1466&auto=format&fit=crop"
-                  alt="Endomorph"
-                  style={{ width: '100%', height: '300px', objectFit: 'cover', borderRadius: 'var(--radius-m)' }}
-                />
-              </div>
+              <img 
+                src="/images/bodytypes-visual-showoff.jpg"
+                alt="Body types comparison"
+                style={{ 
+                  width: '100%', 
+                  height: 'auto', 
+                  borderRadius: 'var(--radius-l)', 
+                  marginTop: 'var(--space-2xl)',
+                  boxShadow: 'var(--shadow-card)'
+                }}
+              />
             </div>
 
             <h3 className="article-title" style={{ marginTop: 'var(--space-5xl)', fontSize: '2rem' }}>

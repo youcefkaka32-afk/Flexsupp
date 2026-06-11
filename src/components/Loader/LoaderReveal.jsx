@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { motion, useMotionValue, useSpring, AnimatePresence } from 'framer-motion'
+import { DotLottieReact } from '@lottiefiles/dotlottie-react'
 import './Loader.css'
 
 const BRAND_PHRASES = [
@@ -188,6 +189,67 @@ export default function LoaderReveal({ isFirstLoad, onComplete }) {
 
       {/* Scanlines */}
       {isFirstLoad && <div className="loader-scanlines" style={{ zIndex: 99999 }} />}
+
+      {/* Lightning animation - Lottie behind logo */}
+      {isFirstLoad && !startCurtainLift && (
+        <>
+          {/* White flash overlay synchronized with lightning */}
+          <motion.div
+            style={{
+              position: 'fixed',
+              inset: 0,
+              background: 'white',
+              zIndex: 99999,
+              pointerEvents: 'none',
+            }}
+            initial={{ opacity: 0 }}
+            animate={{ 
+              opacity: [
+                0, 0, 0, 0.15, 0, 0,  // First flash
+                0, 0, 0.12, 0, 0,     // Second flash
+                0, 0, 0, 0.18, 0, 0,  // Third flash
+                0, 0, 0.1, 0, 0,      // Fourth flash
+                0, 0, 0, 0.2, 0.15, 0 // Fifth flash (double)
+              ]
+            }}
+            transition={{
+              duration: 7,
+              repeat: Infinity,
+              ease: 'easeOut',
+              times: [
+                0, 0.05, 0.08, 0.09, 0.1, 0.15,
+                0.2, 0.25, 0.26, 0.27, 0.32,
+                0.4, 0.48, 0.52, 0.53, 0.54, 0.6,
+                0.65, 0.7, 0.71, 0.72, 0.78,
+                0.85, 0.88, 0.92, 0.93, 0.94, 1
+              ]
+            }}
+          />
+          
+          {/* Lottie lightning animation */}
+          <div style={{
+            position: 'fixed',
+            inset: 0,
+            zIndex: 99997,
+            pointerEvents: 'none',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
+            <DotLottieReact
+              src="/lightning.lottie"
+              loop
+              autoplay
+              style={{
+                width: '100%',
+                height: '100%',
+                maxWidth: '1200px',
+                maxHeight: '1200px',
+              }}
+            />
+          </div>
+        </>
+      )}
 
       {/* Loader content */}
       <AnimatePresence>

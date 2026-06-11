@@ -1,0 +1,78 @@
+export const toolsData = {
+  fr: {
+    title: 'OUTILS & CALCULATEURS',
+    readMore: 'LIRE PLUS',
+    items: [
+      {
+        id: 'bmi-calculator',
+        title: 'CALCULATEUR IMC',
+        desc: 'Calculez votre indice de masse corporelle pour évaluer votre poids santé.',
+        category: 'OUTIL',
+        type: 'tool',
+        image: 'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?q=80&w=1470&auto=format&fit=crop',
+      },
+      {
+        id: 'calorie-calculator',
+        title: 'CALCULATEUR DE CALORIES',
+        desc: 'Déterminez vos besoins caloriques quotidiens selon vos objectifs fitness.',
+        category: 'OUTIL',
+        type: 'tool',
+        image: 'https://images.unsplash.com/photo-1490645935967-10de6ba17061?q=80&w=1453&auto=format&fit=crop',
+      },
+      {
+        id: 'body-types',
+        title: 'TYPES DE CORPS',
+        desc: 'Découvrez votre morphotype et comment adapter votre entraînement et nutrition.',
+        category: 'GUIDE',
+        type: 'article',
+        image: 'https://images.unsplash.com/photo-1544033527-b192daee1f5b?q=80&w=1470&auto=format&fit=crop',
+      },
+      {
+        id: 'workout-planning',
+        title: 'PLANIFICATION D\'ENTRAÎNEMENT',
+        desc: 'Apprenez à structurer vos séances pour maximiser vos résultats.',
+        category: 'GUIDE',
+        type: 'article',
+        image: 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=1470&auto=format&fit=crop',
+      },
+    ],
+  },
+  en: {
+    title: 'TOOLS & CALCULATORS',
+    readMore: 'READ MORE',
+    items: [
+      {
+        id: 'bmi-calculator',
+        title: 'BMI CALCULATOR',
+        desc: 'Calculate your Body Mass Index to assess your healthy weight range.',
+        category: 'TOOL',
+        type: 'tool',
+        image: 'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?q=80&w=1470&auto=format&fit=crop',
+      },
+      {
+        id: 'calorie-calculator',
+        title: 'CALORIE CALCULATOR',
+        desc: 'Determine your daily calorie needs based on your fitness goals.',
+        category: 'TOOL',
+        type: 'tool',
+        image: 'https://images.unsplash.com/photo-1490645935967-10de6ba17061?q=80&w=1453&auto=format&fit=crop',
+      },
+      {
+        id: 'body-types',
+        title: 'BODY TYPES GUIDE',
+        desc: 'Learn your body type and how to customize your exercise and nutrition.',
+        category: 'GUIDE',
+        type: 'article',
+        image: 'https://images.unsplash.com/photo-1544033527-b192daee1f5b?q=80&w=1470&auto=format&fit=crop',
+      },
+      {
+        id: 'workout-planning',
+        title: 'WORKOUT PLANNING',
+        desc: 'Learn how to structure your training sessions for maximum results.',
+        category: 'GUIDE',
+        type: 'article',
+        image: 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=1470&auto=format&fit=crop',
+      },
+    ],
+  },
+}

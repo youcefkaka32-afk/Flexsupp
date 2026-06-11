@@ -24,6 +24,12 @@ const ProductPage = lazy(() => import('./pages/ProductPage'))
 const AboutPage  = lazy(() => import('./pages/AboutPage'))
 const AdminPage  = lazy(() => import('./pages/AdminPage'))
 
+// Tool pages
+const BMICalculator = lazy(() => import('./pages/tools/BMICalculator'))
+const CalorieCalculator = lazy(() => import('./pages/tools/CalorieCalculator'))
+const BodyTypes = lazy(() => import('./pages/tools/BodyTypes'))
+const WorkoutPlanning = lazy(() => import('./pages/tools/WorkoutPlanning'))
+
 
 function AnimatedRoutes() {
   const location = useLocation()
@@ -46,6 +52,10 @@ function AnimatedRoutes() {
             <Route path="/shop" element={<PageTransition><ShopPage /></PageTransition>} />
             <Route path="/boutique/:id" element={<PageTransition><ProductPage /></PageTransition>} />
             <Route path="/about" element={<PageTransition><AboutPage /></PageTransition>} />
+            <Route path="/tools/bmi-calculator" element={<PageTransition><BMICalculator /></PageTransition>} />
+            <Route path="/tools/calorie-calculator" element={<PageTransition><CalorieCalculator /></PageTransition>} />
+            <Route path="/tools/body-types" element={<PageTransition><BodyTypes /></PageTransition>} />
+            <Route path="/tools/workout-planning" element={<PageTransition><WorkoutPlanning /></PageTransition>} />
             <Route path="/admin" element={<AdminPage />} />
           </Routes>
         </Suspense>

@@ -31,6 +31,8 @@
   flex-direction: column;
   box-shadow: var(--shadow-card);
   transition: all 0.3s ease;
+  text-decoration: none;
+  color: inherit;
 }
 
 .tools-card:hover {

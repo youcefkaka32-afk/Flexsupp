@@ -8,6 +8,13 @@
   cursor: none;
   isolation: isolate;
   color: #fff;
+  will-change: auto;
+}
+
+/* Prevent content shift during page transitions */
+.hero * {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 .hero::after {
@@ -33,10 +40,15 @@
   position: absolute;
   inset: 0;
   opacity: 0;
-  will-change: opacity, transform;
+  will-change: opacity;
   background-position: center center;
   background-repeat: no-repeat;
   background-size: cover;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform: translateZ(0);
 }
 .bg-gl-canvas {
   position: absolute;

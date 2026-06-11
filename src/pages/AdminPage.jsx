@@ -14,6 +14,8 @@ const SEED_CATEGORIES = [
   { id: 'creatine', name: 'CRÉATINE', slug: 'creatine', description: 'Boostez votre force et vos performances explosives', image: '', href: '#productsSection' },
   { id: 'bcaa', name: 'BCAA', slug: 'bcaa', description: "Acides aminés essentiels pour la récupération et l'endurance", image: '', href: '#productsSection' },
   { id: 'preworkout', name: 'PRÉ-WORKOUT', slug: 'preworkout', description: "Énergie maximale avant l'entraînement", image: '', href: '#productsSection' },
+  { id: 'recovery', name: 'RECOVERY', slug: 'recovery', description: 'Suppléments de récupération post-entraînement', image: '', href: '#productsSection' },
+  { id: 'multivitamins', name: 'MULTIVITAMINES', slug: 'multivitamins', description: 'Vitamines et minéraux essentiels pour la santé globale', image: '', href: '#productsSection' },
 ]
 
 const SEED_BRANDS = [

@@ -154,7 +154,38 @@ export default function Hero() {
 
   const handleHeroClick = (event) => {
     if (event.target.closest('a, button, input, textarea, select')) return
-    window.location.href = 'https://www.instagram.com/flex_supps_/'
+    
+    const currentSlide = state.current.currentIndex
+    
+    // Slide 0 (main hero) → Instagram
+    if (currentSlide === 0) {
+      window.location.href = 'https://www.instagram.com/flex_supps_/'
+      return
+    }
+    
+    // Slide 1 (desktop1) → Pre-Workout & Creatine
+    if (currentSlide === 1) {
+      navigate('/shop?categories=Pre-Workout,Creatine')
+      return
+    }
+    
+    // Slide 2 (desktop2) → Recovery & Whey
+    if (currentSlide === 2) {
+      navigate('/shop?categories=Recovery,Whey')
+      return
+    }
+    
+    // Slide 3 (desktop3) → BCAA & Pre-Workout
+    if (currentSlide === 3) {
+      navigate('/shop?categories=BCAA,Pre-Workout')
+      return
+    }
+    
+    // Slide 4 (desktop4) → BCAA & Pre-Workout
+    if (currentSlide === 4) {
+      navigate('/shop?categories=BCAA,Pre-Workout')
+      return
+    }
   }
 
   const applyBackground = (slide, layer) => {

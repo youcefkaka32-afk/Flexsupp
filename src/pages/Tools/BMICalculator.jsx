@@ -178,8 +178,8 @@ Important: BMI is a screening tool, not a diagnosis. Consult a healthcare profes
 
             <div className="tool-sidebar">
               <img 
-                src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?q=80&w=1470&auto=format&fit=crop"
-                alt="BMI measurement"
+                src="/images/Bodymaxindex.jpg"
+                alt="Body Mass Index chart"
                 className="sidebar-image"
               />
             </div>

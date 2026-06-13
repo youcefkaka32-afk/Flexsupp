@@ -8,57 +8,57 @@ const ALL_REVIEWS = [
     avatar: 'S', name: 'Sam C.', date: 'August 7, 2025', stars: 5,
     title: 'Great Product',
     text: 'It is a really great product and I noticed results right away!! Strength went up in the first week.',
-    productName: 'MHP T-Bomb 3xtreme® Testosterone Blend',
-    img: 'https://airzonedz.com/wp-content/uploads/2026/02/img_9519-600x800.jpeg'
+    productName: 'Scitec Nutrition Créatine Mono',
+    img: '/images/creatine-creapure.jpg'
   },
   {
     avatar: 'R', name: 'RAINONE R.', date: 'May 27, 2026', stars: 5,
     title: 'Great Taste',
     text: 'Great taste, mixes instantly and digests very well with no bloating. Best whey I have tried so far.',
-    productName: 'Bodybuilding.com Signature 100% Isolate, 5lb',
-    img: 'https://airzonedz.com/wp-content/uploads/2025/08/img_1248-800x800.jpeg'
+    productName: 'Whey Protein Concentrate',
+    img: '/images/whey-protein-concentrate.jpg'
   },
   {
     avatar: 'J', name: 'Jenene J.', date: 'July 20, 2025', stars: 5,
     title: 'Great During And After Workouts',
     text: "Love a small scoop of the BCAA in my water during and after workouts. My muscles don't feel fatigued at all.",
-    productName: 'Bodybuilding.com Signature BCAA',
-    img: 'https://airzonedz.com/wp-content/uploads/2026/02/e36cf088-c852-4ddc-b4fa-372df4b4cf55-640x800.jpeg'
+    productName: 'BCAA Essential',
+    img: '/images/bcaa-essential.jpg'
   },
   {
     avatar: 'J', name: 'Juan L.', date: 'January 30, 2025', stars: 5,
     title: 'No Crash, Pure Energy',
     text: 'Taste great! Extreme energy boost and focus for workouts without any crash afterwards. Highly recommend.',
-    productName: 'EVLUTION NUTRITION ENGN Shred Pre-Workout',
-    img: 'https://airzonedz.com/wp-content/uploads/2025/08/img_1246-800x800.jpeg'
+    productName: 'Eliminate Pre-Workout',
+    img: '/images/eliminate-preworkout.jpg'
   },
   {
     avatar: 'A', name: 'Amir K.', date: 'March 12, 2026', stars: 5,
     title: 'Livraison Rapide, Produit Authentique',
     text: 'Reçu en 2 jours, emballage parfait et produit 100% authentique. La créatine a boosté mes performances de manière notable.',
-    productName: 'Scitec Nutrition Créatine Mono',
-    img: 'https://airzonedz.com/wp-content/uploads/2026/02/img_9507-600x800.jpeg'
+    productName: 'Creatine HCL',
+    img: '/images/creatine-hcl.jpg'
   },
   {
     avatar: 'M', name: 'Mohamed B.', date: 'April 5, 2026', stars: 5,
     title: 'Qualité Top',
     text: 'Whey Gold est excellent. Goût chocolat parfait, se mélange facilement et les résultats sont au rendez-vous après 3 semaines.',
-    productName: 'Optimum Nutrition Whey Gold',
-    img: 'https://airzonedz.com/wp-content/uploads/2025/08/img_1246-800x800.jpeg'
+    productName: 'Chocolate Peanut Butter Protein',
+    img: '/images/chocolate-peanut-butter.jpg'
   },
   {
     avatar: 'L', name: 'Lina M.', date: 'February 18, 2026', stars: 5,
     title: 'Meilleure Boutique en Algérie',
     text: 'Service client exceptionnel et produits authentiques. Je commande chez Flex Supps depuis un an et je ne suis jamais déçue.',
-    productName: 'BioTechUSA BCAA Essential',
-    img: 'https://airzonedz.com/wp-content/uploads/2026/02/img_1790-640x800.jpeg'
+    productName: 'BCAA Recovery',
+    img: '/images/bcaa-recovery.jpg'
   },
   {
     avatar: 'K', name: 'Karim D.', date: 'May 1, 2026', stars: 5,
     title: 'Insane Pump',
     text: 'The pre-workout formula is absolutely insane. Pump and focus are on another level. Will definitely reorder.',
-    productName: 'Cellucor C4 Pre-Workout Extreme',
-    img: 'https://airzonedz.com/wp-content/uploads/2025/08/img_1248-800x800.jpeg'
+    productName: 'Ultra Gainer',
+    img: '/images/ultra-gainer.jpg'
   },
 ]
 
@@ -79,6 +79,7 @@ export default function ProductReviews() {
   const [index, setIndex] = useState(0)
   const [dragging, setDragging] = useState(false)
   const [dragStart, setDragStart] = useState(0)
+  const [isMobile, setIsMobile] = useState(false)
   const timerRef = useRef(null)
   const trackRef = useRef(null)
   const sectionRef = useRef(null)
@@ -86,12 +87,25 @@ export default function ProductReviews() {
   useScrollReveal({ selector: '.reviews-header', from: 'fadeUp', duration: 0.8 }, sectionRef)
   useScrollReveal({ selector: '.reviews-carousel-wrap', from: 'fadeUp', delay: 0.15, duration: 0.9 }, sectionRef)
 
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth <= 768)
+    check()
+    window.addEventListener('resize', check)
+    return () => window.removeEventListener('resize', check)
+  }, [])
+
+  const cardsPerView = isMobile ? 1 : CARDS_PER_VIEW
   const total = ALL_REVIEWS.length
-  const maxIndex = total - CARDS_PER_VIEW
+  const maxIndex = total - cardsPerView
 
   const go = useCallback((next) => {
     setIndex(Math.max(0, Math.min(next, maxIndex)))
   }, [maxIndex])
+
+  // Reset index if it goes out of bounds when switching between mobile/desktop
+  useEffect(() => {
+    if (index > maxIndex) setIndex(0)
+  }, [maxIndex, index])
 
   const prev = () => go(index - 1)
   const next = () => go(index + 1)
@@ -128,7 +142,10 @@ export default function ProductReviews() {
     if (Math.abs(diff) > 50) { diff > 0 ? handleNext() : handlePrev() }
   }
 
-  const offset = -(index * (100 / CARDS_PER_VIEW))
+  // Mobile: cards are 90% wide, need 5% left shift to center first card
+  const cardWidthPercent = isMobile ? 90 : (100 / cardsPerView)
+  const centeringOffset = isMobile ? -5 : 0
+  const offset = centeringOffset - (index * cardWidthPercent)
 
   return (
     <section className="reviews-section" ref={sectionRef}>
@@ -193,7 +210,7 @@ export default function ProductReviews() {
 
         {/* Dots */}
         <div className="reviews-dots">
-          {Array.from({ length: maxIndex + 1 }).map((_, i) => (
+          {(isMobile ? ALL_REVIEWS : Array.from({ length: maxIndex + 1 })).map((_, i) => (
             <button
               key={i}
               className={`reviews-dot ${i === index ? 'active' : ''}`}

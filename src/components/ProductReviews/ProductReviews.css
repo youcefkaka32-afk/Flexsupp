@@ -261,9 +261,19 @@
 }
 
 @media (max-width: 768px) {
-  /* Better spacing and sizing for mobile */
+  /* ═══════════════════════════════════════════════════════════
+     MOBILE CAROUSEL REWRITE — One card at a time, centered
+     ═══════════════════════════════════════════════════════════ */
+  
   .reviews-section {
     padding: 4rem 0 3rem;
+  }
+
+  /* Remove outer shell horizontal padding so carousel centers
+     (global .section-shell adds side padding on mobile) */
+  .reviews-section .section-shell {
+    padding-left: 0;
+    padding-right: 0;
   }
 
   .reviews-header {
@@ -284,19 +294,42 @@
     font-size: 22px;
   }
 
-  /* Make cards full width on mobile with better visibility */
+  /* Hide desktop navigation arrows */
+  .reviews-nav-btn {
+    display: none;
+  }
+
+  /* Carousel container */
+  .reviews-carousel-wrap {
+    gap: 0;
+  }
+
+  /* Viewport with padding for centering */
+  .reviews-viewport {
+    overflow: visible;
+    padding: 0;
+  }
+
+  /* Track holds all cards - NO margin */
+  .reviews-track {
+    display: flex;
+    gap: 0;
+  }
+
+  /* Each card: 90% width to leave space for peek */
   .review-card {
-    flex: 0 0 calc(100% - 2rem);
-    padding: 0 1rem;
+    flex: 0 0 90%;
+    margin: 0;
+    padding: 0 10px;
+    box-sizing: border-box;
   }
 
   .review-card__inner {
     padding: 1.5rem;
     gap: 1rem;
-    min-height: 300px;
   }
 
-  /* Adjust card elements for mobile */
+  /* Card content adjustments */
   .review-card__avatar {
     width: 44px;
     height: 44px;
@@ -320,44 +353,93 @@
     line-height: 1.6;
   }
 
-  /* Optimize carousel for mobile */
-  .reviews-carousel-wrap {
-    gap: 0.75rem;
-  }
-
-  .reviews-nav-btn {
-    width: 44px;
-    height: 44px;
-  }
-
-  /* Better dot indicators */
+  /* ═══════════════════════════════════════════════════════════
+     INDICATOR DOTS — 8 dots, pill for active
+     ═══════════════════════════════════════════════════════════ */
+  
   .reviews-dots {
-    margin-top: 1.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     gap: 8px;
+    margin-top: 1.75rem;
   }
 
   .reviews-dot {
     width: 8px;
     height: 8px;
+    border-radius: 50%;
+    border: none;
+    background-color: #cccccc;
+    cursor: pointer;
+    padding: 0;
+    transition: width 0.3s ease, border-radius 0.3s ease;
   }
 
   .reviews-dot.active {
     width: 24px;
+    height: 8px;
+    border-radius: 9999px;
+    background-color: #ff0000;
+  }
+
+  /* Mobile — Scroll-snap carousel using actual card width = 90% (from .review-card) */
+  .reviews-track {
+    display: flex;
+    overflow-x: scroll;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    gap: 0;
+    transform: none !important;
+    width: auto;
+  }
+
+  .review-card {
+    flex: 0 0 90%;
+    min-width: 90%;
+    flex-shrink: 0;
+    scroll-snap-align: center;
+    margin: 0;
+    padding: 0 10px;
+    box-sizing: border-box;
+  }
+
+  /* Center first/last card so single card sits centered with peeks */
+  .review-card:first-child {
+    margin-left: calc((100vw - 90vw) / 2);
+  }
+  .review-card:last-child {
+    margin-right: calc((100vw - 90vw) / 2);
+  }
+
+  /* Hard-reset and size indicator dots on mobile */
+  .reviews-dots {
+    display: none !important;
+  }
+
+  .reviews-dot {
+    width: 8px !important;
+    height: 8px !important;
+    border-radius: 50% !important;
+    padding: 0 !important;
+    transform: none !important;
+    font-size: 0 !important;
+    border: none !important;
+    background-color: #cccccc !important;
+    transition: width 0.3s ease, height 0.2s ease, border-radius 0.3s ease;
+  }
+
+  .reviews-dot.active {
+    width: 24px !important;
+    height: 8px !important;
+    border-radius: 9999px !important;
+    background-color: #ff0000 !important;
   }
 }
 
 @media (max-width: 640px) {
   .review-card {
-    flex: 0 0 calc(100% - 1rem);
-    padding: 0 0.5rem;
-  }
-
-  .reviews-carousel-wrap {
-    gap: 0.5rem;
-  }
-
-  .reviews-nav-btn {
-    width: 40px;
-    height: 40px;
+    flex: 0 0 85%;
+    padding: 0 8px;
   }
 }

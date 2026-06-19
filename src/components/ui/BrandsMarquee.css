@@ -88,6 +88,13 @@
   background: linear-gradient(270deg, var(--pg-bg, #fff) 0%, transparent 100%);
 }
 
+/* ── Dark mode logo invert ──────────────────────────────── */
+/* Black logos on transparent become white in dark theme, except those with .no-invert */
+[data-theme="dark"] .bm-logo-tile img:not(.no-invert) {
+  filter: invert(1) brightness(0.9);
+  transition: filter 0.3s ease;
+}
+
 /* ── Mobile tweaks ──────────────────────────────────────── */
 @media (max-width: 768px) {
   .bm-logo-tile {

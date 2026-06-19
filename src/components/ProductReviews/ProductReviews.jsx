@@ -180,7 +180,7 @@ const ALL_REVIEWS_DATA = {
   ]
 }
 
-const CARDS_PER_VIEW = 3
+const CARDS_PER_VIEW_DESKTOP = 3
 
 function StarRating({ count }) {
   return (
@@ -196,24 +196,22 @@ export default function ProductReviews() {
   const { t, i18n } = useTranslation()
   const lang = i18n.language || 'en'
   const [index, setIndex] = useState(0)
+  const [isMobile, setIsMobile] = useState(false)
   const [dragging, setDragging] = useState(false)
   const [dragStart, setDragStart] = useState(0)
-  const [isMobile, setIsMobile] = useState(false)
+
   const timerRef = useRef(null)
   const trackRef = useRef(null)
   const sectionRef = useRef(null)
+  const isProgrammaticScroll = useRef(false)
 
-  // Get reviews based on current language
   const ALL_REVIEWS = ALL_REVIEWS_DATA[lang] || ALL_REVIEWS_DATA.en
+  const total = ALL_REVIEWS.length
 
   useScrollReveal({ selector: '.reviews-header', from: 'fadeUp', duration: 0.8 }, sectionRef)
   useScrollReveal({ selector: '.reviews-carousel-wrap', from: 'fadeUp', delay: 0.15, duration: 0.9 }, sectionRef)
 
-  // Reset index when language changes
-  useEffect(() => {
-    setIndex(0)
-  }, [lang])
-
+  // ── Mobile detection ──────────────────────────────────────────
   useEffect(() => {
     const check = () => setIsMobile(window.innerWidth <= 768)
     check()
@@ -221,42 +219,80 @@ export default function ProductReviews() {
     return () => window.removeEventListener('resize', check)
   }, [])
 
-  const cardsPerView = isMobile ? 1 : CARDS_PER_VIEW
-  const total = ALL_REVIEWS.length
-  const maxIndex = total - cardsPerView
+  // ── Reset when language changes ───────────────────────────────
+  useEffect(() => {
+    setIndex(0)
+  }, [lang])
 
-  const go = useCallback((next) => {
-    setIndex(Math.max(0, Math.min(next, maxIndex)))
-  }, [maxIndex])
+  // ── Derived values ────────────────────────────────────────────
+  const cardsPerView = isMobile ? 1 : CARDS_PER_VIEW_DESKTOP
+  const maxIndex = Math.max(0, total - cardsPerView)
 
-  // Reset index if it goes out of bounds when switching between mobile/desktop
+  // Keep index in bounds when cardsPerView changes (resize)
   useEffect(() => {
     if (index > maxIndex) setIndex(0)
-  }, [maxIndex, index])
+  }, [maxIndex]) // eslint-disable-line
 
-  const prev = () => go(index - 1)
-  const next = () => go(index + 1)
-
-  // Auto-advance
-  useEffect(() => {
-    timerRef.current = setInterval(() => {
-      setIndex(i => i >= maxIndex ? 0 : i + 1)
-    }, 4000)
-    return () => clearInterval(timerRef.current)
-  }, [maxIndex])
-
-  const resetTimer = () => {
+  // ── Auto-advance ──────────────────────────────────────────────
+  const startTimer = useCallback(() => {
     clearInterval(timerRef.current)
     timerRef.current = setInterval(() => {
-      setIndex(i => i >= maxIndex ? 0 : i + 1)
+      setIndex(i => (i >= maxIndex ? 0 : i + 1))
     }, 4000)
-  }
+  }, [maxIndex])
 
-  const handlePrev = () => { prev(); resetTimer() }
-  const handleNext = () => { next(); resetTimer() }
-  const handleDot  = (i) => { go(i); resetTimer() }
+  useEffect(() => {
+    startTimer()
+    return () => clearInterval(timerRef.current)
+  }, [startTimer])
 
-  // Drag / swipe
+  // ── Mobile: programmatic scroll whenever index changes ────────
+  useEffect(() => {
+    if (!isMobile) return
+    const track = trackRef.current
+    if (!track) return
+
+    // Card width = 90vw
+    const cardWidth = window.innerWidth * 0.9
+    const targetScroll = index * cardWidth
+
+    isProgrammaticScroll.current = true
+    track.scrollTo({ left: targetScroll, behavior: 'smooth' })
+
+    const t = setTimeout(() => { isProgrammaticScroll.current = false }, 450)
+    return () => clearTimeout(t)
+  }, [index, isMobile])
+
+  // ── Mobile: sync dot from user's native swipe ─────────────────
+  useEffect(() => {
+    if (!isMobile) return
+    const track = trackRef.current
+    if (!track) return
+
+    const onScroll = () => {
+      if (isProgrammaticScroll.current) return
+      const cardWidth = window.innerWidth * 0.9
+      const nearest = Math.round(track.scrollLeft / cardWidth)
+      const clamped = Math.max(0, Math.min(nearest, total - 1))
+      setIndex(clamped)
+    }
+
+    track.addEventListener('scroll', onScroll, { passive: true })
+    return () => track.removeEventListener('scroll', onScroll)
+  }, [isMobile, total])
+
+  // ── Navigation helpers ────────────────────────────────────────
+  const go = useCallback((next) => {
+    const clamped = Math.max(0, Math.min(next, maxIndex))
+    setIndex(clamped)
+    startTimer()
+  }, [maxIndex, startTimer])
+
+  const handlePrev = () => go(index - 1)
+  const handleNext = () => go(index + 1)
+  const handleDot  = (i) => go(i)
+
+  // ── Desktop drag / swipe ──────────────────────────────────────
   const onDragStart = (e) => {
     setDragging(true)
     setDragStart(e.clientX ?? e.touches?.[0]?.clientX)
@@ -269,16 +305,15 @@ export default function ProductReviews() {
     if (Math.abs(diff) > 50) { diff > 0 ? handleNext() : handlePrev() }
   }
 
-  // Mobile: cards are 90% wide, need 5% left shift to center first card
-  const cardWidthPercent = isMobile ? 90 : (100 / cardsPerView)
-  const centeringOffset = isMobile ? -5 : 0
-  const offset = centeringOffset - (index * cardWidthPercent)
+  // ── Desktop transform offset ──────────────────────────────────
+  const cardWidthPct = 100 / cardsPerView
+  const offset = isMobile ? 0 : -(index * cardWidthPct)
 
   return (
     <section className="reviews-section" ref={sectionRef}>
+      
+      {/* Header (contained inside normal padded shell) */}
       <div className="section-shell">
-
-        {/* Header */}
         <div className="reviews-header">
           <div>
             <span className="eyebrow">{t('reviews.count')}</span>
@@ -289,53 +324,74 @@ export default function ProductReviews() {
             <div className="reviews-overall__score">5.0</div>
           </div>
         </div>
+      </div>
 
-        {/* Carousel */}
-        <div className="reviews-carousel-wrap">
-          <button type="button" className="reviews-nav-btn prev" onClick={handlePrev} disabled={index === 0} aria-label="Previous">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="15 18 9 12 15 6"/></svg>
-          </button>
+      {/* Carousel Wrapper (placed OUTSIDE shell, so it naturally spans full viewport width) */}
+      <div className="reviews-carousel-wrap">
+        <button
+          type="button"
+          className="reviews-nav-btn prev"
+          onClick={handlePrev}
+          disabled={index === 0}
+          aria-label="Previous"
+        >
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
 
-          <div className="reviews-viewport"
-            onMouseDown={onDragStart} onMouseUp={onDragEnd} onMouseLeave={onDragEnd}
-            onTouchStart={onDragStart} onTouchEnd={onDragEnd}
+        <div
+          className="reviews-viewport"
+          onMouseDown={onDragStart}
+          onMouseUp={onDragEnd}
+          onMouseLeave={onDragEnd}
+          onTouchStart={onDragStart}
+          onTouchEnd={onDragEnd}
+        >
+          <div
+            className="reviews-track"
+            ref={trackRef}
+            style={isMobile
+              ? undefined
+              : { transform: `translateX(${offset}%)`, transition: dragging ? 'none' : 'transform 0.45s cubic-bezier(0.22,1,0.36,1)' }
+            }
           >
-            <div
-              className="reviews-track"
-              ref={trackRef}
-              style={{ transform: `translateX(${offset}%)`, transition: dragging ? 'none' : 'transform 0.45s cubic-bezier(0.22,1,0.36,1)' }}
-            >
-              {ALL_REVIEWS.map((rev, i) => (
-                <div key={i} className="review-card">
-                  <div className="review-card__inner">
-                    <div className="review-card__header">
-                      <div className="review-card__avatar">{rev.avatar}</div>
-                      <div className="review-card__meta">
-                        <span className="review-card__username">{rev.name}</span>
-                        <span className="review-card__date">{rev.date}</span>
-                      </div>
-                      <StarRating count={rev.stars} />
+            {ALL_REVIEWS.map((rev, i) => (
+              <div key={i} className="review-card">
+                <div className="review-card__inner">
+                  <div className="review-card__header">
+                    <div className="review-card__avatar">{rev.avatar}</div>
+                    <div className="review-card__meta">
+                      <span className="review-card__username">{rev.name}</span>
+                      <span className="review-card__date">{rev.date}</span>
                     </div>
+                    <StarRating count={rev.stars} />
+                  </div>
 
-                    <h4 className="review-card__heading">{rev.title}</h4>
-                    <p className="review-card__text">"{rev.text}"</p>
+                  <h4 className="review-card__heading">{rev.title}</h4>
+                  <p className="review-card__text">"{rev.text}"</p>
 
-                    <div className="review-card__product">
-                      <img src={rev.img} alt={rev.productName} className="review-card__prod-img" />
-                      <span className="review-card__prod-name">{rev.productName}</span>
-                    </div>
+                  <div className="review-card__product">
+                    <img src={rev.img} alt={rev.productName} className="review-card__prod-img" />
+                    <span className="review-card__prod-name">{rev.productName}</span>
                   </div>
                 </div>
-              ))}
-            </div>
+              </div>
+            ))}
           </div>
-
-          <button type="button" className="reviews-nav-btn next" onClick={handleNext} disabled={index === maxIndex} aria-label="Next">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="9 18 15 12 9 6"/></svg>
-          </button>
         </div>
 
-        {/* Dots */}
+        <button
+          type="button"
+          className="reviews-nav-btn next"
+          onClick={handleNext}
+          disabled={index === maxIndex}
+          aria-label="Next"
+        >
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+      </div>
+
+      {/* Dots (contained inside normal padded shell) */}
+      <div className="section-shell">
         <div className="reviews-dots">
           {(isMobile ? ALL_REVIEWS : Array.from({ length: maxIndex + 1 })).map((_, i) => (
             <button
@@ -347,8 +403,8 @@ export default function ProductReviews() {
             />
           ))}
         </div>
-
       </div>
+
     </section>
   )
 }

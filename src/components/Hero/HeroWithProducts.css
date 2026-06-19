@@ -833,3 +833,63 @@
     letter-spacing: 0.01em;
   }
 }
+
+/* ── Mobile performance — reduce GPU/CPU load on phones ── */
+@media (hover: none) and (pointer: coarse) {
+  /* Kill continuous CRT flicker animation — biggest GPU offender */
+  .hero-with-products .crt-overlay {
+    animation: none !important;
+    opacity: 0.35;
+  }
+
+  /* Remove blanket backface-visibility on ALL children — creates too many
+     compositor layers and causes jank on lower-end devices/iPhones */
+  .hero-with-products * {
+    backface-visibility: unset;
+    -webkit-backface-visibility: unset;
+  }
+
+  /* Re-apply only where actually needed for GPU rasterization */
+  .hero-with-products .bg-layer,
+  .hero-with-products .bg-gl-canvas,
+  .hero-with-products .shoe-svg {
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+
+  /* Scope will-change strictly — don't promote every element */
+  .hero-with-products { will-change: auto; }
+  .hero-with-products .title-layer .letter { will-change: transform, opacity; }
+  .hero-with-products .bg-layer { will-change: opacity; }
+  .hero-with-products .bg-gl-canvas { will-change: opacity; }
+  .hero-with-products .shoe-stage { will-change: auto; }
+  .hero-with-products .shoe-float { will-change: auto; }
+  .hero-with-products .shoe-base { will-change: auto; }
+  .hero-with-products .shoe-tilt { will-change: auto; }
+  .hero-with-products .shoe-svg { will-change: auto; }
+  .hero-with-products .arrow-symbol { will-change: auto; }
+
+  /* Grain canvas is hidden via JS on mobile anyway — enforce with CSS */
+  .hero-with-products .grain { display: none !important; }
+
+  /* Don't hold compositor layers for idle overlay elements */
+  .hero-with-products .glitch-overlay,
+  .hero-with-products .vhs-flash-overlay {
+    will-change: auto;
+  }
+
+  /* Remove backdrop-filter blur on nav buttons — very expensive on mobile */
+  .hero-with-products .ghost-nav button {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    background: rgba(0, 0, 0, 0.32);
+  }
+
+  /* Remove backdrop-filter blur on CTA button */
+  .hero-with-products .voir-plus {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    background: rgba(0, 0, 0, 0.28);
+  }
+}
+

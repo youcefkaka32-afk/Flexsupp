@@ -115,6 +115,11 @@ function MarqueeRow({ logos, reverse = false, speed = 30 }) {
     draggingRef.current = false
   }
 
+  const shouldNoInvert = (src) => {
+    const s = src?.toLowerCase() || ''
+    return s.includes('redcon1') || s.includes('mutant') || s.includes('muscletech')
+  }
+
   return (
     <div
       className="bm-row-wrapper"
@@ -132,6 +137,7 @@ function MarqueeRow({ logos, reverse = false, speed = 30 }) {
             <img
               src={src}
               alt=""
+              className={shouldNoInvert(src) ? 'no-invert' : ''}
               loading="lazy"
               decoding="async"
               draggable={false}

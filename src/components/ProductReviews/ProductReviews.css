@@ -74,11 +74,16 @@
   line-height: 1;
 }
 
-/* ── Carousel wrapper ── */
+/* ── Carousel wrapper (Desktop style mirroring section-shell) ── */
 .reviews-carousel-wrap {
   display: flex;
   align-items: stretch;
   gap: 1.25rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 3rem;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .reviews-viewport {
@@ -92,6 +97,7 @@
 
 .reviews-viewport:active { cursor: grabbing; }
 
+/* Desktop track — JS translateX */
 .reviews-track {
   display: flex;
   width: 100%;
@@ -281,27 +287,19 @@
   border-radius: 4px;
 }
 
-/* ── Responsive ── */
+/* ── Tablet (2-up) ── */
 @media (max-width: 1024px) {
   .review-card {
     flex: 0 0 50%;
   }
 }
 
+/* ═══════════════════════════════════════════════════════════════
+   MOBILE CAROUSEL — Clean, natural edge-to-edge layout
+   ═══════════════════════════════════════════════════════════════ */
 @media (max-width: 768px) {
-  /* ═══════════════════════════════════════════════════════════
-     MOBILE CAROUSEL REWRITE — One card at a time, centered
-     ═══════════════════════════════════════════════════════════ */
-  
   .reviews-section {
     padding: 4rem 0 3rem;
-  }
-
-  /* Remove outer shell horizontal padding so carousel centers
-     (global .section-shell adds side padding on mobile) */
-  .reviews-section .section-shell {
-    padding-left: 0;
-    padding-right: 0;
   }
 
   .reviews-header {
@@ -322,34 +320,66 @@
     font-size: 22px;
   }
 
-  /* Hide desktop navigation arrows */
+  /* Hide desktop nav arrows */
   .reviews-nav-btn {
-    display: none;
+    display: none !important;
   }
 
-  /* Carousel container */
+  /* Span exactly 100vw naturally, without container breakout calculations */
   .reviews-carousel-wrap {
-    gap: 0;
+    width: 100vw !important;
+    max-width: 100vw !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    gap: 0 !important;
   }
 
-  /* Viewport with padding for centering */
+  /* Viewport spanning full width, with extra padding/margin to prevent vertical shadow clipping */
   .reviews-viewport {
-    overflow: visible;
-    padding: 0;
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow: visible !important;
+    padding: 1.5rem 0 !important;
+    margin: -1.5rem 0 !important;
+    cursor: default;
   }
 
-  /* Track holds all cards - NO margin */
+  /* ── The scrollable track ── */
   .reviews-track {
-    display: flex;
-    gap: 0;
+    display: flex !important;
+    width: 100% !important;
+    overflow-x: scroll !important;
+    scroll-snap-type: x mandatory !important;
+    -webkit-overflow-scrolling: touch !important;
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+    /* No JS transform on mobile */
+    transform: none !important;
+    transition: none !important;
+    /* Symmetrical padding for perfect peeks (5vw on both sides) */
+    padding-left: 5vw !important;
+    padding-right: 5vw !important;
+    /* Vertical padding matching viewport to allow shadow rendering */
+    padding-top: 1.5rem !important;
+    padding-bottom: 1.5rem !important;
+    margin-top: -1.5rem !important;
+    margin-bottom: -1.5rem !important;
+    gap: 0 !important;
   }
 
-  /* Each card: 90% width to leave space for peek */
+  .reviews-track::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  /* Each card is exactly 90vw so it leaves a perfect 5vw peek on both sides */
   .review-card {
-    flex: 0 0 90%;
-    margin: 0;
-    padding: 0 10px;
-    box-sizing: border-box;
+    flex: 0 0 90vw !important;
+    width: 90vw !important;
+    min-width: 90vw !important;
+    max-width: 90vw !important;
+    padding: 0 8px !important;
+    box-sizing: border-box !important;
+    scroll-snap-align: center !important;
   }
 
   .review-card__inner {
@@ -357,7 +387,6 @@
     gap: 1rem;
   }
 
-  /* Card content adjustments */
   .review-card__avatar {
     width: 44px;
     height: 44px;
@@ -381,93 +410,32 @@
     line-height: 1.6;
   }
 
-  /* ═══════════════════════════════════════════════════════════
-     INDICATOR DOTS — 8 dots, pill for active
-     ═══════════════════════════════════════════════════════════ */
-  
+  /* Dots container */
   .reviews-dots {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 8px;
-    margin-top: 1.75rem;
-  }
-
-  .reviews-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    border: none;
-    background-color: var(--pg-border-mid);
-    cursor: pointer;
-    padding: 0;
-    transition: width 0.3s ease, border-radius 0.3s ease;
-  }
-
-  .reviews-dot.active {
-    width: 24px;
-    height: 8px;
-    border-radius: 9999px;
-    background-color: #ff0000;
-  }
-
-  /* Mobile — Scroll-snap carousel using actual card width = 90% (from .review-card) */
-  .reviews-track {
-    display: flex;
-    overflow-x: scroll;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-    gap: 0;
-    transform: none !important;
-    width: auto;
-  }
-
-  .review-card {
-    flex: 0 0 90%;
-    min-width: 90%;
-    flex-shrink: 0;
-    scroll-snap-align: center;
-    margin: 0;
-    padding: 0 10px;
-    box-sizing: border-box;
-  }
-
-  /* Center first/last card so single card sits centered with peeks */
-  .review-card:first-child {
-    margin-left: calc((100vw - 90vw) / 2);
-  }
-  .review-card:last-child {
-    margin-right: calc((100vw - 90vw) / 2);
-  }
-
-  /* Hard-reset and size indicator dots on mobile */
-  .reviews-dots {
-    display: none !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 8px !important;
+    margin-top: 1.75rem !important;
   }
 
   .reviews-dot {
     width: 8px !important;
     height: 8px !important;
+    min-height: 0 !important; /* Override mobile-enhancements.css 44px min-height */
     border-radius: 50% !important;
-    padding: 0 !important;
-    transform: none !important;
-    font-size: 0 !important;
     border: none !important;
-    background-color: var(--pg-border-mid) !important;
-    transition: width 0.3s ease, height 0.2s ease, border-radius 0.3s ease;
+    background: var(--pg-border-mid) !important;
+    cursor: pointer;
+    padding: 0 !important;
+    transition: width 0.3s ease, border-radius 0.3s ease, background 0.25s ease;
   }
 
   .reviews-dot.active {
     width: 24px !important;
     height: 8px !important;
+    min-height: 0 !important; /* Override mobile-enhancements.css 44px min-height */
     border-radius: 9999px !important;
-    background-color: #ff0000 !important;
-  }
-}
-
-@media (max-width: 640px) {
-  .review-card {
-    flex: 0 0 85%;
-    padding: 0 8px;
+    background: #ff0000 !important;
   }
 }

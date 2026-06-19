@@ -491,3 +491,48 @@
     );
   }
 }
+
+/* ── Mobile performance — reduce GPU/CPU load on phones ── */
+@media (hover: none) and (pointer: coarse) {
+  /* Kill the continuous CRT flicker animation — biggest GPU offender */
+  .crt-overlay {
+    animation: none !important;
+    opacity: 0.35;
+  }
+
+  /* Remove blanket backface-visibility on ALL children — too many
+     compositing layers = jank. Only keep it on the elements that move. */
+  .hero * {
+    backface-visibility: unset;
+    -webkit-backface-visibility: unset;
+  }
+
+  /* Re-apply only where truly needed */
+  .bg-layer,
+  .bg-gl-canvas,
+  .shoe-svg {
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+
+  /* Limit will-change to elements that actually animate */
+  .hero { will-change: auto; }
+  .title-layer .letter { will-change: transform, opacity; }
+  .bg-layer { will-change: opacity; }
+  .bg-gl-canvas { will-change: opacity; }
+
+  /* Simplify the grain canvas — already hidden on mobile in JS,
+     ensure display:none so it doesn't take up a compositor layer */
+  .grain { display: none !important; }
+
+  /* Reduce the glitch overlay complexity on touch */
+  .glitch-overlay {
+    will-change: auto;
+  }
+
+  /* Prevent the vhs flash from holding a compositor layer when idle */
+  .vhs-flash-overlay {
+    will-change: auto;
+  }
+}
+

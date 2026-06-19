@@ -106,25 +106,7 @@ export default function Footer() {
           <div className="footer-bottom-inner">
             <div className="footer-legal-block">
               <p>
-                {t('footer.copyright')} | Designed & Developed by{' '}
-                <a
-                  href="https://www.instagram.com/youcef.builds/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="footer-dev-credit-link"
-                >
-                  Youcef.builds
-                </a>{' '}
-                (
-                <a
-                  href="https://wa.me/213560684042"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="footer-dev-credit-link"
-                >
-                  WhatsApp
-                </a>
-                )
+                {t('footer.copyright')} | Designed & Developed by Youcef.builds
               </p>
               <p className="footer-disclaimer">
                 These statements have not been evaluated by any official authority. Products are not intended to diagnose, treat, cure or prevent any disease. Always consult a qualified healthcare professional before starting any diet or supplement program.

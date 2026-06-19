@@ -857,117 +857,130 @@ export default function HeroWithProducts() {
     s.cursorPos.x = s.cursorTarget.x
     s.cursorPos.y = s.cursorTarget.y
 
-    const grain = grainRef.current
-    const ctx = grain.getContext('2d', { willReadFrequently: true })
-    const nW = 256
-    const nH = 256
-    grain.width = nW
-    grain.height = nH
-    grain.style.width = '100%'
-    grain.style.height = '100%'
-    const imgData = ctx.createImageData(nW, nH)
-    const data = imgData.data
-    let rafGrain
+    const isMobileDevice = () => window.innerWidth <= 768 || window.matchMedia('(hover: none) and (pointer: coarse)').matches
+    const isMobile = isMobileDevice()
 
-    function drawGrain(ts) {
-      if (ts - s.lastNoiseTime < 40 && s.glitchPower < 0.5) {
+    let rafGrain
+    if (!isMobile && grainRef.current) {
+      const grain = grainRef.current
+      const ctx = grain.getContext('2d', { willReadFrequently: true })
+      const nW = 256
+      const nH = 256
+      grain.width = nW
+      grain.height = nH
+      grain.style.width = '100%'
+      grain.style.height = '100%'
+      const imgData = ctx.createImageData(nW, nH)
+      const data = imgData.data
+
+      function drawGrain(ts) {
+        if (ts - s.lastNoiseTime < 40 && s.glitchPower < 0.5) {
+          rafGrain = requestAnimationFrame(drawGrain)
+          return
+        }
+        s.lastNoiseTime = ts
+        const base = s.glitchPower > 0 ? Math.floor(100 + s.glitchPower * 90) : 22
+        const jitter = 40 + s.glitchPower * 120
+        for (let i = 0; i < data.length; i += 4) {
+          const v = Math.floor(jitter + Math.random() * (120 + s.glitchPower * 120))
+          data[i] = v
+          data[i + 1] = v
+          data[i + 2] = v
+          data[i + 3] = base
+        }
+        ctx.putImageData(imgData, 0, 0)
         rafGrain = requestAnimationFrame(drawGrain)
-        return
       }
-      s.lastNoiseTime = ts
-      const base = s.glitchPower > 0 ? Math.floor(100 + s.glitchPower * 90) : 22
-      const jitter = 40 + s.glitchPower * 120
-      for (let i = 0; i < data.length; i += 4) {
-        const v = Math.floor(jitter + Math.random() * (120 + s.glitchPower * 120))
-        data[i] = v
-        data[i + 1] = v
-        data[i + 2] = v
-        data[i + 3] = base
-      }
-      ctx.putImageData(imgData, 0, 0)
       rafGrain = requestAnimationFrame(drawGrain)
+    } else {
+      if (grainRef.current) grainRef.current.style.display = 'none'
     }
-    rafGrain = requestAnimationFrame(drawGrain)
 
     let cancelled = false
     let rafGL = 0
     let onResize = null
 
-    ;(async () => {
-      try {
-        if (!isWebGLSupported()) return
+    if (!isMobile) {
+      ;(async () => {
+        try {
+          if (!isWebGLSupported()) return
 
-        const canvas = glCanvasRef.current
-        const renderer = new THREE.WebGLRenderer({
-          canvas,
-          antialias: true,
-          alpha: false,
-          powerPreference: 'high-performance'
-        })
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
-        renderer.setSize(window.innerWidth, window.innerHeight)
-        s.glRenderer = renderer
-        s.isGLActive = true
-
-        if (bgARef.current) bgARef.current.style.display = 'none'
-        if (bgBRef.current) bgBRef.current.style.display = 'none'
-
-        const scene = new THREE.Scene()
-        const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1)
-
-        const slide = slides[s.currentIndex]
-        const initialGrad = parseRadialGradient(slide.background)
-
-        const mat = new THREE.ShaderMaterial({
-          vertexShader,
-          fragmentShader,
-          uniforms: {
-            uTime: { value: 0 },
-            uProgress: { value: 1.0 },
-            uGlitch: { value: 0.0 },
-            uResolution: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) },
-            
-            uPrevCenter: { value: initialGrad.center },
-            uPrevC0: { value: initialGrad.colors[0] },
-            uPrevC1: { value: initialGrad.colors[1] },
-            uPrevC2: { value: initialGrad.colors[2] },
-            uPrevC3: { value: initialGrad.colors[3] },
-            uPrevOffsets: { value: new THREE.Vector4(...initialGrad.offsets) },
-
-            uNextCenter: { value: initialGrad.center },
-            uNextC0: { value: initialGrad.colors[0] },
-            uNextC1: { value: initialGrad.colors[1] },
-            uNextC2: { value: initialGrad.colors[2] },
-            uNextC3: { value: initialGrad.colors[3] },
-            uNextOffsets: { value: new THREE.Vector4(...initialGrad.offsets) }
-          },
-          depthWrite: false,
-          depthTest: false,
-        })
-        s.glMaterial = mat
-        scene.add(new THREE.Mesh(new THREE.PlaneGeometry(2, 2), mat))
-
-        canvas.classList.add('is-ready')
-        renderSlide(s.currentIndex, true, true)
-
-        const clock = new THREE.Clock()
-        function animateGL() {
-          rafGL = requestAnimationFrame(animateGL)
-          mat.uniforms.uTime.value = clock.getElapsedTime()
-          renderer.render(scene, camera)
-        }
-        animateGL()
-
-        onResize = () => {
-          renderer.setSize(window.innerWidth, window.innerHeight)
+          const canvas = glCanvasRef.current
+          const renderer = new THREE.WebGLRenderer({
+            canvas,
+            antialias: true,
+            alpha: false,
+            powerPreference: 'high-performance'
+          })
           renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
-          mat.uniforms.uResolution.value.set(window.innerWidth, window.innerHeight)
+          renderer.setSize(window.innerWidth, window.innerHeight)
+          s.glRenderer = renderer
+          s.isGLActive = true
+
+          if (bgARef.current) bgARef.current.style.display = 'none'
+          if (bgBRef.current) bgBRef.current.style.display = 'none'
+
+          const scene = new THREE.Scene()
+          const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1)
+
+          const slide = slides[s.currentIndex]
+          const initialGrad = parseRadialGradient(slide.background)
+
+          const mat = new THREE.ShaderMaterial({
+            vertexShader,
+            fragmentShader,
+            uniforms: {
+              uTime: { value: 0 },
+              uProgress: { value: 1.0 },
+              uGlitch: { value: 0.0 },
+              uResolution: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) },
+              
+              uPrevCenter: { value: initialGrad.center },
+              uPrevC0: { value: initialGrad.colors[0] },
+              uPrevC1: { value: initialGrad.colors[1] },
+              uPrevC2: { value: initialGrad.colors[2] },
+              uPrevC3: { value: initialGrad.colors[3] },
+              uPrevOffsets: { value: new THREE.Vector4(...initialGrad.offsets) },
+
+              uNextCenter: { value: initialGrad.center },
+              uNextC0: { value: initialGrad.colors[0] },
+              uNextC1: { value: initialGrad.colors[1] },
+              uNextC2: { value: initialGrad.colors[2] },
+              uNextC3: { value: initialGrad.colors[3] },
+              uNextOffsets: { value: new THREE.Vector4(...initialGrad.offsets) }
+            },
+            depthWrite: false,
+            depthTest: false,
+          })
+          s.glMaterial = mat
+          scene.add(new THREE.Mesh(new THREE.PlaneGeometry(2, 2), mat))
+
+          canvas.classList.add('is-ready')
+          renderSlide(s.currentIndex, true, true)
+
+          const clock = new THREE.Clock()
+          function animateGL() {
+            if (cancelled) return
+            rafGL = requestAnimationFrame(animateGL)
+            mat.uniforms.uTime.value = clock.getElapsedTime()
+            renderer.render(scene, camera)
+          }
+          animateGL()
+
+          onResize = () => {
+            renderer.setSize(window.innerWidth, window.innerHeight)
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+            mat.uniforms.uResolution.value.set(window.innerWidth, window.innerHeight)
+          }
+          window.addEventListener('resize', onResize)
+        } catch (err) {
+          console.warn('Hero shader background initialization failed. Falling back to CSS backgrounds.', err)
         }
-        window.addEventListener('resize', onResize)
-      } catch (err) {
-        console.warn('Hero shader background initialization failed. Falling back to CSS backgrounds.', err)
-      }
-    })()
+      })()
+    } else {
+      if (glCanvasRef.current) glCanvasRef.current.style.display = 'none'
+      renderSlide(s.currentIndex, true, true)
+    }
 
     return () => {
       cancelled = true

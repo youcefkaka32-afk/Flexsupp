@@ -243,6 +243,11 @@ export default function HeroWithProducts() {
     setTiltRY: null,
   })
 
+  const isMobileDevice = () => {
+    if (typeof window === 'undefined') return false
+    return window.innerWidth <= 768 || window.matchMedia('(hover: none) and (pointer: coarse)').matches
+  }
+
   const applyBackground = (slide, layer) => {
     if (!layer) return
     layer.className = 'bg-layer is-active'
@@ -363,6 +368,7 @@ export default function HeroWithProducts() {
     const activeSlide = slides[s.currentIndex]
     if (!titleFrontRef.current || !titleBackRef.current || !infoKickerRef.current || !infoSubRef.current || !voirPlusRef.current || !shoeStageRef.current) return
 
+    const isMobile = isMobileDevice()
     const frontLetters = Array.from(titleFrontRef.current.querySelectorAll('.letter'))
     const backLetters = Array.from(titleBackRef.current.querySelectorAll('.letter'))
     const allLetters = [...frontLetters, ...backLetters]
@@ -373,7 +379,12 @@ export default function HeroWithProducts() {
 
     gsap.killTweensOf([allLetters, infoKickerRef.current, infoSubRef.current, voirPlusRef.current, shoeStageRef.current, titleFrontRef.current, titleBackRef.current])
     gsap.set([infoKickerRef.current, infoSubRef.current, voirPlusRef.current], { opacity: 0, y: 18 })
-    gsap.set([titleBackRef.current, titleFrontRef.current], { x: 0, y: 0, xPercent: xPct, yPercent: yPct })
+    
+    if (isMobile) {
+      gsap.set([titleFrontRef.current, titleBackRef.current], { opacity: 0, x: 0, y: 0, xPercent: xPct, yPercent: yPct })
+    } else {
+      gsap.set([titleBackRef.current, titleFrontRef.current], { x: 0, y: 0, xPercent: xPct, yPercent: yPct })
+    }
     
     if (activeSlide.shoe === 'superfly') {
       gsap.set(shoeStageRef.current, { opacity: 0, scale: 1.05, y: 600, x: 0, xPercent: -50, yPercent: -50 })
@@ -406,40 +417,65 @@ export default function HeroWithProducts() {
       }, 0)
     }
 
-    const isAr = i18n.language === 'ar'
-    const length = isAr ? 1 : activeSlide.title.length
-    const duration = 0.7
-    const ease = 'power3.out'
     const delayStart = activeSlide.shoe === 'superfly' ? 0.08 : 0.1
 
-    for (let i = 0; i < length; i++) {
-      const fl = frontLetters[i]
-      const bl = backLetters[i]
-      if (!fl || (!bl && !isAr)) continue
-
-      const isFVisible = !fl.classList.contains('hidden')
-      const isBVisible = !bl.classList.contains('hidden')
-      const delay = delayStart + i * 0.035
-      const opacityTargets = []
-
-      if (isFVisible) opacityTargets.push(fl)
-      if (isBVisible) opacityTargets.push(bl)
-      if (!isBVisible) gsap.set(bl, { opacity: 0 })
-
+    if (isMobile) {
+      // Mobile optimization: animate the container to prevent browser layout thrashing on individual letters
+      const duration = 0.7
+      const ease = 'power2.out'
+      
+      gsap.set(allLetters, { opacity: 1, x: 0, y: 0 })
+      
       if (activeSlide.shoe === 'superfly') {
-        if (isFVisible) gsap.set(fl, { opacity: 0, y: -200, x: 0 })
-        else gsap.set(fl, { y: -200, x: 0 })
-        if (bl) gsap.set(bl, { opacity: 0, y: -200, x: 0 })
+        gsap.set([titleFrontRef.current, titleBackRef.current], { y: -80, opacity: 0, xPercent: xPct, yPercent: yPct })
       } else {
-        if (isFVisible) gsap.set(fl, { opacity: 0, y: 0, x: -150 })
-        else gsap.set(fl, { y: 0, x: -150 })
-        if (bl) gsap.set(bl, { opacity: 0, y: 0, x: -150 })
+        gsap.set([titleFrontRef.current, titleBackRef.current], { x: -60, opacity: 0, xPercent: xPct, yPercent: yPct })
       }
 
-      const targets = bl ? [fl, bl] : [fl]
-      entryTl.to(targets, { y: 0, x: 0, duration: duration, ease: ease }, delay)
-      if (opacityTargets.length > 0) {
-        entryTl.to(opacityTargets, { opacity: 1, duration: duration, ease: ease }, delay)
+      entryTl.to([titleFrontRef.current, titleBackRef.current], {
+        x: 0,
+        y: 0,
+        opacity: 1,
+        xPercent: xPct,
+        yPercent: yPct,
+        duration: duration,
+        ease: ease,
+      }, delayStart)
+    } else {
+      const isAr = i18n.language === 'ar'
+      const length = isAr ? 1 : activeSlide.title.length
+      const duration = 0.7
+      const ease = 'power3.out'
+
+      for (let i = 0; i < length; i++) {
+        const fl = frontLetters[i]
+        const bl = backLetters[i]
+        if (!fl || (!bl && !isAr)) continue
+
+        const isFVisible = !fl.classList.contains('hidden')
+        const isBVisible = !bl.classList.contains('hidden')
+        const delay = delayStart + i * 0.035
+        const opacityTargets = []
+
+        if (isFVisible) opacityTargets.push(fl)
+        if (isBVisible) opacityTargets.push(bl)
+        if (!isBVisible) gsap.set(bl, { opacity: 0 })
+
+        if (activeSlide.shoe === 'superfly') {
+          if (isFVisible) gsap.set(fl, { opacity: 0, y: -200, x: 0 })
+          else gsap.set(fl, { y: -200, x: 0 })
+          if (bl) gsap.set(bl, { opacity: 0, y: -200, x: 0 })
+        } else {
+          if (isFVisible) gsap.set(fl, { opacity: 0, y: 0, x: -150 })
+          else gsap.set(fl, { y: 0, x: -150 })
+          if (bl) gsap.set(bl, { opacity: 0, y: 0, x: -150 })
+        }
+
+        const targets = bl ? [fl, bl] : [fl]
+        entryTl.to(targets, { y: 0, x: 0, duration: duration, ease: ease }, delay)
+        if (opacityTargets.length > 0) {
+          entryTl.to(opacityTargets, { opacity: 1, duration: duration, ease: ease }, delay)
+        }
       }
     }
 
@@ -717,14 +753,26 @@ export default function HeroWithProducts() {
     ]
     leavingLetters.sort((a, b) => parseInt(a.getAttribute('data-idx')) - parseInt(b.getAttribute('data-idx')))
 
-    gsap.to(leavingLetters, {
-      x: letterExitX,
-      y: letterExitY,
-      opacity: 0,
-      duration: 0.30,
-      stagger: 0.02,
-      ease: 'power3.in',
-    })
+    const isMobile = isMobileDevice()
+
+    if (isMobile) {
+      gsap.to([titleFrontRef.current, titleBackRef.current], {
+        x: letterExitX * 0.4,
+        y: letterExitY * 0.4,
+        opacity: 0,
+        duration: 0.28,
+        ease: 'power2.in',
+      })
+    } else {
+      gsap.to(leavingLetters, {
+        x: letterExitX,
+        y: letterExitY,
+        opacity: 0,
+        duration: 0.30,
+        stagger: 0.02,
+        ease: 'power3.in',
+      })
+    }
 
     const tl = gsap.timeline()
     tl.to(vhsRef.current, { opacity: 0.35, duration: 0.12, ease: 'none' }, 0.35)
@@ -770,55 +818,80 @@ export default function HeroWithProducts() {
       if (!titleFrontRef.current || !titleBackRef.current) return
       const frontLetters = Array.from(titleFrontRef.current.querySelectorAll('.letter'))
       const backLetters = Array.from(titleBackRef.current.querySelectorAll('.letter'))
-      const isAr = i18n.language === 'ar'
-      const nextSlide = slides[nextIndex]
-      const length = isAr ? 1 : nextSlide.title.length
-      
       const allNewLetters = [...frontLetters, ...backLetters]
       gsap.killTweensOf(allNewLetters)
 
-      for (let i = 0; i < length; i++) {
-        const fl = frontLetters[i]
-        const bl = backLetters[i]
-        if (!fl || (!bl && !isAr)) continue
+      const isMobile = isMobileDevice()
+      const nextSlide = slides[nextIndex]
 
-        const isFVisible = !fl.classList.contains('hidden')
-        const isBVisible = bl ? !bl.classList.contains('hidden') : false
-
-        const targets = bl ? [fl, bl] : [fl]
-        const visibleTargets = []
-        if (isFVisible) visibleTargets.push(fl)
-        if (bl && isBVisible) visibleTargets.push(bl)
-
-        const delay = i * 0.035
-
-        gsap.set(targets, { 
-          x: letterEntryX, 
-          y: letterEntryY, 
-          skewX: letterEntrySkew 
+      if (isMobile) {
+        gsap.set(allNewLetters, { opacity: 1, x: 0, y: 0 })
+        gsap.set([titleFrontRef.current, titleBackRef.current], {
+          x: letterEntryX * 0.4,
+          y: letterEntryY * 0.4,
+          opacity: 0,
+          xPercent: xPct,
+          yPercent: yPct
         })
-        gsap.set(visibleTargets, { opacity: 0 })
 
-        gsap.to(targets, {
+        gsap.to([titleFrontRef.current, titleBackRef.current], {
           x: 0,
           y: 0,
-          skewX: 0,
-          duration: 0.90,
-          ease: 'power3.out',
-          delay: delay,
+          opacity: 1,
+          xPercent: xPct,
+          yPercent: yPct,
+          duration: 0.7,
+          ease: 'power2.out',
         })
+      } else {
+        const isAr = i18n.language === 'ar'
+        const length = isAr ? 1 : nextSlide.title.length
 
-        if (visibleTargets.length > 0) {
-          gsap.to(visibleTargets, {
-            opacity: 1,
+        for (let i = 0; i < length; i++) {
+          const fl = frontLetters[i]
+          const bl = backLetters[i]
+          if (!fl || (!bl && !isAr)) continue
+
+          const isFVisible = !fl.classList.contains('hidden')
+          const isBVisible = bl ? !bl.classList.contains('hidden') : false
+
+          const targets = bl ? [fl, bl] : [fl]
+          const visibleTargets = []
+          if (isFVisible) visibleTargets.push(fl)
+          if (bl && isBVisible) visibleTargets.push(bl)
+
+          const delay = i * 0.035
+
+          gsap.set(targets, { 
+            x: letterEntryX, 
+            y: letterEntryY, 
+            skewX: letterEntrySkew 
+          })
+          gsap.set(visibleTargets, { opacity: 0 })
+
+          gsap.to(targets, {
+            x: 0,
+            y: 0,
+            skewX: 0,
             duration: 0.90,
             ease: 'power3.out',
             delay: delay,
           })
+
+          if (visibleTargets.length > 0) {
+            gsap.to(visibleTargets, {
+              opacity: 1,
+              duration: 0.90,
+              ease: 'power3.out',
+              delay: delay,
+            })
+          }
         }
       }
+    }, null, 0.55)
 
-      // Info block rises in
+    // Info block rises in
+    tl.call(() => {
       if (infoKickerRef.current && infoSubRef.current && voirPlusRef.current) {
         gsap.set([infoKickerRef.current, infoSubRef.current, voirPlusRef.current], { opacity: 0, y: 18 })
         gsap.to([infoKickerRef.current, infoSubRef.current], {

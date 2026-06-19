@@ -891,5 +891,14 @@
     -webkit-backdrop-filter: none;
     background: rgba(0, 0, 0, 0.28);
   }
+
+  /* Disable expensive SVG chromatic glitch filters on mobile during transitions */
+  .hero-with-products.is-glitching .shoe-svg {
+    filter: drop-shadow(0 15px 12px rgba(0, 0, 0, 0.38)) drop-shadow(0 25px 38px rgba(0, 0, 0, 0.52)) !important;
+  }
+
+  .hero-with-products.is-glitching .title-stage {
+    filter: none !important;
+  }
 }
 

@@ -358,11 +358,12 @@
   border: 1px solid var(--pg-border);
   border-radius: 22px;
   padding: 1rem;
-  display: grid;
+  display: grid !important;
   gap: 1rem;
   text-align: left;
   cursor: pointer;
   transition: border-color 0.25s ease, transform 0.25s ease;
+  width: 100%;
 }
 
 .related-product-card:hover {

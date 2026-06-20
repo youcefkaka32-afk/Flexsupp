@@ -25,7 +25,8 @@
   .catalog-grid,
   .featured-product-grid,
   .new-products-grid,
-  .boutique-product-grid {
+  .boutique-product-grid,
+  .related-products-grid {
     grid-template-columns: repeat(2, 1fr) !important;
     gap: 0.75rem;
     width: 100%;
@@ -34,14 +35,16 @@
   .catalog-card,
   .premium-product-card,
   .new-card,
-  .best-seller-card {
+  .best-seller-card,
+  .related-product-card {
     max-width: 100%;
   }
 
   /* Adjust product card padding for 2-column layout */
   .catalog-card,
   .premium-product-card,
-  .new-card {
+  .new-card,
+  .related-product-card {
     padding: 0.75rem;
   }
 
@@ -58,14 +61,16 @@
   /* Product card titles smaller for 2-column */
   .catalog-card__name,
   .card-name,
-  .new-card__name {
+  .new-card__name,
+  .related-product-card h3 {
     font-size: 0.85rem !important;
     line-height: 1.3;
   }
 
   /* Product prices */
   .catalog-card__price,
-  .card-price {
+  .card-price,
+  .related-card-price {
     font-size: 0.9rem !important;
   }
 
@@ -129,7 +134,8 @@
   .catalog-grid,
   .featured-product-grid,
   .new-products-grid,
-  .boutique-product-grid {
+  .boutique-product-grid,
+  .related-products-grid {
     grid-template-columns: repeat(2, 1fr) !important;
     gap: 0.5rem;
   }
@@ -143,7 +149,8 @@
   /* Make product cards more compact */
   .catalog-card,
   .premium-product-card,
-  .new-card {
+  .new-card,
+  .related-product-card {
     padding: 0.5rem;
   }
 
@@ -157,7 +164,8 @@
   /* Even smaller text on very small screens */
   .catalog-card__name,
   .card-name,
-  .new-card__name {
+  .new-card__name,
+  .related-product-card h3 {
     font-size: 0.75rem !important;
   }
 

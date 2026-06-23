@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { useCart } from '../../hooks/useCart'
 import { formatPrice } from '../../lib/utils'
 import { ALGERIA } from '../../data/algeria'
+import { supabase } from '../../lib/supabase'
 import './CheckoutModal.css'
 
 const WHATSAPP_NUMBER = '213553628299'
@@ -128,10 +129,35 @@ export default function CheckoutModal() {
     return lines.join('\n')
   }
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault()
     const errs = validate()
     if (Object.keys(errs).length) { setErrors(errs); return }
+
+    // ── Save order to Supabase (fail-safe: WhatsApp always opens) ──
+    try {
+      await supabase.from('orders').insert({
+        customer_name: name.trim(),
+        customer_phone: phone.trim(),
+        wilaya,
+        commune,
+        items: items.map(i => ({
+          id: i.id,
+          name: i.name,
+          brand: i.brand,
+          price: i.price,
+          quantity: i.quantity,
+          currency: i.currency,
+        })),
+        total_price: totalPrice,
+        currency,
+        status: 'pending',
+      })
+    } catch {
+      // Silently ignore — customer flow must not be interrupted
+    }
+
+    // ── Open WhatsApp ──
     window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(buildMessage())}`, '_blank', 'noopener,noreferrer')
     dispatch({ type: 'CLEAR' })
     closeCheckout()

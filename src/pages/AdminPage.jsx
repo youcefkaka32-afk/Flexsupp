@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import '../styles/admin.css'
 import { supabase } from '../lib/supabase'
+import AnalyticsTab from './AdminAnalyticsTab'
 
 // Auth constants
 const STORAGE_BUCKET = 'product-images'
@@ -330,11 +331,12 @@ export default function AdminPage() {
   const [password, setPassword] = useState('')
   const [authError, setAuthError] = useState('')
   const [authLoading, setAuthLoading] = useState(false)
-  const [activeTab, setActiveTab] = useState('products')
+  const [activeTab, setActiveTab] = useState('analytics')
   const [toasts, setToasts] = useState([])
   const [products, setProducts] = useState([])
   const [categories, setCategories] = useState([])
   const [brands, setBrands] = useState([])
+  const [orderCount, setOrderCount] = useState(0)
   const [dataLoading, setDataLoading] = useState(false)
   const [dataError, setDataError] = useState(null)
   const [menuOpen, setMenuOpen] = useState(false)
@@ -363,13 +365,15 @@ export default function AdminPage() {
     setDataLoading(true)
     setDataError(null)
     try {
-      const [{ data: p, error: pE }, { data: c, error: cE }, { data: b, error: bE }] = await Promise.all([
+      const [{ data: p, error: pE }, { data: c, error: cE }, { data: b, error: bE }, { count: oC }] = await Promise.all([
         supabase.from('products').select('*').order('created_at', { ascending: true }),
         supabase.from('categories').select('*'),
         supabase.from('brands').select('*').order('name'),
+        supabase.from('orders').select('*', { count: 'exact', head: true }),
       ])
       if (pE) throw pE; if (cE) throw cE; if (bE) throw bE
       setProducts(p || []); setCategories(c || []); setBrands(b || [])
+      setOrderCount(oC || 0)
     } catch (err) {
       setDataError(err.message || 'Erreur Supabase')
     } finally {
@@ -447,10 +451,11 @@ export default function AdminPage() {
   }
 
   const tabs = [
-    { key: 'products', label: `Produits (${products.length})` },
+    { key: 'analytics', label: '📊 Analytiques' },
+    { key: 'products',   label: `Produits (${products.length})` },
     { key: 'categories', label: `Catégories (${categories.length})` },
-    { key: 'brands', label: `Marques (${brands.length})` },
-    { key: 'seed', label: '🌱 Seed' },
+    { key: 'brands',     label: `Marques (${brands.length})` },
+    { key: 'seed',       label: '🌱 Seed' },
   ]
 
   return (
@@ -471,6 +476,7 @@ export default function AdminPage() {
 
       {/* Stats */}
       <div className="admin-stats">
+        <div className="admin-stat"><span className="admin-stat__val admin-stat__val--red">{orderCount}</span><span className="admin-stat__lbl">Commandes</span></div>
         <div className="admin-stat"><span className="admin-stat__val">{products.length}</span><span className="admin-stat__lbl">Produits</span></div>
         <div className="admin-stat"><span className="admin-stat__val admin-stat__val--green">{products.filter(p => p.in_stock).length}</span><span className="admin-stat__lbl">En stock</span></div>
         <div className="admin-stat"><span className="admin-stat__val admin-stat__val--red">{products.filter(p => !p.in_stock).length}</span><span className="admin-stat__lbl">Épuisés</span></div>
@@ -492,6 +498,9 @@ export default function AdminPage() {
         {dataLoading && <div className="admin-loading"><Spinner /> Chargement...</div>}
         {dataError && (
           <div className="admin-error">⚠ {dataError} <button className="admin-btn admin-btn--sm" onClick={fetchAll}>Réessayer</button></div>
+        )}
+        {!dataLoading && activeTab === 'analytics' && (
+          <AnalyticsTab products={products} categories={categories} brands={brands} />
         )}
         {!dataLoading && activeTab === 'products' && (
           <ProductsTab products={products} categories={categories} brands={brands} onRefresh={fetchAll} addToast={addToast} />

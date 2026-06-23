@@ -861,3 +861,17 @@ img { display: block; max-width: 100%; }
   animation-fill-mode: forwards;
   animation-timing-function: ease-out;
 }
+
+/* Hide Chatbase on admin pages */
+.hide-chatbase #chatbase-bubble-window,
+.hide-chatbase #chatbase-bubble-button,
+.hide-chatbase #chatbase-message-bubble,
+.hide-chatbase iframe[src*="chatbase.co"],
+.hide-chatbase [id*="chatbase"],
+.hide-chatbase [class*="chatbase"] {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+

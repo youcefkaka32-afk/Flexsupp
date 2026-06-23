@@ -37,6 +37,16 @@ function AnimatedRoutes() {
   const location = useLocation()
   const isAdmin = location.pathname.startsWith('/admin')
 
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      if (isAdmin) {
+        document.documentElement.classList.add('hide-chatbase')
+      } else {
+        document.documentElement.classList.remove('hide-chatbase')
+      }
+    }
+  }, [isAdmin])
+
   useLayoutEffect(() => {
     if (typeof window !== 'undefined' && 'scrollRestoration' in window.history) {
       window.history.scrollRestoration = 'manual'

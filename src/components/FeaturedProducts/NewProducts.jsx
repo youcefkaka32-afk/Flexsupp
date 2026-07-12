@@ -9,7 +9,7 @@ import { useScrollReveal } from '../../hooks/useScrollReveal'
 
 export default function NewProducts() {
   const { data, loading } = useStoreData()
-  const { dispatch, openDrawer } = useCart()
+  const { openCheckoutWith } = useCart()
   const { t } = useTranslation()
   const sectionRef = useRef(null)
 
@@ -24,12 +24,11 @@ export default function NewProducts() {
     ? flagged
     : allProducts.filter(p => p.badge === 'NOUVEAU')
 
-  function addToCart(product) {
-    dispatch({ type: 'ADD', product: {
+  function buyNow(product) {
+    openCheckoutWith({
       id: product.id, name: product.name, brand: product.brand,
       price: product.price, currency: product.currency, image: product.image,
-    }})
-    openDrawer()
+    })
   }
 
   // Don't render the section at all if there are no new products and we're done loading
@@ -73,7 +72,7 @@ export default function NewProducts() {
                         </div>
                       </div>
                     </div>
-                    <button type="button" className="new-card__quickadd font-display" onClick={() => addToCart(product)} disabled={!product.inStock}>
+                    <button type="button" className="new-card__quickadd font-display" onClick={() => buyNow(product)} disabled={!product.inStock}>
                       {product.inStock ? t('newProducts.quickAdd') : t('newProducts.outOfStock')}
                     </button>
                   </article>

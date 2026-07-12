@@ -3,7 +3,6 @@ import { motion, useScroll, useMotionValueEvent } from 'framer-motion'
 import React, { useState, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import './Navbar.css'
-import CartIcon from '../Cart/CartIcon'
 import { MenuToggleIcon } from '../ui/menu-toggle-icon'
 import LanguageSwitcher from './LanguageSwitcher'
 import { useTheme } from '../../context/ThemeContext'
@@ -121,7 +120,6 @@ export default function Navbar() {
                 </svg>
               )}
             </button>
-            <CartIcon />
           </div>
         </div>
       </motion.nav>

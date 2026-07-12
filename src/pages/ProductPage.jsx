@@ -11,7 +11,7 @@ export default function ProductPage() {
   const navigate = useNavigate()
   const { t } = useTranslation()
   const { data, loading } = useStoreData()
-  const { dispatch, openDrawer } = useCart()
+  const { openCheckoutWith } = useCart()
   const product = data?.products?.find((item) => item.id === id)
   const [selectedFlavor, setSelectedFlavor] = useState(product?.flavors?.[0] ?? { name: '', color: '#777' })
   const [selectedSize, setSelectedSize]     = useState(product?.sizes?.[0] ?? '')
@@ -37,16 +37,14 @@ export default function ProductPage() {
   const oldPriceLabel = product?.oldPrice ? formatPrice(product.oldPrice, product.currency) : null
   const savings       = product?.oldPrice ? Math.round(((product.oldPrice - product.price) / product.oldPrice) * 100) : null
 
-  const handleAddToCart = () => {
+  const handleBuyNow = () => {
     if (!product) return
     const variantId = `${product.id}-${selectedFlavor.name}-${selectedSize}`
-    dispatch({ type: 'ADD', product: {
+    openCheckoutWith({
       id: variantId, name: product.name, brand: product.brand,
       price: product.price, currency: product.currency,
       image: mainImage || product.image, flavor: selectedFlavor.name, size: selectedSize,
-      quantity,
-    }})
-    openDrawer()
+    })
   }
 
   if (loading) return <div className="product-page-loading"><p>{t('product.loading')}</p></div>
@@ -144,8 +142,8 @@ export default function ProductPage() {
             </div>
           </div>
 
-          <button className="btn primary add-cart-button" type="button" onClick={handleAddToCart}>
-            {t('product.addToCart')}
+          <button className="btn primary add-cart-button" type="button" onClick={handleBuyNow} disabled={!product.inStock}>
+            {product.inStock ? t('product.addToCart') : t('product.outOfStock')}
           </button>
         </section>
       </div>

@@ -68,7 +68,7 @@
     "speedRecovery": "SPEED RECOVERY",
     "maxPerformance": "MAX PERFORMANCE",
     "from": "From",
-    "quickAdd": "QUICK ADD",
+    "quickAdd": "BUY NOW",
     "outOfStock": "OUT OF STOCK",
     "sale": "SALE"
   },
@@ -89,7 +89,7 @@
   },
   "newProducts": {
     "title": "NEW PRODUCTS",
-    "quickAdd": "QUICK ADD",
+    "quickAdd": "BUY NOW",
     "outOfStock": "OUT OF STOCK"
   },
   "tools": {
@@ -214,12 +214,12 @@
       "new": "New arrivals"
     },
     "viewProducts": "View",
-    "quickAdd": "QUICK ADD +",
+    "quickAdd": "BUY",
     "outOfStock": "OUT OF STOCK",
     "flavor": "Flavor",
     "size": "Size",
     "quantity": "Quantity",
-    "addToCart": "Add to cart",
+    "addToCart": "Buy",
     "inStock": "IN STOCK",
     "rupture": "OUT OF STOCK"
   },
@@ -236,7 +236,7 @@
     "selectedFlavor": "Selected flavor",
     "size": "Size",
     "quantity": "Quantity",
-    "addToCart": "Add to cart",
+    "addToCart": "Buy",
     "fullDescription": "Full description",
     "ingredients": "Ingredients",
     "ingredientsText": "Premium ingredients specially formulated for athletes: whey proteins, natural flavors, emulsifiers and sweeteners. No compromise on taste.",

@@ -68,7 +68,7 @@
     "speedRecovery": "تسريع التعافي",
     "maxPerformance": "أقصى أداء",
     "from": "ابتداءً من",
-    "quickAdd": "إضافة سريعة",
+    "quickAdd": "اشترِ الآن",
     "outOfStock": "نفذ المخزون",
     "sale": "تخفيض"
   },
@@ -89,7 +89,7 @@
   },
   "newProducts": {
     "title": "المنتجات الجديدة",
-    "quickAdd": "إضافة سريعة",
+    "quickAdd": "اشترِ الآن",
     "outOfStock": "نفذ المخزون"
   },
   "tools": {
@@ -214,12 +214,12 @@
       "new": "الأحدث"
     },
     "viewProducts": "عرض",
-    "quickAdd": "إضافة سريعة +",
+    "quickAdd": "شراء",
     "outOfStock": "نفذ المخزون",
     "flavor": "النكهة",
     "size": "الحجم",
     "quantity": "الكمية",
-    "addToCart": "أضف إلى السلة",
+    "addToCart": "شراء",
     "inStock": "متوفر",
     "rupture": "نفذ المخزون"
   },
@@ -236,7 +236,7 @@
     "selectedFlavor": "النكهة المختارة",
     "size": "الحجم",
     "quantity": "الكمية",
-    "addToCart": "أضف إلى السلة",
+    "addToCart": "شراء",
     "fullDescription": "الوصف الكامل",
     "ingredients": "المكونات",
     "ingredientsText": "مكونات عالية الجودة مصممة خصيصاً للرياضيين: بروتين مصل اللبن، نكهات طبيعية، مستحلبات ومحليات. بدون تنازل عن الطعم.",

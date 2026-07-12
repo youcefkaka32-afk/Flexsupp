@@ -397,3 +397,99 @@
   font-family: 'Inter', sans-serif;
   font-style: italic;
 }
+
+/* ── Direct-buy product card ── */
+.checkout-direct-product {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 14px;
+  background: var(--pg-bg);
+  border: 1px solid var(--pg-border-mid);
+  border-radius: 8px;
+  padding: 16px;
+}
+.checkout-direct-product__img {
+  width: 140px;
+  height: 140px;
+  object-fit: contain;
+  border-radius: 6px;
+  background: var(--modal-surface);
+  flex-shrink: 0;
+}
+.checkout-direct-product__info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  width: 100%;
+}
+.checkout-direct-product__brand {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #E31B23;
+}
+.checkout-direct-product__name {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 19px;
+  font-weight: 850;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--modal-text);
+  line-height: 1.2;
+}
+.checkout-direct-product__variant {
+  font-size: 12px;
+  color: var(--pg-text-muted);
+  font-family: 'Inter', sans-serif;
+  letter-spacing: 0.06em;
+}
+.checkout-direct-product__unit-price {
+  font-size: 13px;
+  color: var(--pg-text-dim);
+  font-family: 'IBM Plex Mono', monospace;
+  letter-spacing: 0.04em;
+  margin-top: 2px;
+}
+
+/* Quantity stepper inside direct-buy card */
+.checkout-direct-qty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 10px;
+}
+.checkout-direct-qty__btn {
+  width: 30px;
+  height: 30px;
+  border: 1.5px solid var(--pg-border-mid);
+  background: transparent;
+  color: var(--modal-text);
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  border-radius: 6px;
+  display: grid;
+  place-items: center;
+  transition: border-color 180ms, background 180ms, color 180ms;
+  line-height: 1;
+}
+.checkout-direct-qty__btn:hover {
+  border-color: #E31B23;
+  background: rgba(227,27,35,0.08);
+  color: #E31B23;
+}
+.checkout-direct-qty__num {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 20px;
+  font-weight: 900;
+  color: var(--modal-text);
+  min-width: 22px;
+  text-align: center;
+  letter-spacing: 0.04em;
+}

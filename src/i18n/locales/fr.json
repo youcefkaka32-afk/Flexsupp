@@ -68,7 +68,7 @@
     "speedRecovery": "RÉCUPÉRATION",
     "maxPerformance": "PERFORMANCE MAX",
     "from": "À partir de",
-    "quickAdd": "AJOUT RAPIDE",
+    "quickAdd": "ACHETER",
     "outOfStock": "ÉPUISÉ",
     "sale": "PROMO"
   },
@@ -89,7 +89,7 @@
   },
   "newProducts": {
     "title": "NOUVEAUX PRODUITS",
-    "quickAdd": "AJOUT RAPIDE",
+    "quickAdd": "ACHETER",
     "outOfStock": "ÉPUISÉ"
   },
   "tools": {
@@ -214,12 +214,12 @@
       "new": "Nouveautés"
     },
     "viewProducts": "Voir",
-    "quickAdd": "AJOUT RAPIDE +",
+    "quickAdd": "ACHETER",
     "outOfStock": "ÉPUISÉ",
     "flavor": "Saveur",
     "size": "Format",
     "quantity": "Quantité",
-    "addToCart": "Ajouter au panier",
+    "addToCart": "Acheter",
     "inStock": "EN STOCK",
     "rupture": "RUPTURE DE STOCK"
   },
@@ -236,7 +236,7 @@
     "selectedFlavor": "Saveur sélectionnée",
     "size": "Format",
     "quantity": "Quantité",
-    "addToCart": "Ajouter au panier",
+    "addToCart": "Acheter",
     "fullDescription": "Description complète",
     "ingredients": "Ingrédients",
     "ingredientsText": "Ingrédients premium spécialement formulés pour les sportifs : protéines de lactosérum, arômes naturels, émulsifiants et édulcorants. Sans compromis sur le goût.",

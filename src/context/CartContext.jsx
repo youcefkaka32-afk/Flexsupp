@@ -59,14 +59,23 @@ function reducer(state, action) {
 export const CartContext = createContext(null)
 
 export function CartProvider({ children }) {
-  const [items, dispatch]       = useReducer(reducer, [], load)
-  const [drawerOpen, setDrawer] = useState(false)
+  const [items, dispatch]           = useReducer(reducer, [], load)
+  const [drawerOpen, setDrawer]     = useState(false)
   const [checkoutOpen, setCheckout] = useState(false)
+  // directItem: a single product bypassing the cart, set via openCheckoutWith()
+  const [directItem, setDirectItem] = useState(null)
 
-  const openDrawer   = useCallback(() => setDrawer(true), [])
-  const closeDrawer  = useCallback(() => setDrawer(false), [])
-  const openCheckout = useCallback(() => { setDrawer(false); setCheckout(true) }, [])
-  const closeCheckout = useCallback(() => setCheckout(false), [])
+  const openDrawer    = useCallback(() => setDrawer(true), [])
+  const closeDrawer   = useCallback(() => setDrawer(false), [])
+  const openCheckout  = useCallback(() => { setDrawer(false); setCheckout(true) }, [])
+  const closeCheckout = useCallback(() => { setCheckout(false); setDirectItem(null) }, [])
+
+  // Direct buy: skip cart drawer, open checkout immediately with a specific product
+  const openCheckoutWith = useCallback((product) => {
+    setDirectItem(product)
+    setDrawer(false)
+    setCheckout(true)
+  }, [])
 
   const totalItems = items.reduce((sum, i) => sum + i.quantity, 0)
   const totalPrice = items.reduce((sum, i) => sum + i.price * i.quantity, 0)
@@ -76,13 +85,15 @@ export function CartProvider({ children }) {
     dispatch,
     drawerOpen,
     checkoutOpen,
+    directItem,
     openDrawer,
     closeDrawer,
     openCheckout,
     closeCheckout,
+    openCheckoutWith,
     totalItems,
     totalPrice,
-  }), [items, dispatch, drawerOpen, checkoutOpen, openDrawer, closeDrawer, openCheckout, closeCheckout, totalItems, totalPrice])
+  }), [items, dispatch, drawerOpen, checkoutOpen, directItem, openDrawer, closeDrawer, openCheckout, closeCheckout, openCheckoutWith, totalItems, totalPrice])
 
   return (
     <CartContext.Provider value={value}>

@@ -16,7 +16,7 @@ gsap.registerPlugin(ScrollTrigger)
 export default function Products() {
   const sectionRef = useRef(null)
   const { data, loading } = useStoreData()
-  const { dispatch, openDrawer } = useCart()
+  const { openCheckoutWith } = useCart()
   const { t } = useTranslation()
 
   const SORT_OPTIONS = [
@@ -229,7 +229,7 @@ export default function Products() {
                       initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, scale: 0.95 }} transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
                     >
-                      <PremiumProductCard product={product} dispatch={dispatch} openDrawer={openDrawer} />
+                      <PremiumProductCard product={product} openCheckoutWith={openCheckoutWith} />
                     </motion.div>
                   ))
               }
@@ -440,7 +440,7 @@ function PriceRangeSlider({ min, max, value, onChange }) {
 }
 
 // ── Product Card ─────────────────────────────────────────────────────────
-function PremiumProductCard({ product, dispatch, openDrawer }) {
+function PremiumProductCard({ product, openCheckoutWith }) {
   const navigate = useNavigate()
   const { t } = useTranslation()
   const price    = formatPrice(product.price, product.currency)
@@ -457,16 +457,17 @@ function PremiumProductCard({ product, dispatch, openDrawer }) {
     setQuantity(1)
   }, [product])
 
-  const addToCart = (e) => {
-    e.preventDefault(); e.stopPropagation()
+  const buyNow = (e) => {
+    if (e) {
+      e.preventDefault(); e.stopPropagation()
+    }
     const itemId = `${product.id}-${selectedFlavor.name}-${selectedSize}`
-    dispatch({ type: 'ADD', product: {
+    openCheckoutWith({
       id: itemId, name: product.name, brand: product.brand,
       price: product.price, currency: product.currency,
       image: product.image, flavor: selectedFlavor.name, size: selectedSize,
       quantity,
-    }})
-    openDrawer()
+    })
     setQuickAddOpen(false)
   }
 
@@ -502,6 +503,25 @@ function PremiumProductCard({ product, dispatch, openDrawer }) {
             }
           </div>
         </div>
+
+        {/* Mobile Buy Button - placed underneath the product picture */}
+        <div className="card-mobile-buy-btn">
+          {product.inStock ? (
+            <button
+              className="btn primary font-display"
+              type="button"
+              onClick={e => {
+                e.stopPropagation()
+                buyNow()
+              }}
+            >
+              {t('shop.addToCart')}
+            </button>
+          ) : (
+            <span className="btn btn--disabled font-display">{t('shop.outOfStock')}</span>
+          )}
+        </div>
+
         <div className="card-body">
           <div className="card-meta">
             <span className="card-brand text-red font-display">{product.brand.toUpperCase()}</span>
@@ -528,7 +548,7 @@ function PremiumProductCard({ product, dispatch, openDrawer }) {
           <QuickAddModal
             product={product} selectedFlavor={selectedFlavor} selectedSize={selectedSize} quantity={quantity}
             onClose={() => setQuickAddOpen(false)} onChangeFlavor={setSelectedFlavor}
-            onChangeSize={setSelectedSize} onChangeQuantity={setQuantity} onAddToCart={addToCart}
+            onChangeSize={setSelectedSize} onChangeQuantity={setQuantity} onBuyNow={buyNow}
           />
         )}
       </AnimatePresence>
@@ -536,7 +556,7 @@ function PremiumProductCard({ product, dispatch, openDrawer }) {
   )
 }
 
-function QuickAddModal({ product, selectedFlavor, selectedSize, quantity, onClose, onChangeFlavor, onChangeSize, onChangeQuantity, onAddToCart }) {
+function QuickAddModal({ product, selectedFlavor, selectedSize, quantity, onClose, onChangeFlavor, onChangeSize, onChangeQuantity, onBuyNow }) {
   const { t } = useTranslation()
   return (
     <motion.div className="quick-add-backdrop" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={onClose}>
@@ -586,7 +606,7 @@ function QuickAddModal({ product, selectedFlavor, selectedSize, quantity, onClos
                 <button type="button" className="quantity-btn" onClick={() => onChangeQuantity(quantity + 1)}>+</button>
               </div>
             </div>
-            <button className="btn primary modal-add-button" type="button" onClick={onAddToCart}>{t('shop.addToCart')}</button>
+            <button className="btn primary modal-add-button" type="button" onClick={onBuyNow}>{t('shop.addToCart')}</button>
           </div>
         </div>
       </motion.div>

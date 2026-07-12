@@ -7,23 +7,19 @@ import './FeaturedProducts.css'
 
 export default function FeaturedProducts() {
   const { data, loading } = useStoreData()
-  const { dispatch, openDrawer } = useCart()
+  const { openCheckoutWith } = useCart()
 
   const featured = data ? data.products.filter((p) => p.featured) : []
 
-  function addToCart(product) {
-    dispatch({
-      type: 'ADD',
-      product: {
-        id: product.id,
-        name: product.name,
-        brand: product.brand,
-        price: product.price,
-        currency: product.currency,
-        image: product.image,
-      },
+  function buyNow(product) {
+    openCheckoutWith({
+      id: product.id,
+      name: product.name,
+      brand: product.brand,
+      price: product.price,
+      currency: product.currency,
+      image: product.image,
     })
-    openDrawer()
   }
 
   return (
@@ -81,10 +77,10 @@ export default function FeaturedProducts() {
                   <div className="best-seller-card__overlay">
                     <button
                       className="best-seller-card__quick-add font-display"
-                      onClick={() => addToCart(product)}
+                      onClick={() => buyNow(product)}
                       disabled={!product.inStock}
                     >
-                      {product.inStock ? '+ AJOUTER AU PANIER' : 'ÉPUISÉ'}
+                      {product.inStock ? 'ACHETER' : 'ÉPUISÉ'}
                     </button>
                   </div>
                 </div>
@@ -114,10 +110,10 @@ export default function FeaturedProducts() {
                     </div>
                     <button
                       className="btn primary best-seller-card__btn font-display"
-                      onClick={() => addToCart(product)}
+                      onClick={() => buyNow(product)}
                       disabled={!product.inStock}
                     >
-                      {product.inStock ? 'AJOUTER' : 'ÉPUISÉ'}
+                      {product.inStock ? 'ACHETER' : 'ÉPUISÉ'}
                     </button>
                   </div>
                 </div>

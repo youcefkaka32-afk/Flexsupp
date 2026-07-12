@@ -6,7 +6,6 @@ import './styles/mobile-enhancements.css'
 import './styles/mobile-scale-fix.css'
 import { CartProvider } from './context/CartContext'
 import { ThemeProvider } from './context/ThemeContext'
-import CartDrawer      from './components/Cart/CartDrawer'
 import CheckoutModal   from './components/Checkout/CheckoutModal'
 import Navbar          from './components/Navbar/Navbar'
 import PageTransition from './components/PageTransition/PageTransition'
@@ -85,7 +84,6 @@ function AnimatedRoutes() {
           </Routes>
         </Suspense>
       </AnimatePresence>
-      {!isAdmin && <CartDrawer />}
       {!isAdmin && <CheckoutModal />}
       {!isAdmin && <ScrollToTop />}
     </>

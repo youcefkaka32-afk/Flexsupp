@@ -576,6 +576,10 @@
   font-size: 0.8rem;
 }
 
+.card-mobile-buy-btn {
+  display: none;
+}
+
 .card-body {
   padding: 1.25rem;
   display: flex;
@@ -796,11 +800,41 @@
   }
 
   .card-image-wrap {
-    /* Reduce image container height on mobile to avoid elongated cards */
-    aspect-ratio: 4 / 3;
+    aspect-ratio: 1 / 1;
     height: auto;
-    max-height: 220px;
-    padding: 0.75rem;
+    max-height: 250px;
+    padding: 0.4rem;
+  }
+
+  .card-mobile-buy-btn {
+    display: block;
+    padding: 0 1rem 0.5rem;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .card-mobile-buy-btn button,
+  .card-mobile-buy-btn .btn {
+    width: 100%;
+    border-radius: 6px;
+    font-size: 0.82rem;
+    font-weight: 900;
+    letter-spacing: 0.12em;
+    min-height: 42px !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #ff0000;
+    color: #ffffff;
+    border: none;
+    cursor: pointer;
+    text-transform: uppercase;
+  }
+
+  .card-mobile-buy-btn .btn--disabled {
+    background: var(--pg-border-mid);
+    color: var(--pg-text-faint);
+    cursor: not-allowed;
   }
 
   .card-body {
@@ -823,17 +857,7 @@
 
   /* Quick add button always visible on mobile */
   .card-quick-add-overlay {
-    opacity: 1;
-    transform: translateY(0);
-    pointer-events: auto;
-    position: relative;
-    background: transparent;
-    padding: 0.75rem 0 0;
-  }
-
-  .quick-add-btn-slide {
-    font-size: 0.75rem;
-    padding: 0.6rem 1rem;
+    display: none !important;
   }
 
   .boutique-toolbar {

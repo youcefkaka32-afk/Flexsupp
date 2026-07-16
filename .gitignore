@@ -67,3 +67,9 @@ vite-output.txt
 
 # Frames folder
 /ezgif-5545a7a067b626e2-jpg/
+
+# Raw source images (renamed copies are already in public/images/products/)
+imagesproducts/
+
+# Dev-only scratch scripts
+scratch/

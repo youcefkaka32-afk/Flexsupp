@@ -7,6 +7,22 @@ export default function LazyImage({ src, alt, className = '', ...props }) {
   const containerRef = useRef(null)
 
   useEffect(() => {
+    const el = containerRef.current
+    if (!el) return
+
+    // If IntersectionObserver isn't supported, load immediately
+    if (typeof IntersectionObserver === 'undefined') {
+      setInView(true)
+      return
+    }
+
+    // Check if already in viewport on mount (handles above-the-fold images)
+    const rect = el.getBoundingClientRect()
+    if (rect.top < window.innerHeight + 300 && rect.bottom > -300) {
+      setInView(true)
+      return
+    }
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -15,15 +31,12 @@ export default function LazyImage({ src, alt, className = '', ...props }) {
         }
       },
       { 
-        rootMargin: '120px', // start loading slightly before they scroll in
-        threshold: 0.01 
+        rootMargin: '400px', // preload aggressively before scrolling in
+        threshold: 0 
       }
     )
 
-    if (containerRef.current) {
-      observer.observe(containerRef.current)
-    }
-
+    observer.observe(el)
     return () => observer.disconnect()
   }, [])
 
@@ -56,3 +69,5 @@ export default function LazyImage({ src, alt, className = '', ...props }) {
     </div>
   )
 }
+
+

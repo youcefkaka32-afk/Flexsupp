@@ -23,7 +23,7 @@ export const slides = [
     kicker: 'BUILD YOUR BODY',
     subtitle: 'Premium Whey Formula',
     cta: 'SHOP NOW',
-    ctaHref: '/shop?category=whey',
+    ctaHref: '/shop?category=protein',
     ctaProminent: true,
     goal: 'muscle',
     // Protein → very dominant red, white center, tiny orange
@@ -65,7 +65,7 @@ export const slides = [
     kicker: 'BULK UP FASTER',
     subtitle: 'High-Calorie Mass Formula',
     cta: 'SHOP NOW',
-    ctaHref: '/shop?category=whey',
+    ctaHref: '/shop?category=protein',
     ctaProminent: false,
     goal: 'bulk',
     // Mass Gainer → very large purple bloom on left, then blue, white
@@ -113,10 +113,14 @@ export const shoeMarkup = {
 
 // PRODUCT COLOR GRADIENTS (for hero-with-products)
 export const productColorThemes = {
-  whey: 'linear-gradient(135deg, #d4a574 0%, #f4e4c1 50%, #e8d4b0 100%)',  // Gold/tan
+  protein: 'linear-gradient(135deg, #d4a574 0%, #f4e4c1 50%, #e8d4b0 100%)',  // Gold/tan
   creatine: 'linear-gradient(135deg, #8b4513 0%, #d2691e 50%, #cd853f 100%)',  // Brown
   bcaa: 'linear-gradient(135deg, #1e90ff 0%, #4169e1 50%, #6495ed 100%)',  // Blue
   preworkout: 'linear-gradient(135deg, #dc143c 0%, #ff1744 50%, #ff5252 100%)',  // Red
+  sarms: 'linear-gradient(135deg, #374151 0%, #4b5563 50%, #1f2937 100%)',  // Dark grey/slate
+  peptide: 'linear-gradient(135deg, #0d9488 0%, #14b8a6 50%, #115e59 100%)',  // Teal
+  'fat-burner': 'linear-gradient(135deg, #ea580c 0%, #f97316 50%, #c2410c 100%)',  // Orange
+  multivitamins: 'linear-gradient(135deg, #84cc16 0%, #a3e635 50%, #65a30d 100%)',  // Lime green
 }
 
 // BRANDS / CATEGORIES / PRODUCTS

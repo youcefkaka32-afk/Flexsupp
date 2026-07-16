@@ -1202,11 +1202,11 @@ export default function HeroWithProducts() {
     if (event.target.closest('a, button, input, textarea, select')) return
     const currentSlide = state.current.currentIndex
     if (currentSlide === 0) {
-      navigate('/shop?category=whey')
+      navigate('/shop?category=protein')
     } else if (currentSlide === 1) {
       navigate('/shop?category=bcaa')
     } else if (currentSlide === 2) {
-      navigate('/shop?category=whey')
+      navigate('/shop?category=protein')
     } else if (currentSlide === 3) {
       navigate('/shop?category=creatine')
     }

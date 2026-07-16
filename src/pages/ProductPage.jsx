@@ -57,9 +57,10 @@ export default function ProductPage() {
     </div>
   )
 
-  const descriptionPreview = product.description.length > 140 && !readMore
-    ? `${product.description.slice(0, 140)}...`
-    : product.description
+  const translatedDesc = t(`products.${product.id}.desc`, product.description)
+  const descriptionPreview = translatedDesc.length > 140 && !readMore
+    ? `${translatedDesc.slice(0, 140)}...`
+    : translatedDesc
 
   const galleryImages = [product.image, product.imageHover].filter(Boolean)
 
@@ -88,13 +89,13 @@ export default function ProductPage() {
 
         <section className="product-info-panel">
           <span className="product-brand-label">{product.brand}</span>
-          <h1 className="product-title font-display">{product.name}</h1>
+          <h1 className="product-title font-display">{t(`products.${product.id}.name`, product.name)}</h1>
           <span className={`stock-badge ${product.inStock ? 'in-stock' : 'out-of-stock'}`}>
             {product.inStock ? t('product.inStock') : t('product.outOfStock')}
           </span>
 
           <p className="product-short-description">{descriptionPreview}</p>
-          {product.description.length > 140 && (
+          {translatedDesc.length > 140 && (
             <button className="read-more-toggle" type="button" onClick={() => setReadMore((c) => !c)}>
               {readMore ? t('product.readLess') : t('product.readMore')}
             </button>

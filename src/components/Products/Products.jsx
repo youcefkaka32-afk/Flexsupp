@@ -343,7 +343,7 @@ function SidebarContent({
           {categories.map(cat => (
             <li key={cat.id}>
               <button className={`sidebar-list-item ${activeCategory === cat.id ? 'active' : ''}`} onClick={() => setActiveCategory(cat.id)}>
-                <span>{cat.name}</span>
+                <span>{t(`categories.${cat.id}`, cat.name)}</span>
                 <span className="sidebar-check">{activeCategory === cat.id && '✓'}</span>
               </button>
             </li>
@@ -527,7 +527,7 @@ function PremiumProductCard({ product, openCheckoutWith }) {
             <span className="card-brand text-red font-display">{product.brand.toUpperCase()}</span>
             {product.tags?.[0] && <span className="card-tag">{product.tags[0].toUpperCase()}</span>}
           </div>
-          <h3 className="card-name font-display">{product.name}</h3>
+          <h3 className="card-name font-display">{t(`products.${product.id}.name`, product.name)}</h3>
           {product.flavors?.length > 0 && (
             <div className="card-swatches" aria-hidden>
               {product.flavors.slice(0, 4).map((f, i) => (
@@ -569,11 +569,11 @@ function QuickAddModal({ product, selectedFlavor, selectedSize, quantity, onClos
           </div>
           <div className="quick-add-content">
             <span className="modal-brand-label">{product.brand}</span>
-            <h2 className="modal-title font-display">{product.name}</h2>
+            <h2 className="modal-title font-display">{t(`products.${product.id}.name`, product.name)}</h2>
             <span className={`stock-badge ${product.inStock ? 'in-stock' : 'out-of-stock'}`}>
               {product.inStock ? t('shop.inStock') : t('shop.rupture')}
             </span>
-            <p className="modal-copy">{product.description}</p>
+            <p className="modal-copy">{t(`products.${product.id}.desc`, product.description)}</p>
             <div className="modal-price-block">
               {product.oldPrice && <span className="modal-price-old">{formatPrice(product.oldPrice, product.currency)}</span>}
               <span className="modal-price-current text-red">{formatPrice(product.price, product.currency)}</span>

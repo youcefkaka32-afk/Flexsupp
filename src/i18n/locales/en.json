@@ -52,10 +52,22 @@
     "cta": "DISCOVER THE STORE"
   },
   "trustbar": {
-    "shipping": { "title": "NATIONWIDE DELIVERY", "desc": "To all wilayas." },
-    "algerian": { "title": "PROUDLY ALGERIAN", "desc": "Authentic products guaranteed." },
-    "freeShipping": { "title": "FREE SHIPPING", "desc": "On orders over 5,000 DA." },
-    "secure": { "title": "SECURE PAYMENT", "desc": "100% secure and reliable." }
+    "shipping": {
+      "title": "NATIONWIDE DELIVERY",
+      "desc": "To all wilayas."
+    },
+    "algerian": {
+      "title": "PROUDLY ALGERIAN",
+      "desc": "Authentic products guaranteed."
+    },
+    "freeShipping": {
+      "title": "FREE SHIPPING",
+      "desc": "On orders over 5,000 DA."
+    },
+    "secure": {
+      "title": "SECURE PAYMENT",
+      "desc": "100% secure and reliable."
+    }
   },
   "catalog": {
     "title": "OUR SPORTS SUPPLEMENTS",
@@ -292,10 +304,22 @@
     "eyebrow": "WHY CHOOSE US",
     "title": "THE FLEX SUPPS DIFFERENCE",
     "features": {
-      "authentic": { "title": "100% AUTHENTIC", "desc": "Every product is sourced directly from official manufacturers. Zero counterfeits, absolute guarantee." },
-      "delivery": { "title": "FAST DELIVERY", "desc": "Express delivery across Algeria. Cash on delivery available in all wilayas." },
-      "certified": { "title": "CERTIFIED FORMULAS", "desc": "All our brands are certified and lab-tested. Real performance, proven results." },
-      "support": { "title": "EXPERT SUPPORT", "desc": "Our team of sports nutrition experts guides you in choosing the best supplements." }
+      "authentic": {
+        "title": "100% AUTHENTIC",
+        "desc": "Every product is sourced directly from official manufacturers. Zero counterfeits, absolute guarantee."
+      },
+      "delivery": {
+        "title": "FAST DELIVERY",
+        "desc": "Express delivery across Algeria. Cash on delivery available in all wilayas."
+      },
+      "certified": {
+        "title": "CERTIFIED FORMULAS",
+        "desc": "All our brands are certified and lab-tested. Real performance, proven results."
+      },
+      "support": {
+        "title": "EXPERT SUPPORT",
+        "desc": "Our team of sports nutrition experts guides you in choosing the best supplements."
+      }
     },
     "manifestoEyebrow": "FOUNDER & PHILOSOPHY",
     "est": "EST. 2023",
@@ -317,6 +341,130 @@
       "betaAlanine": "BETA-ALANINE",
       "citrulline": "L-CITRULLINE",
       "noSugar": "ADDED SUGARS"
+    }
+  },
+  "categories": {
+    "protein": "Protein",
+    "protein_desc": "High-quality proteins for recovery and muscle growth",
+    "creatine": "Creatine",
+    "creatine_desc": "Boost your strength and explosive performance",
+    "sarms": "Sarms",
+    "sarms_desc": "Selective androgen receptor modulators for targeted anabolism",
+    "peptide": "Peptides",
+    "peptide_desc": "Premium peptides for vitality, care, and repair",
+    "fat-burner": "Fat Burner",
+    "fat-burner_desc": "Powerful thermogenic fat burners for cutting",
+    "preworkout": "Pre-Workout",
+    "preworkout_desc": "Maximum energy and muscle pump before training",
+    "multivitamins": "Multivitamins",
+    "multivitamins_desc": "Essential vitamins and minerals for overall health",
+    "bcaa": "BCAA & Amino Acids",
+    "bcaa_desc": "Essential amino acids for recovery and performance"
+  },
+  "products": {
+    "ostrovit-marine-collagen": {
+      "name": "Marine Collagen (Black Currant)",
+      "desc": "Type I Marine Collagen from OstroVit NUTRICOSMETICS in black currant flavour. 200g of pure collagen for healthy skin, joints, and hair."
+    },
+    "lipo6-hardcore": {
+      "name": "LIPO-6 Hardcore",
+      "desc": "LIPO-6 Hardcore by Nutrex Research, the ultimate fat burner with 60 capsules. Advanced formula for rapid and effective weight loss."
+    },
+    "scitec-jumbo-green": {
+      "name": "Jumbo (Strawberry)",
+      "desc": "Jumbo by Scitec Nutrition, protein drink powder with 7 carbohydrates, muscle function matrix, energy complex, and amino acid matrix. 6600g for 30 servings."
+    },
+    "biotech-l-carnitine-liquid": {
+      "name": "L-Carnitine 100.000 Liquid (Cherry)",
+      "desc": "BioTechUSA L-Carnitine 100.000 Liquid cherry flavoured. 2000mg L-Carnitine per serving with green tea extract and vitamins. Sugar free, 500ml (50 servings)."
+    },
+    "biotech-creatine-monohydrate": {
+      "name": "100% Creatine Monohydrate",
+      "desc": "BioTechUSA 100% Creatine Monohydrate pure and micronized, unflavoured. 3g creatine daily, sugar free, gluten free. 300g (88 servings)."
+    },
+    "biotech-iso-whey-zero-black-strawberry": {
+      "name": "Iso Whey Zero Black (Strawberry)",
+      "desc": "BioTechUSA Iso Whey Zero Black Strawberry — anabolic whey protein isolate with 80% protein. Lactose free, sugar free, gluten free, palm oil free. With 3g creatine. 2270g (75 servings)."
+    },
+    "usn-isopro-whey": {
+      "name": "IsoPro Whey (Vanilla)",
+      "desc": "USN GoldenBody IsoPro Whey 100% Whey Protein Isolate. Leader in sports nutrition, vanilla flavour for optimal muscle recovery."
+    },
+    "lipo6-nighttime": {
+      "name": "LIPO6 Nighttime",
+      "desc": "LIPO6 Nighttime — nighttime weight loss & sleep support. In the realm of dreams, we find inspiration and rejuvenation. 30 capsules, one pill only."
+    },
+    "applied-critical-whey": {
+      "name": "Critical Whey (Strawberry)",
+      "desc": "Applied Nutrition Critical Whey Advanced Protein certified Informed Sport. 21g protein, 110 calories per serving. 67 servings, Strawberry Milkshake flavour."
+    },
+    "lipo6-black": {
+      "name": "LIPO6 Black Ultra Concentrate",
+      "desc": "LIPO6 Black Ultra Concentrate from Nutrex Research. Ultra concentrated formula with Vitamin C, Capsule B, and Cynomite. 60 Liqui-Caps."
+    },
+    "naughty-boy-whey": {
+      "name": "Whey (Vanilla Ice Cream)",
+      "desc": "Naughty Boy Whey Advanced Protein — 100g protein, 1.6g fat. Vanilla Ice Cream flavour for high-quality muscle recovery."
+    },
+    "animal-pak": {
+      "name": "Animal Pak (Multivitamin)",
+      "desc": "Animal Pak Ultimate Foundation — 20-en-1 multivitamin pack improved with 25% less pills. Vitamins, minerals, antioxidants, Siberian ginseng, turmeric, milk thistle, and digestive enzymes. 44 packs."
+    },
+    "myvitamins-multivitamin-gummies": {
+      "name": "Multivitamin Gummies (Vimto)",
+      "desc": "Myvitamins Multivitamin Gummies Vimto flavour. Delicious multivitamin gummies. 60 gummies per bottle, formulated for active adults."
+    },
+    "myprotein-impact-creatine-1kg": {
+      "name": "Impact Creatine (1kg)",
+      "desc": "MyProtein Impact Creatine — increases physical performance and supports high intensity exercise. Unflavoured, 1kg ≈ 333 servings."
+    },
+    "on-platinum-hydro-whey": {
+      "name": "Platinum Hydro Whey (Chocolate)",
+      "desc": "Optimum Nutrition Platinum Hydro Whey chocolate. Advanced hydrolysed whey protein isolate — 30g high protein, 9.5g BCAAs per serving. 1.6kg."
+    },
+    "applied-multivitamin-complex": {
+      "name": "Multi-Vitamin Complex",
+      "desc": "Applied Nutrition Multi-Vitamin Complex — complete daily vitamin and mineral supplement in clear capsules to support overall wellness."
+    },
+    "on-opti-women": {
+      "name": "Opti-Women",
+      "desc": "Optimum Nutrition Opti-Women multivitamin for active women. 23 active ingredients, supports metabolic and immune function, reduces fatigue. 60 capsules."
+    },
+    "applied-beef-mass-gainer": {
+      "name": "Beef Mass Gainer",
+      "desc": "Applied Nutrition Beef Mass Gainer — strength, muscle, mass. 42g protein, 70g dual carb, 454 kcal. Low fat, lactose free, dairy free."
+    },
+    "myprotein-impact-creatine-small": {
+      "name": "Impact Creatine (250g)",
+      "desc": "MyProtein Impact Creatine — 3g creatine per serving. Increases physical performance and supports high intensity exercise. Unflavoured, 250g."
+    },
+    "extreme-fat-burner-pink": {
+      "name": "Extreme Fat Burner (Watermelon)",
+      "desc": "Extreme Fat Burner watermelon flavour — powerful supplement with 1200mg L-Tyrosine, 1000mg L-Carnitine, and 300mg green tea extract to support fat loss."
+    },
+    "doctor-nutrition-amino-eaa": {
+      "name": "Amino EAA (Cherry)",
+      "desc": "Doctor Nutrition Amino EAA — essential amino acids cherry flavour. 30 servings, 300g. Base for recovery and muscle maintenance."
+    },
+    "weider-mega-mass-4000": {
+      "name": "Mega Mass 4000 (Chocolate)",
+      "desc": "Weider Mega Mass 4000 new formula — designed for hardgainers. +800 kcal, 49g protein per serving with Creapure. Aspartame free. 4kg."
+    },
+    "biotech-hyper-mass": {
+      "name": "Hyper Mass (Chocolate)",
+      "desc": "BioTechUSA Hyper Mass — protein drink powder with carbohydrates and creatine. Low sugar, high protein. Chocolate flavour, 7004g (104 servings)."
+    },
+    "biotech-citrulline-malate": {
+      "name": "Citrulline Malate (Lime)",
+      "desc": "BioTechUSA Citrulline Malate lime flavoured. 1.5g L-Citrulline + 1.5g malate per serving. Sugar free, gluten free to support blood flow and muscle pump."
+    },
+    "biotech-iso-whey-zero-pistachio": {
+      "name": "Iso Whey Zero (Pistachio)",
+      "desc": "BioTechUSA Iso Whey Zero Pistachio — premium whey protein isolate with L-Glutamine and BCAAs. Sugar free, gluten free, palm oil free. 2270g."
+    },
+    "myprotein-l-glutamine": {
+      "name": "L-Glutamine",
+      "desc": "MyProtein L-Glutamine — pure, unflavoured amino acid supplement to support muscle recovery and protect muscle fibers after intense workouts."
     }
   }
 }

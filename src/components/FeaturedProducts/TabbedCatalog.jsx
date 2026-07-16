@@ -87,7 +87,7 @@ export default function TabbedCatalog() {
           {topTab === 'category'
             ? categories.map(cat => (
                 <button type="button" key={cat.id} className={`catalog-sub-btn ${activeSubTab === cat.id ? 'active' : ''}`} onClick={() => setActiveSubTab(cat.id)}>
-                  {cat.name}
+                  {t(`categories.${cat.id}`, cat.name)}
                 </button>
               ))
             : goals.filter(g => g.id !== 'all').map(goal => (

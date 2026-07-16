@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
+import { useTranslation } from 'react-i18next'
 import './Categories.css'
 import { useStoreData } from '../../hooks/useStoreData'
 
@@ -18,39 +19,38 @@ const icons = {
   ),
   creatine: (
     <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M20 8l-3 6 3 6 3-6z" fill="currentColor"/>
-      <path d="M20 20l-3 6 3 6 3-6z" fill="currentColor"/>
-      <circle cx="12" cy="14" r="2" fill="currentColor"/>
-      <circle cx="28" cy="14" r="2" fill="currentColor"/>
-      <circle cx="12" cy="26" r="2" fill="currentColor"/>
-      <circle cx="28" cy="26" r="2" fill="currentColor"/>
+      <path d="M9 25V29H31V25H9Z" fill="currentColor"/>
+      <path d="M11 25V17C11 13.7 13.7 11 17 11H23C26.3 11 29 13.7 29 17V25H11ZM16 7H24V9H16V7Z" fill="currentColor"/>
     </svg>
   ),
   bcaa: (
     <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <circle cx="12" cy="12" r="4" stroke="currentColor" strokeWidth="2" fill="none"/>
-      <circle cx="28" cy="12" r="4" stroke="currentColor" strokeWidth="2" fill="none"/>
-      <circle cx="20" cy="28" r="4" stroke="currentColor" strokeWidth="2" fill="none"/>
-      <line x1="14" y1="15" x2="18" y2="25" stroke="currentColor" strokeWidth="2"/>
-      <line x1="26" y1="15" x2="22" y2="25" stroke="currentColor" strokeWidth="2"/>
+      <path d="M20 7L10 12V28L20 33L30 28V12L20 7Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M20 7V33" stroke="currentColor" strokeWidth="2"/>
+      <path d="M10 12L30 28" stroke="currentColor" strokeWidth="2"/>
+      <path d="M30 12L10 28" stroke="currentColor" strokeWidth="2"/>
     </svg>
   ),
   preworkout: (
     <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M20 6l4 8h8l-6 6 2 8-8-4-8 4 2-8-6-6h8z" fill="currentColor"/>
+      <path d="M21 7L11 20H19V33L29 20H21V7Z" fill="currentColor"/>
     </svg>
   ),
 }
 
 const categoryMeta = {
-  whey:       { icon: icons.whey, count: '12+ Produits', color: '#E31B23' },
+  protein:    { icon: icons.whey, count: '12+ Produits', color: '#E31B23' },
   creatine:   { icon: icons.creatine, count: '8+ Produits',  color: '#E31B23' },
   bcaa:       { icon: icons.bcaa, count: '10+ Produits', color: '#E31B23' },
   preworkout: { icon: icons.preworkout, count: '6+ Produits',  color: '#E31B23' },
+  sarms:      { icon: icons.creatine, count: '2+ Produits',  color: '#E31B23' },
+  peptide:    { icon: icons.bcaa, count: '3+ Produits',  color: '#E31B23' },
+  'fat-burner': { icon: icons.preworkout, count: '4+ Produits',  color: '#E31B23' },
 }
 
 export default function Categories() {
   const { data, loading } = useStoreData()
+  const { t } = useTranslation()
   const categories = data ? data.categories : []
 
   return (
@@ -60,11 +60,11 @@ export default function Categories() {
         {/* Section Header */}
         <div className="section-head">
           <div>
-            <span className="eyebrow">CATÉGORIES</span>
-            <h2 className="section-title font-display">EXPLORER PAR TYPE</h2>
+            <span className="eyebrow">{t('catalog.byCategory')}</span>
+            <h2 className="section-title font-display">{t('shop.productType')}</h2>
           </div>
           <Link to="/shop" className="btn categories-view-all font-display">
-            VOIR TOUT →
+            {t('shop.viewProducts')} →
           </Link>
         </div>
 
@@ -92,10 +92,10 @@ export default function Categories() {
                   <span className="category-tile__icon">{categoryMeta[cat.id]?.icon || icons.whey}</span>
 
                   {/* Name */}
-                  <h3 className="category-tile__name font-display">{cat.name}</h3>
+                  <h3 className="category-tile__name font-display">{t(`categories.${cat.id}`, cat.name)}</h3>
 
                   {/* Description */}
-                  <p className="category-tile__desc">{cat.description}</p>
+                  <p className="category-tile__desc">{t(`categories.${cat.id}_desc`, cat.description)}</p>
 
                   {/* Count + Arrow */}
                   <div className="category-tile__footer">

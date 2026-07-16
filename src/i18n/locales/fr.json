@@ -52,10 +52,22 @@
     "cta": "DÉCOUVRIR LA BOUTIQUE"
   },
   "trustbar": {
-    "shipping": { "title": "LIVRAISON NATIONALE", "desc": "Dans toutes les wilayas." },
-    "algerian": { "title": "FIÈREMENT ALGÉRIEN", "desc": "Produits authentiques garantis." },
-    "freeShipping": { "title": "LIVRAISON GRATUITE", "desc": "À partir de 5000 DA d'achat." },
-    "secure": { "title": "PAIEMENT SÉCURISÉ", "desc": "100% sécurisé et fiable." }
+    "shipping": {
+      "title": "LIVRAISON NATIONALE",
+      "desc": "Dans toutes les wilayas."
+    },
+    "algerian": {
+      "title": "FIÈREMENT ALGÉRIEN",
+      "desc": "Produits authentiques garantis."
+    },
+    "freeShipping": {
+      "title": "LIVRAISON GRATUITE",
+      "desc": "À partir de 5000 DA d'achat."
+    },
+    "secure": {
+      "title": "PAIEMENT SÉCURISÉ",
+      "desc": "100% sécurisé et fiable."
+    }
   },
   "catalog": {
     "title": "NOS COMPLÉMENTS SPORTIFS",
@@ -291,10 +303,22 @@
     "eyebrow": "POURQUOI NOUS CHOISIR",
     "title": "LA DIFFÉRENCE FLEX SUPPS",
     "features": {
-      "authentic": { "title": "100% AUTHENTIQUE", "desc": "Chaque produit est sourcé directement auprès des fabricants officiels. Zéro contrefaçon, garantie absolue." },
-      "delivery": { "title": "LIVRAISON RAPIDE", "desc": "Livraison express partout en Algérie. Paiement à la livraison disponible sur toutes les wilayas." },
-      "certified": { "title": "FORMULES CERTIFIÉES", "desc": "Toutes nos marques sont certifiées et testées en laboratoire. Performance réelle, résultats prouvés." },
-      "support": { "title": "SUPPORT EXPERT", "desc": "Notre équipe d'experts en nutrition sportive vous guide dans le choix des meilleurs compléments." }
+      "authentic": {
+        "title": "100% AUTHENTIQUE",
+        "desc": "Chaque produit est sourcé directement auprès des fabricants officiels. Zéro contrefaçon, garantie absolue."
+      },
+      "delivery": {
+        "title": "LIVRAISON RAPIDE",
+        "desc": "Livraison express partout en Algérie. Paiement à la livraison disponible sur toutes les wilayas."
+      },
+      "certified": {
+        "title": "FORMULES CERTIFIÉES",
+        "desc": "Toutes nos marques sont certifiées et testées en laboratoire. Performance réelle, résultats prouvés."
+      },
+      "support": {
+        "title": "SUPPORT EXPERT",
+        "desc": "Notre équipe d'experts en nutrition sportive vous guide dans le choix des meilleurs compléments."
+      }
     },
     "manifestoEyebrow": "FONDATEUR ET PHILOSOPHIE",
     "est": "EST. 2023",
@@ -316,6 +340,130 @@
       "betaAlanine": "BETA-ALANINE",
       "citrulline": "L-CITRULLINE",
       "noSugar": "SUCRES AJOUTÉS"
+    }
+  },
+  "categories": {
+    "protein": "Protéine",
+    "protein_desc": "Protéines de haute qualité pour la récupération et la croissance musculaire",
+    "creatine": "Créatine",
+    "creatine_desc": "Boostez votre force et vos performances explosives",
+    "sarms": "Sarms",
+    "sarms_desc": "Modulateurs sélectifs des récepteurs aux androgènes pour l'anabolisme ciblé",
+    "peptide": "Peptides",
+    "peptide_desc": "Peptides de qualité supérieure pour la vitalité, le soin et la réparation",
+    "fat-burner": "Brûleur de Graisse",
+    "fat-burner_desc": "Brûleurs de graisse thermogéniques puissants pour la sèche",
+    "preworkout": "Pré-Workout",
+    "preworkout_desc": "Énergie maximale et congestion avant l'entraînement",
+    "multivitamins": "Multivitamines",
+    "multivitamins_desc": "Vitamines et minéraux essentiels pour la santé globale",
+    "bcaa": "BCAA & Acides Aminés",
+    "bcaa_desc": "Acides aminés essentiels pour la récupération et la performance"
+  },
+  "products": {
+    "ostrovit-marine-collagen": {
+      "name": "Marine Collagen (Cassis)",
+      "desc": "Collagène marin de type I OstroVit NUTRICOSMETICS à la saveur cassis. 200g de collagène pur pour la santé de la peau, des articulations et des cheveux."
+    },
+    "lipo6-hardcore": {
+      "name": "LIPO-6 Hardcore",
+      "desc": "LIPO-6 HARDCORE de Nutrex Research, le brûleur de graisse maximum avec 60 capsules. Formule avancée pour une perte de poids rapide et efficace."
+    },
+    "scitec-jumbo-green": {
+      "name": "Jumbo (Fraise)",
+      "desc": "JUMBO Scitec Nutrition, boisson protéinée en poudre avec 7 glucides, matrix musculaire, complexe énergétique et acides aminés. 6600g pour 30 servings."
+    },
+    "biotech-l-carnitine-liquid": {
+      "name": "L-Carnitine 100.000 Liquid (Cerise)",
+      "desc": "BioTechUSA L-CARNITINE 100.000 LIQUID à la cerise. 2000mg de L-Carnitine par serving avec extrait de thé vert et vitamines. Sans sucre, 500ml (50 servings)."
+    },
+    "biotech-creatine-monohydrate": {
+      "name": "100% Creatine Monohydrate",
+      "desc": "BioTechUSA 100% CREATINE MONOHYDRATE pure et micronisée, sans arôme. 3g de créatine par jour, sans sucre, sans gluten. 300g (88 servings)."
+    },
+    "biotech-iso-whey-zero-black-strawberry": {
+      "name": "Iso Whey Zero Black (Fraise)",
+      "desc": "BioTechUSA ISO WHEY ZERO BLACK Fraise — isolat de whey anabolisant à 80% de protéines. Sans lactose, sans sucre, sans gluten, sans huile de palme. Avec 3g de créatine. 2270g (75 servings)."
+    },
+    "usn-isopro-whey": {
+      "name": "IsoPro Whey (Vanille)",
+      "desc": "USN GOLDENBODY ISOPRO WHEY 100% isolat de whey protéine. Leader en nutrition sportive, parfum vanille pour une récupération musculaire optimale."
+    },
+    "lipo6-nighttime": {
+      "name": "LIPO6 Nighttime",
+      "desc": "LIPO6 NIGHTTIME — perte de poids nocturne et support du sommeil. Dans le royaume des rêves, nous trouvons l'inspiration et le rajeunissement. 30 capsules, une seule pilule."
+    },
+    "applied-critical-whey": {
+      "name": "Critical Whey (Fraise)",
+      "desc": "Applied Nutrition CRITICAL WHEY Advanced Protein certifié Informed Sport. 21g de protéines, 110 calories par serving. 67 servings, parfum Strawberry Milkshake."
+    },
+    "lipo6-black": {
+      "name": "LIPO6 Black Ultra Concentrate",
+      "desc": "LIPO6 BLACK Ultra Concentrate de Nutrex Research. Formule ultra-concentrée avec Vitamine C, Capsule B et Cynomite. 60 LIQUI-CAPS, complément alimentaire."
+    },
+    "naughty-boy-whey": {
+      "name": "Whey (Vanille Glacée)",
+      "desc": "Naughty Boy WHEY Advanced Protein — 100g de protéines, 1.6g de lipides. Parfum Vanilla Ice Cream pour une récupération musculaire de haute qualité."
+    },
+    "animal-pak": {
+      "name": "Animal Pak (Multivitamine)",
+      "desc": "Animal PAK Ultimate Foundation — 20-en-1 multivitamine pack améliorée avec 25% moins de pilules. Vitamines, minéraux, antioxydants, ginseng sibérien, curcuma, chardon-marie, enzymes digestives. 44 packs."
+    },
+    "myvitamins-multivitamin-gummies": {
+      "name": "Multivitamin Gummies (Vimto)",
+      "desc": "Myvitamins MULTIVITAMIN GUMMIES parfum Vimto. Multivitamines délicieuses sous forme de gummies. 60 gummies par boîte, formulées pour les adultes actifs."
+    },
+    "myprotein-impact-creatine-1kg": {
+      "name": "Impact Creatine (1kg)",
+      "desc": "MyProtein IMPACT Creatine — augmente les performances physiques et supporte l'exercice à haute intensité. Non aromatisé, 1kg ≈ 333 servings."
+    },
+    "on-platinum-hydro-whey": {
+      "name": "Platinum Hydro Whey (Chocolat)",
+      "desc": "Optimum Nutrition PLATINUM HYDRO WHEY au chocolat. Isolat de whey hydrolysé avancé — 30g de protéines, 9.5g de BCAAs par serving. 1.6kg."
+    },
+    "applied-multivitamin-complex": {
+      "name": "Multi-Vitamin Complex",
+      "desc": "Applied Nutrition MULTI-VITAMIN COMPLEX — complément vitaminique complet en capsules claires. Soutien des vitamines et micronutriments essentiels."
+    },
+    "on-opti-women": {
+      "name": "Opti-Women",
+      "desc": "Optimum Nutrition OPTI-WOMEN multivitamine pour femmes actives. 23 ingrédients actifs, soutient la fonction métabolique et immunitaire, réduit la fatigue. 60 capsules."
+    },
+    "applied-beef-mass-gainer": {
+      "name": "Beef Mass Gainer",
+      "desc": "Applied Nutrition BEEF MASS GAINER — force, muscle, masse. 42g de protéines, 70g de glucides doubles, 454 kcal. Faible en sucre, sans lactose, sans produits laitiers."
+    },
+    "myprotein-impact-creatine-small": {
+      "name": "Impact Creatine (250g)",
+      "desc": "MyProtein IMPACT Creatine — 3g de créatine par serving. Augmente les performances physiques et supporte l'exercice à haute intensité. Format pratique."
+    },
+    "extreme-fat-burner-pink": {
+      "name": "Extreme Fat Burner (Pastèque)",
+      "desc": "EXTREME FAT BURNER parfum pastèque — 1200mg L-Tyrosine, 1000mg L-Carnitine, 300mg d'extrait de thé vert. Complément alimentaire puissant pour la perte de poids."
+    },
+    "doctor-nutrition-amino-eaa": {
+      "name": "Amino EAA (Cerise)",
+      "desc": "Doctor Nutrition AMINO EAA — acides aminés essentiels parfum cerise. 30 servings, 300g. La base pour la récupération et le maintien musculaire."
+    },
+    "weider-mega-mass-4000": {
+      "name": "Mega Mass 4000 (Chocolat)",
+      "desc": "Weider MEGA MASS 4000 nouvelle formule — conçu pour les hardgainers. +800 kcal par serving, 49g de protéines, avec Creapure. Sans aspartame, sucre réduit. 4kg."
+    },
+    "biotech-hyper-mass": {
+      "name": "Hyper Mass (Chocolat)",
+      "desc": "BioTechUSA HYPER MASS — boisson protéinée en poudre avec glucides et créatine. Faible en sucre, haute en protéines. Parfum chocolat, 7004g (104 servings)."
+    },
+    "biotech-citrulline-malate": {
+      "name": "Citrulline Malate (Citron Vert)",
+      "desc": "BioTechUSA CITRULLINE MALATE parfum citron vert. 1.5g L-Citrulline + 1.5g Malate par serving. Sans sucre, sans gluten."
+    },
+    "biotech-iso-whey-zero-pistachio": {
+      "name": "Iso Whey Zero (Pistache)",
+      "desc": "BioTechUSA ISO WHEY ZERO Pistache — isolat de whey premium avec L-Glutamine et BCAAs. Sans sucre, sans gluten, sans huile de palme. 2270g."
+    },
+    "myprotein-l-glutamine": {
+      "name": "L-Glutamine",
+      "desc": "MyProtein L-GLUTAMINE — acide aminé essentiel formulé par des experts, non aromatisé. 5g de L-Glutamine pour la récupération musculaire et le système immunitaire."
     }
   }
 }

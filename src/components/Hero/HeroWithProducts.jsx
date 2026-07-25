@@ -453,13 +453,13 @@ export default function HeroWithProducts() {
         if (!fl || (!bl && !isAr)) continue
 
         const isFVisible = !fl.classList.contains('hidden')
-        const isBVisible = !bl.classList.contains('hidden')
+        const isBVisible = bl ? !bl.classList.contains('hidden') : false
         const delay = delayStart + i * 0.035
         const opacityTargets = []
 
         if (isFVisible) opacityTargets.push(fl)
-        if (isBVisible) opacityTargets.push(bl)
-        if (!isBVisible) gsap.set(bl, { opacity: 0 })
+        if (bl && isBVisible) opacityTargets.push(bl)
+        if (bl && !isBVisible) gsap.set(bl, { opacity: 0 })
 
         if (activeSlide.shoe === 'superfly') {
           if (isFVisible) gsap.set(fl, { opacity: 0, y: -200, x: 0 })

@@ -306,8 +306,10 @@ export default function ProductReviews() {
   }
 
   // ── Desktop transform offset ──────────────────────────────────
+  const isRtl = i18n.language === 'ar'
   const cardWidthPct = 100 / cardsPerView
-  const offset = isMobile ? 0 : -(index * cardWidthPct)
+  const rawOffset = -(index * cardWidthPct)
+  const offset = isMobile ? 0 : (isRtl ? -rawOffset : rawOffset)
 
   return (
     <section className="reviews-section" ref={sectionRef}>

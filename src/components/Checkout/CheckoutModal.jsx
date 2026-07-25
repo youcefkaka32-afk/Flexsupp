@@ -236,7 +236,16 @@ export default function CheckoutModal() {
   }
 
   async function saveOrder(receiptUrl = null) {
-    const { data, error } = await supabase.from('orders').insert({
+    const orderId = (typeof crypto !== 'undefined' && crypto.randomUUID)
+      ? crypto.randomUUID()
+      : 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
+          const r = Math.random() * 16 | 0
+          const v = c === 'x' ? r : (r & 0x3 | 0x8)
+          return v.toString(16)
+        })
+
+    const payload = {
+      id: orderId,
       customer_name: name.trim(),
       customer_phone: phone.trim(),
       wilaya,
@@ -249,22 +258,21 @@ export default function CheckoutModal() {
       currency,
       status: payMethod === 'online' ? 'pending' : 'ccp_pending',
       payment_method: payMethod === 'online' ? 'chargily' : 'ccp_baridimob',
-    }).select('id').single()
+    }
+
+    const { error } = await supabase.from('orders').insert(payload)
 
     if (error) {
-      await supabase.from('orders').insert({
-        customer_name: name.trim(), customer_phone: phone.trim(),
-        wilaya, commune,
-        items: orderItems.map(i => ({
-          id: i.id, name: i.name, brand: i.brand,
-          price: i.price, quantity: i.quantity, currency: i.currency,
-        })),
-        total_price: orderTotal, currency,
-        status: payMethod === 'online' ? 'pending' : 'ccp_pending',
-      })
-      return null
+      console.warn('First insert attempt warning:', error)
+      // Fallback if payment_method column is not yet in Supabase table
+      delete payload.payment_method
+      const { error: fallbackError } = await supabase.from('orders').insert(payload)
+      if (fallbackError) {
+        console.error('Order insert error:', fallbackError)
+        return null
+      }
     }
-    return data?.id ?? null
+    return orderId
   }
 
   async function handleSubmit(e) {

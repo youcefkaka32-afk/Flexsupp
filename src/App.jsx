@@ -30,11 +30,14 @@ const BMICalculator = lazy(() => import('./pages/Tools/BMICalculator'))
 const CalorieCalculator = lazy(() => import('./pages/Tools/CalorieCalculator'))
 const BodyTypes = lazy(() => import('./pages/Tools/BodyTypes'))
 const WorkoutPlanning = lazy(() => import('./pages/Tools/WorkoutPlanning'))
+const PaymentSuccess = lazy(() => import('./pages/PaymentSuccess'))
+const PaymentCancel  = lazy(() => import('./pages/PaymentCancel'))
 
 
 function AnimatedRoutes() {
   const location = useLocation()
   const isAdmin = location.pathname.startsWith('/admin')
+  const isPaymentPage = location.pathname.startsWith('/payment')
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -66,9 +69,9 @@ function AnimatedRoutes() {
   
   return (
     <>
-      {!isAdmin && <AnnouncementBar />}
-      {!isAdmin && <Navbar />}
-      {!isAdmin && <CustomCursor />}
+      {!isAdmin && !isPaymentPage && <AnnouncementBar />}
+      {!isAdmin && !isPaymentPage && <Navbar />}
+      {!isAdmin && !isPaymentPage && <CustomCursor />}
       <AnimatePresence mode="wait">
         <Suspense fallback={null}>
           <Routes location={location} key={location.pathname}>
@@ -80,12 +83,14 @@ function AnimatedRoutes() {
             <Route path="/tools/calorie-calculator" element={<PageTransition><CalorieCalculator /></PageTransition>} />
             <Route path="/tools/body-types" element={<PageTransition><BodyTypes /></PageTransition>} />
             <Route path="/tools/workout-planning" element={<PageTransition><WorkoutPlanning /></PageTransition>} />
+            <Route path="/payment/success" element={<PaymentSuccess />} />
+            <Route path="/payment/cancel"  element={<PaymentCancel />} />
             <Route path="/admin" element={<AdminPage />} />
           </Routes>
         </Suspense>
       </AnimatePresence>
-      {!isAdmin && <CheckoutModal />}
-      {!isAdmin && <ScrollToTop />}
+      {!isAdmin && !isPaymentPage && <CheckoutModal />}
+      {!isAdmin && !isPaymentPage && <ScrollToTop />}
     </>
   )
 }

@@ -493,3 +493,289 @@
   text-align: center;
   letter-spacing: 0.04em;
 }
+
+/* ── Payment method toggle ─────────────────────────────────── */
+.pay-toggle {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.pay-toggle__btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 14px 10px;
+  border: 1.5px solid var(--pg-border-mid);
+  background: var(--pg-bg);
+  color: var(--pg-text-muted);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: border-color 200ms, background 200ms, color 200ms, box-shadow 200ms;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  line-height: 1.2;
+  text-align: center;
+}
+
+.pay-toggle__btn svg {
+  margin-bottom: 2px;
+  flex-shrink: 0;
+}
+
+.pay-toggle__sub {
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.6;
+}
+
+.pay-toggle__btn:hover {
+  border-color: var(--pg-text-dim);
+  color: var(--pg-text);
+}
+
+.pay-toggle__btn.active {
+  border-color: #E31B23;
+  background: rgba(227, 27, 35, 0.07);
+  color: #E31B23;
+  box-shadow: 0 0 0 3px rgba(227, 27, 35, 0.08);
+}
+
+.pay-toggle__btn.active .pay-toggle__sub {
+  opacity: 0.8;
+}
+
+/* ── Submit button variants ────────────────────────────────── */
+.checkout-submit--whatsapp {
+  background: #25D366;
+}
+.checkout-submit--whatsapp:hover {
+  background: #1aad57;
+  transform: translateY(-1px);
+}
+
+/* ── Loading spinner ───────────────────────────────────────── */
+.checkout-spinner {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  border: 2.5px solid rgba(255,255,255,0.35);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: co-spin 0.65s linear infinite;
+  flex-shrink: 0;
+}
+
+@keyframes co-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── Payment error message ─────────────────────────────────── */
+.checkout-pay-error {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 14px;
+  background: rgba(227, 27, 35, 0.07);
+  border: 1px solid rgba(227, 27, 35, 0.25);
+  border-radius: 6px;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  color: #E31B23;
+  line-height: 1.5;
+}
+
+.checkout-pay-error svg {
+  flex-shrink: 0;
+}
+
+/* ── CCP / BaridiMob Bank Card ──────────────────────────────── */
+.ccp-info-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: var(--pg-bg);
+  border: 1.5px solid rgba(227, 27, 35, 0.25);
+  border-radius: 10px;
+  padding: 16px;
+  margin-top: 4px;
+}
+
+.ccp-info-card__header {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.ccp-info-card__icon {
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.ccp-info-card__title {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--pg-text);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.ccp-detail-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  background: var(--modal-surface);
+  border: 1px solid var(--pg-border-mid);
+  border-radius: 8px;
+  padding: 10px 14px;
+}
+
+.ccp-detail-item__info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.ccp-detail-item__label {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #E31B23;
+}
+
+.ccp-detail-item__val {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  color: var(--pg-text);
+  word-break: break-all;
+}
+
+.ccp-detail-item__val--mono {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.ccp-detail-item__sub {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  color: var(--pg-text-muted);
+}
+
+.ccp-copy-btn {
+  padding: 6px 12px;
+  background: rgba(227, 27, 35, 0.1);
+  border: 1px solid rgba(227, 27, 35, 0.3);
+  color: #E31B23;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border-radius: 6px;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: background 150ms, color 150ms;
+}
+
+.ccp-copy-btn:hover {
+  background: #E31B23;
+  color: #fff;
+}
+
+/* ── Receipt Upload Dropzone ────────────────────────────────── */
+.ccp-upload-zone {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.ccp-upload-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--pg-text-muted);
+}
+
+.ccp-dropzone {
+  border: 2px dashed var(--pg-border-mid);
+  border-radius: 8px;
+  padding: 16px;
+  text-align: center;
+  background: var(--modal-surface);
+  cursor: pointer;
+  transition: border-color 200ms, background 200ms;
+}
+
+.ccp-dropzone:hover {
+  border-color: #E31B23;
+  background: rgba(227, 27, 35, 0.03);
+}
+
+.ccp-dropzone.error {
+  border-color: #E31B23;
+}
+
+.ccp-dropzone__placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  color: var(--pg-text-muted);
+}
+
+.ccp-dropzone__placeholder p {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.ccp-preview {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.ccp-preview img {
+  max-height: 140px;
+  object-fit: contain;
+  border-radius: 6px;
+  border: 1px solid var(--pg-border-mid);
+}
+
+.ccp-preview__change {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  color: #E31B23;
+  font-weight: 600;
+}
+
+.checkout-submit--ccp {
+  background: #25D366;
+}
+
+.checkout-submit--ccp:hover {
+  background: #1aad57;
+}
+
+

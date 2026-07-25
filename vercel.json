@@ -1,4 +1,14 @@
 {
+  "functions": {
+    "api/chargily/checkout.js": {
+      "memory": 256,
+      "maxDuration": 10
+    },
+    "api/chargily/webhook.js": {
+      "memory": 256,
+      "maxDuration": 10
+    }
+  },
   "headers": [
     {
       "source": "/assets/(.*)",
@@ -23,9 +33,18 @@
       "headers": [
         { "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" }
       ]
+    },
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "no-store" },
+        { "key": "X-Content-Type-Options", "value": "nosniff" }
+      ]
     }
   ],
   "rewrites": [
+    { "source": "/api/chargily/checkout", "destination": "/api/chargily/checkout" },
+    { "source": "/api/chargily/webhook",  "destination": "/api/chargily/webhook" },
     { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
